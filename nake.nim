@@ -19,7 +19,7 @@ var
 
 proc newTask(desc: string; action: TTaskFunction): PTask
 proc runTask*(name: string) {.inline.}
-proc shell*(cmd: varargs[string, `$`]): int {.discardable.}
+proc shell*(cmd: varargs[string, `$`]): bool {.discardable.}
 proc cd*(dir: string) {.inline.}
 
 template nakeImports*(): stmt {.immediate.} =
@@ -30,7 +30,7 @@ template nakeImports*(): stmt {.immediate.} =
   when not defined(strutils): import strutils
   when not defined(os): import os
 
-template task*(name: string; description: string; body: stmt): stmt {.immediate.} =
+template task*(name: string; description: string = "No description."; body: stmt): stmt {.immediate.} =
   nakeImports()
   bind tasks
   tasks[name] = PTask(desc: description, action: proc() {.closure.} =
@@ -40,8 +40,13 @@ proc newTask (desc: string; action: TTaskFunction): PTask = PTask(
   desc: desc, action: action)
 proc runTask (name: string) = tasks[name].action()
 
-proc shell*(cmd: varargs[string, `$`]): int =
-  result = execShellCmd(cmd.join(" "))
+proc shell*(cmd: varargs[string, `$`]): bool =
+  result = execShellCmd(cmd.join(" ")) == 0
+proc direShell*(cmd: varargs[string, `$`]): bool {.discardable.} =
+  ## like shell() but quit if the process does not return 0
+  result = shell(cmd)
+  if not result: quit 1
+
 proc cd*(dir: string) = setCurrentDir(dir)
 template withDir*(dir: string; body: stmt): stmt =
   ## temporary cd
@@ -63,7 +68,7 @@ when isMainModule:
   for i in 1..paramCount():
     args.add paramStr(i)
     args.add " "
-  quit shell("nimrod", "c", "-r", "nakefile.nim", args)
+  quit (if shell("nimrod", "c", "-r", "nakefile.nim", args): 0 else: 1)
 else:
   addQuitProc proc {.noconv.} =
     var 
