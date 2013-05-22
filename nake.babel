@@ -1,0 +1,6 @@
+[Package]
+name = "nake"
+version = "1.0"
+author = "fowl"
+description = "make-like for Nimrod. Describe your builds as tasks!"
+license = "MIT"
