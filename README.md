@@ -29,6 +29,8 @@ Nake has its own nakefile, it will build nake as a binary is just a shortcut for
 ```sh
 cd ~/.babel/libs/nake
 nimrod c -r nakefile install
+## boring ^
 cd ~/my-project
-nake debug-build  ## wow look at the convenience (!!)
+nake debug-build  
+## wow look at the convenience (!!)
 ```

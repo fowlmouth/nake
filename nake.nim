@@ -7,41 +7,53 @@ contents thereof.
 
 As said in the Olde Country, `Keepe it Gangster'."""
 
-import strutils, parseopt, tables, os
+import strutils, parseopt, tables, os, rdstdin
+export strutils, parseopt, tables, os, rdstdin
 
 type
   PTask* = ref object
     desc*: string
     action*: TTaskFunction
-  TTaskFunction* = proc() {.closure.}
+  TTaskFunction* = proc() 
 var 
   tasks = initTable[string, PTask](32)
+  careful = false
 
 proc newTask(desc: string; action: TTaskFunction): PTask
 proc runTask*(name: string) {.inline.}
 proc shell*(cmd: varargs[string, `$`]): bool {.discardable.}
 proc cd*(dir: string) {.inline.}
 
-template nakeImports*(): stmt {.immediate.} =
+discard """ template nakeImports*(): stmt {.immediate.} =
   ## Import required modules, if they need to be imported.
   ## This is no longer necessary as it's called from task()
   when not defined(tables): import tables
   when not defined(parseopt): import parseopt
   when not defined(strutils): import strutils
   when not defined(os): import os
+ """
 
-template task*(name: string; description: string = "No description."; body: stmt): stmt {.immediate.} =
-  nakeImports()
-  bind tasks
-  tasks[name] = PTask(desc: description, action: proc() {.closure.} =
-    body)
 
 proc newTask (desc: string; action: TTaskFunction): PTask = PTask(
   desc: desc, action: action)
 proc runTask (name: string) = tasks[name].action()
 
+template task*(name: string; description: string; body: stmt): stmt {.immediate.} =
+  bind tasks,newTask
+  tasks[name] = newTask(description, proc() {.closure.} =
+    body)
+
+proc askShellCMD (cmd: string): bool =
+  if careful:
+    let ans = readLineFromSTDIN ("Run? `$#` [N/y]\L" % cmd).toLower
+    if ans[0] in {'y','Y'}:
+      result = execShellCMD(cmd) == 0
+    else: return false
+  else:
+    result = execShellCMD(cmd) == 0
+
 proc shell*(cmd: varargs[string, `$`]): bool =
-  result = execShellCmd(cmd.join(" ")) == 0
+  askShellCMD(cmd.join(" "))
 proc direShell*(cmd: varargs[string, `$`]): bool {.discardable.} =
   ## like shell() but quit if the process does not return 0
   result = shell(cmd)
@@ -78,6 +90,8 @@ else:
       case kind
       of cmdLongOption, cmdShortOption:
         case key.tolower
+        of "careful", "c":
+          careful = true
         of "tasks", "t":
           printTaskList = true
         else: 
