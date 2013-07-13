@@ -34,3 +34,19 @@ cd ~/my-project
 nake debug-build  
 ## wow look at the convenience (!!)
 ```
+Running nake in such a way is maybe slower than running the ``./nakefile``
+directly since nake will call the nimrod compiler for each run to recompile the
+nakefile. If you are using bash you can add this function definition to your
+initialization files to avoid the recompile based on file timestamps:
+
+```sh
+function nake {
+	# Make NAKEBIN a full path to avoid recursion from the shell.
+	NAKEBIN=~/bin/nake
+	if [[ nakefile.nim -nt nakefile ]]; then
+		"${NAKEBIN}" "$@"
+	else
+		./nakefile "$@"
+	fi
+}
+```
