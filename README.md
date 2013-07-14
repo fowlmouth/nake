@@ -34,3 +34,9 @@ cd ~/my-project
 nake debug-build  
 ## wow look at the convenience (!!)
 ```
+
+Once the nakefile is built you can run it manually with ``./nakefile``, but you
+can also run ``nake`` again. If nake detects that the source file is newer than
+the binary, the nakefile will be rebuilt again, otherwise it just runs the
+nakefile binary directly. You can always remove the ``nakefile`` and the
+``nimcache`` directories if you need to force a rebuild.
