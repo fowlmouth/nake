@@ -7,7 +7,7 @@ contents thereof.
 
 As said in the Olde Country, `Keepe it Gangster'."""
 
-import strutils, parseopt, tables, os, rdstdin
+import strutils, parseopt, tables, os, rdstdin, times
 export strutils, parseopt, tables, os, rdstdin
 
 type
@@ -72,7 +72,6 @@ template withDir*(dir: string; body: stmt): stmt =
 
 when isMainModule:
   ## All the binary does is forward cli arguments to `nimrod c -r nakefile.nim $ARGS`
-  ## maybe there should be some option to not rebuild the nakefile everytime? idk
   if not existsFile("nakefile.nim"):
     echo "No nakefile.nim found. Current working dir is ", getCurrentDir()
     quit 1
@@ -80,6 +79,20 @@ when isMainModule:
   for i in 1..paramCount():
     args.add paramStr(i)
     args.add " "
+
+  # Detects if the nakefile binary is stale and should be rebuilt.
+  try:
+    if fpUserExec in getFilePermissions("nakefile"):
+      let
+        binaryTime = toSeconds(getLastModificationTime("nakefile"))
+        nakefileTime = toSeconds(getLastModificationTime("nakefile.nim"))
+      if binaryTime > nakefileTime:
+        quit (if shell("." / "nakefile", args): 0 else: 1)
+  except EOS:
+    # Reached if for example nakefile doesn't exist, so permissions test fails.
+    nil
+
+  # Recompiles the nakefile and runs it.
   quit (if shell("nimrod", "c", "-r", "nakefile.nim", args): 0 else: 1)
 else:
   addQuitProc proc {.noconv.} =
