@@ -40,3 +40,7 @@ can also run ``nake`` again. If nake detects that the source file is newer than
 the binary, the nakefile will be rebuilt again, otherwise it just runs the
 nakefile binary directly. You can always remove the ``nakefile`` and the
 ``nimcache`` directories if you need to force a rebuild.
+
+Run the `docs` task of the included [nakefile](nakefile.nim) to generate the
+user API HTML documentation. This documentation explains what symbols you can
+use other than the obvious `task` to define tasks.

@@ -7,6 +7,10 @@ contents thereof.
 
 As said in the Olde Country, `Keepe it Gangster'."""
 
+## Documentation for the `nake module <https://github.com/fowlmouth/nake>`_.
+## These are the procs and macros you can use to define and run tasks in your
+## nakefiles.
+
 import strutils, parseopt, tables, os, rdstdin, times
 export strutils, parseopt, tables, os, rdstdin
 
@@ -20,7 +24,25 @@ var
   careful = false
 
 proc newTask(desc: string; action: TTaskFunction): PTask
-proc runTask*(name: string) {.inline.}
+proc runTask*(name: string) {.inline.} ## \
+  ## Runs the specified task.
+  ##
+  ## You can call this proc to *chain* other tasks for the current task and
+  ## avoid repeating code. Example:
+  ##
+  ## .. code-block:: nimrod
+  ##   import nake, os
+  ##
+  ##   ...
+  ##
+  ##   task "docs", "generates docs for module":
+  ##     echo "Generating " & moduleHtml
+  ##     direShell "nimrod", "doc", moduleNim
+  ##
+  ##   task "install_docs", "copies docs to " & docInstallDir:
+  ##     runTask("docs")
+  ##     echo "Copying documentation to " & docInstallDir
+  ##     copyFile(moduleHtml, docInstallDir / moduleHtml)
 proc shell*(cmd: varargs[string, `$`]): bool {.discardable.}
 proc cd*(dir: string) {.inline.}
 
@@ -71,7 +93,7 @@ template withDir*(dir: string; body: stmt): stmt =
   cd(curDir)
 
 when isMainModule:
-  ## All the binary does is forward cli arguments to `nimrod c -r nakefile.nim $ARGS`
+  # All the binary does is forward cli arguments to `nimrod c -r nakefile.nim $ARGS`
   if not existsFile("nakefile.nim"):
     echo "No nakefile.nim found. Current working dir is ", getCurrentDir()
     quit 1
