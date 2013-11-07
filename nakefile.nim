@@ -12,6 +12,10 @@ when defined(Linux):
 
 
 
+task "docs", "generate user documentation for nake API":
+  echo "Generating nake.html"
+  direShell "nimrod", "doc2", "nake.nim"
+
 task "install", "compile and install nake binary":
   direShell "nimrod", "c", "nake"
   

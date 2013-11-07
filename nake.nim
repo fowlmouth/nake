@@ -7,6 +7,10 @@ contents thereof.
 
 As said in the Olde Country, `Keepe it Gangster'."""
 
+## Documentation for the `nake module <https://github.com/fowlmouth/nake>`_.
+## These are the procs and macros you can use to define and run tasks in your
+## nakefiles.
+
 import strutils, parseopt, tables, os, rdstdin, times
 export strutils, parseopt, tables, os, rdstdin
 
@@ -20,9 +24,34 @@ var
   careful = false
 
 proc newTask(desc: string; action: TTaskFunction): PTask
-proc runTask*(name: string) {.inline.}
+proc runTask*(name: string) {.inline.} ## \
+  ## Runs the specified task.
+  ##
+  ## You can call this proc to *chain* other tasks for the current task and
+  ## avoid repeating code. Example:
+  ##
+  ## .. code-block:: nimrod
+  ##   import nake, os
+  ##
+  ##   ...
+  ##
+  ##   task "docs", "generates docs for module":
+  ##     echo "Generating " & moduleHtml
+  ##     direShell "nimrod", "doc", moduleNim
+  ##
+  ##   task "install_docs", "copies docs to " & docInstallDir:
+  ##     runTask("docs")
+  ##     echo "Copying documentation to " & docInstallDir
+  ##     copyFile(moduleHtml, docInstallDir / moduleHtml)
 proc shell*(cmd: varargs[string, `$`]): bool {.discardable.}
+  ## Invokes an external command.
+  ##
+  ## The proc will return false if the command exits with a non zero code.
 proc cd*(dir: string) {.inline.}
+  ## Changes the current directory.
+  ##
+  ## The change is permanent for the rest of the execution. Use the ``withDir``
+  ## template if you want to perform a temporary change only.
 
 discard """ template nakeImports*(): stmt {.immediate.} =
   ## Import required modules, if they need to be imported.
@@ -39,6 +68,18 @@ proc newTask (desc: string; action: TTaskFunction): PTask = PTask(
 proc runTask (name: string) = tasks[name].action()
 
 template task*(name: string; description: string; body: stmt): stmt {.immediate.} =
+  ## Defines a task for nake.
+  ##
+  ## Pass the name of the task, the description that will be displayed to the
+  ## user when `nake` is invoked, and the body of the task. Example:
+  ##
+  ## .. code-block:: nimrod
+  ##   import nake
+  ##
+  ##   task "bin", "compiles all binaries":
+  ##     for binName in binaries:
+  ##       echo "Generating " & binName
+  ##       direShell "nimrod", "c", binName
   bind tasks,newTask
   tasks[name] = newTask(description, proc() {.closure.} =
     body)
@@ -55,23 +96,25 @@ proc askShellCMD (cmd: string): bool =
 proc shell*(cmd: varargs[string, `$`]): bool =
   askShellCMD(cmd.join(" "))
 proc direShell*(cmd: varargs[string, `$`]): bool {.discardable.} =
-  ## like shell() but quit if the process does not return 0
+  ## Like shell() but quits if the process does not return 0
   result = shell(cmd)
   if not result: quit 1
 
 proc cd*(dir: string) = setCurrentDir(dir)
 template withDir*(dir: string; body: stmt): stmt =
-  ## temporary cd
-  ## withDir "foo":
-  ##   # inside foo
-  ## #back to last dir
+  ## Changes the current directory temporarily.
+  ##
+  ## .. code-block:: nimrod
+  ##   withDir "foo":
+  ##     # inside foo
+  ##   #back to last dir
   var curDir = getCurrentDir()
   cd(dir)
   body
   cd(curDir)
 
 when isMainModule:
-  ## All the binary does is forward cli arguments to `nimrod c -r nakefile.nim $ARGS`
+  # All the binary does is forward cli arguments to `nimrod c -r nakefile.nim $ARGS`
   if not existsFile("nakefile.nim"):
     echo "No nakefile.nim found. Current working dir is ", getCurrentDir()
     quit 1

@@ -5,4 +5,5 @@ nimcache/
 
 # Full paths.
 /nake
+/nake.html
 /nakefile
