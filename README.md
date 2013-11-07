@@ -28,6 +28,12 @@ nimrod c -r nakefile test-build
 ```
 
 
+License
+=======
+
+[DATWPL license](LICENSE.md).
+
+
 Installation
 ============
 
