@@ -1,12 +1,7 @@
-    DATWPL: DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+    DO AS THOU WILST PUBLIC LICENSE
 
-    Copyright (C) 2013 fouwlmouth <phowl.mouth@gmail.com>
+    Whoever should stumble upon this document is henceforth and forever
+    entitled to DO AS THOU WILST with aforementioned document and the
+    contents thereof.
 
-    Everyone is permitted to copy and distribute verbatim or modified
-    copies of this license document, and changing it is allowed as long
-    as the name is changed.
-
-               DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
-      TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
-
-     0. You just DO WHAT THE FUCK YOU WANT TO.
+    As said in the Olde Country, `Keepe it Gangster'.
