@@ -155,9 +155,12 @@ else:
       of cmdArgument:
         task = key
       else: nil
-    if printTaskList or task.isNil or not(tasks.hasKey(task)):
+    # If the user specified a task but it doesn't exist, abort.
+    let badTask = (not task.isNil and (not tasks.hasKey(task)))
+    if printTaskList or task.isNil or badTask:
+      if badTask: echo "Task '" & task & "' not found."
       echo "Available tasks:"
       for name, task in pairs(tasks):
         echo name, " - ", task.desc
-      quit 0
+      quit(if badTask: 1 else: 0)
     runTask task
