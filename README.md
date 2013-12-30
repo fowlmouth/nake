@@ -122,7 +122,7 @@ use other than the obvious `task` to define tasks. If you installed from babel
 you first need to go to your babel directory. Unix example:
 
 ```sh
-$ cd ~/.babel/pkgs/nake-x.y
+$ cd `babel path nake`
 $ nimrod c -r nake docs
 $ open nake.html
 ```
