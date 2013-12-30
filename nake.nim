@@ -147,6 +147,38 @@ proc mainExecution() =
   quit (if shell("nimrod", "c", "-r", "nakefile.nim", args): 0 else: 1)
 
 
+proc needsRefresh*(target: string, src: varargs[string]): bool =
+  ## Returns true if target is missing or src has newer modification date.
+  ##
+  ## This is a convenience proc you can use in your tasks to verify if
+  ## compilation for a binary should happen. The proc will return true if
+  ## ``target`` doesn't exists or any of the file paths in ``src`` have a more
+  ## recent last modification timestamp. All paths in ``src`` must be reachable
+  ## or else the proc will raise an exception. Example:
+  ##
+  ## .. code-block:: nimrod
+  ##   import nake, os
+  ##
+  ##   let
+  ##     src = "prog.nim"
+  ##     exe = src.changeFileExt(exeExt)
+  ##   if exe.needsRefresh(src):
+  ##     direShell "nimrod c", src
+  ##   else:
+  ##     echo "All done!"
+  assert len(src) > 0, "Pass some parameters to check for"
+  var targetTime: float
+  try:
+    targetTime = toSeconds(getLastModificationTime(target))
+  except EOS:
+    return true
+
+  for s in src:
+    let srcTime = toSeconds(getLastModificationTime(s))
+    if srcTime > targetTime:
+      return true
+
+
 proc listTasks*() =
   ## Lists to stdout the registered tasks.
   ##
