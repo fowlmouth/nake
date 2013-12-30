@@ -23,6 +23,11 @@ var
   tasks = initTable[string, PTask](32)
   careful = false
 
+const
+  defaultTask* = "default" ## \
+  ## String with the name of the default task nake will run if you define it
+  ## and the user doesn't specify any task.
+
 proc newTask(desc: string; action: TTaskFunction): PTask
 proc runTask*(name: string) {.inline.} ## \
   ## Runs the specified task.
@@ -141,6 +146,18 @@ proc mainExecution() =
   # Recompiles the nakefile and runs it.
   quit (if shell("nimrod", "c", "-r", "nakefile.nim", args): 0 else: 1)
 
+
+proc listTasks*() =
+  ## Lists to stdout the registered tasks.
+  ##
+  ## You can call this proc inside your ``defaultTask`` task to tell the user
+  ## about other options if your default task doesn't have anything to do.
+  assert tasks.len > 0
+  echo "Available tasks:"
+  for name, task in pairs(tasks):
+    echo name, " - ", task.desc
+
+
 proc moduleHook() {.noconv.} =
   ## Hook registered when the module is imported by someone else.
   var
@@ -161,11 +178,12 @@ proc moduleHook() {.noconv.} =
     else: nil
   # If the user specified a task but it doesn't exist, abort.
   let badTask = (not task.isNil and (not tasks.hasKey(task)))
+  if task.isNil and tasks.hasKey(defaultTask):
+    echo "No task specified, running default task defined by nakefile."
+    task = defaultTask
   if printTaskList or task.isNil or badTask:
     if badTask: echo "Task '" & task & "' not found."
-    echo "Available tasks:"
-    for name, task in pairs(tasks):
-      echo name, " - ", task.desc
+    listTasks()
     quit(if badTask: 1 else: 0)
   runTask task
 

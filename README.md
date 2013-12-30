@@ -100,6 +100,18 @@ switch it will report the available tasks.  But if you run a nakefile with a
 specific task and this task doesn't exist, nake will report an error, list the
 available tasks and exit with a non zero status.
 
+In your nakefiles you can define the ``defaultTask`` task. This is a task which
+will be executed if the user runs ``nake`` without specifying a task. Example:
+
+```nimrod
+task defaultTask, "Compiles binary":
+  if binaryRequiresRebuilding():
+    doStuffToCompileProgram()
+  else:
+    echo "Binary is fresh, anything else?"
+    listTasks()
+```
+
 
 Documentation
 =============
