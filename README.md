@@ -64,8 +64,9 @@ $ babel install
 Usage
 =====
 
-Nake has its own nakefile, it will build nake as a binary is just a shortcut
-for `nimrod c -r nakefile $ARGS`
+Nake has its own nakefile, it will build nake as a binary. The ``nake`` binary
+is just a shortcut for ``nimrod c -r nakefile $ARGS``:
+
 ```sh
 cd ~/.babel/libs/nake
 nimrod c -r nakefile install
@@ -80,6 +81,24 @@ can also run ``nake`` again. If nake detects that the source file is newer than
 the binary, the nakefile will be rebuilt again, otherwise it just runs the
 nakefile binary directly. You can always remove the ``nakefile`` and the
 ``nimcache`` directories if you need to force a rebuild.
+
+Most nakefiles will involve running some commands in a shell. To verify what
+the shell invocations do you can pass the ``-c`` or ``--careful`` switch to a
+``nake`` binary and then it will ask you to confirm each command being run:
+
+```sh
+$ nake --careful install
+Run? `nimrod c nake` [N/y]
+```
+
+Note that this parameter only applies to nake's convenience ``shell`` and
+``direShell`` procs, a *malicious* nakefile author will likely implement his
+own shell spawning process.
+
+If you run the nakefile without parameters or with the ``-t`` or ``--tasks``
+switch it will report the available tasks.  But if you run a nakefile with a
+specific task and this task doesn't exist, nake will report an error, list the
+available tasks and exit with a non zero status.
 
 
 Documentation
