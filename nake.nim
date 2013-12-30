@@ -113,8 +113,11 @@ template withDir*(dir: string; body: stmt): stmt =
   body
   cd(curDir)
 
-when isMainModule:
-  # All the binary does is forward cli arguments to `nimrod c -r nakefile.nim $ARGS`
+proc mainExecution() =
+  ## Entry point when this module is run as an executable.
+  ##
+  ## All the binary does is forward cli arguments to `nimrod c -r nakefile.nim
+  ## $ARGS`
   if not existsFile("nakefile.nim"):
     echo "No nakefile.nim found. Current working dir is ", getCurrentDir()
     quit 1
@@ -137,30 +140,36 @@ when isMainModule:
 
   # Recompiles the nakefile and runs it.
   quit (if shell("nimrod", "c", "-r", "nakefile.nim", args): 0 else: 1)
+
+proc moduleHook() {.noconv.} =
+  ## Hook registered when the module is imported by someone else.
+  var
+    task: string
+    printTaskList: bool
+  for kind, key, val in getOpt():
+    case kind
+    of cmdLongOption, cmdShortOption:
+      case key.tolower
+      of "careful", "c":
+        careful = true
+      of "tasks", "t":
+        printTaskList = true
+      else:
+        echo "Unknown option: ", key, ": ", val
+    of cmdArgument:
+      task = key
+    else: nil
+  # If the user specified a task but it doesn't exist, abort.
+  let badTask = (not task.isNil and (not tasks.hasKey(task)))
+  if printTaskList or task.isNil or badTask:
+    if badTask: echo "Task '" & task & "' not found."
+    echo "Available tasks:"
+    for name, task in pairs(tasks):
+      echo name, " - ", task.desc
+    quit(if badTask: 1 else: 0)
+  runTask task
+
+when isMainModule:
+  mainExecution()
 else:
-  addQuitProc proc {.noconv.} =
-    var 
-      task: string
-      printTaskList: bool
-    for kind, key, val in getOpt():
-      case kind
-      of cmdLongOption, cmdShortOption:
-        case key.tolower
-        of "careful", "c":
-          careful = true
-        of "tasks", "t":
-          printTaskList = true
-        else: 
-          echo "Unknown option: ", key, ": ", val
-      of cmdArgument:
-        task = key
-      else: nil
-    # If the user specified a task but it doesn't exist, abort.
-    let badTask = (not task.isNil and (not tasks.hasKey(task)))
-    if printTaskList or task.isNil or badTask:
-      if badTask: echo "Task '" & task & "' not found."
-      echo "Available tasks:"
-      for name, task in pairs(tasks):
-        echo name, " - ", task.desc
-      quit(if badTask: 1 else: 0)
-    runTask task
+  addQuitProc moduleHook
