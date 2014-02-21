@@ -4,6 +4,8 @@
 nimcache/
 
 # Full paths.
+/LICENSE.html
+/README.html
 /nake
 /nake.html
 /nakefile

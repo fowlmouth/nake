@@ -11,10 +11,16 @@ when defined(Linux):
     echo "Symlinked file"
 
 
-
-task "docs", "generate user documentation for nake API":
+task "docs", "generate user documentation for nake API and local rst files":
   echo "Generating nake.html"
   direShell "nimrod", "doc2", "nake.nim"
+  for rstSrc in walkFiles("*.rst"):
+    let rstDest = rstSrc.changeFileExt(".html")
+    if not rstDest.needsRefresh(rstSrc): continue
+    if not shell("nimrod rst2html -o:" & rstDest & " " & rstSrc):
+      quit("Could not generate html doc for " & rstSrc)
+    else:
+      echo rstSrc, " -> ", rstDest
 
 task "install", "compile and install nake binary":
   direShell "nimrod", "c", "nake"
