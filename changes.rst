@@ -4,7 +4,7 @@ Nake changes log
 
 Changes for `nake <https://github.com/fowlmouth/nake>`_.
 
-v1.2, ????-??-??
+v1.2, 2014-02-22
 ----------------
 
 * Nake now reports an error to the OS for unknown tasks.

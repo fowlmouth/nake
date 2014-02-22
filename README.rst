@@ -121,5 +121,5 @@ which are indexed from `docindex.rst <docindex.rst>`_.
 Changes
 =======
 
-This is development version 1.2. Read the changes log in the `changes.rst file
+This is stable version 1.2. Read the changes log in the `changes.rst file
 <changes.rst>`_.
