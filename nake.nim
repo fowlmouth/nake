@@ -141,7 +141,7 @@ proc mainExecution() =
         quit (if shell("." / "nakefile", args): 0 else: 1)
   except EOS:
     # Reached if for example nakefile doesn't exist, so permissions test fails.
-    nil
+    discard
 
   # Recompiles the nakefile and runs it.
   quit (if shell("nimrod", "c", "-r", "nakefile.nim", args): 0 else: 1)
@@ -207,7 +207,7 @@ proc moduleHook() {.noconv.} =
         echo "Unknown option: ", key, ": ", val
     of cmdArgument:
       task = key
-    else: nil
+    else: discard
   # If the user specified a task but it doesn't exist, abort.
   let badTask = (not task.isNil and (not tasks.hasKey(task)))
   if task.isNil and tasks.hasKey(defaultTask):
