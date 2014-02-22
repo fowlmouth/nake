@@ -104,11 +104,22 @@ will be executed if the user runs ``nake`` without specifying a task. Example::
 Documentation
 =============
 
-Run the **docs** task of the included `nakefile <nakefile.nim>`_ to generate
-the user API HTML documentation. This documentation explains what symbols you
-can use other than the obvious ``task`` to define tasks. If you installed from
-babel you first need to go to your babel directory. Unix example::
+Run the **docs** task of the included `nakefile.nim <nakefile.nim>`_ to
+generate the user API HTML documentation in the `nake.html file <nake.html>`_.
+This documentation explains what symbols you can use other than the obvious
+``task`` to define tasks. If you installed from babel you first need to go to
+your babel directory. Unix example::
 
     $ cd `babel path nake`
     $ nimrod c -r nake docs
     $ open nake.html
+
+The **docs** task will also generate HTML versions of all local rst files,
+which are indexed from `docindex.rst <docindex.rst>`_.
+
+
+Changes
+=======
+
+This is development version 1.2. Read the changes log in the `changes.rst file
+<changes.rst>`_.

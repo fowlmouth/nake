@@ -6,6 +6,9 @@ nimcache/
 # Full paths.
 /LICENSE.html
 /README.html
+/changes.html
+/docindex.html
 /nake
 /nake.html
 /nakefile
+/release_steps.html
