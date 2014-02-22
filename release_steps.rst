@@ -8,6 +8,8 @@ What to do for a new public release?
   * Modify `README.rst <../README.rst>`_ (s/development/stable/).
   * Modify `changes.rst <changes.rst>`_ with list of changes and
     version/number.
+  * Modify `nake.babel <nake.babel>`_ with version and list of new files to
+    install.
 
 * ``git commit -av`` into the release branch the version number changes.
 * ``git flow release finish versionname`` (the tagname is versionname without
@@ -19,6 +21,7 @@ What to do for a new public release?
   * Modify `README.rst <../README.rst>`_.
   * Add to `changes.rst <changes.rst>`_ development version with unknown
     date.
+  * Modify `nake.babel <nake.babel>`_ with development version.
 
 * ``git commit -av`` into ``master`` with *Bumps version numbers for
   development version*.
