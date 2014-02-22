@@ -4,6 +4,11 @@ Nake changes log
 
 Changes for `nake <https://github.com/fowlmouth/nake>`_.
 
+v1.3, ????-??-??
+----------------
+
+* Nothing yet.
+
 v1.2, 2014-02-22
 ----------------
 
