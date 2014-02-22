@@ -1,8 +1,8 @@
 [Package]
 name = "nake"
-version = "1.1"
+version = "1.2"
 author = "fowl"
 description = "make-like for Nimrod. Describe your builds as tasks!"
 license = "DATWPL"
-InstallFiles = "README.md,nake.nim,nakefile.nim,LICENSE.md"
+InstallFiles = "README.rst,nake.nim,nakefile.nim,LICENSE.rst"
 bin = "nake"

@@ -3,7 +3,7 @@ DO AS THOU WILST PUBLIC LICENSE
 
 Whoever should stumble upon this document is henceforth and forever
 entitled to DO AS THOU WILST with aforementioned document and the
-contents thereof. 
+contents thereof.
 
 As said in the Olde Country, `Keepe it Gangster'."""
 
@@ -18,10 +18,15 @@ type
   PTask* = ref object
     desc*: string
     action*: TTaskFunction
-  TTaskFunction* = proc() 
-var 
+  TTaskFunction* = proc()
+var
   tasks = initTable[string, PTask](32)
   careful = false
+
+const
+  defaultTask* = "default" ## \
+  ## String with the name of the default task nake will run if you define it
+  ## and the user doesn't specify any task.
 
 proc newTask(desc: string; action: TTaskFunction): PTask
 proc runTask*(name: string) {.inline.} ## \
@@ -113,8 +118,11 @@ template withDir*(dir: string; body: stmt): stmt =
   body
   cd(curDir)
 
-when isMainModule:
-  # All the binary does is forward cli arguments to `nimrod c -r nakefile.nim $ARGS`
+proc mainExecution() =
+  ## Entry point when this module is run as an executable.
+  ##
+  ## All the binary does is forward cli arguments to `nimrod c -r nakefile.nim
+  ## $ARGS`
   if not existsFile("nakefile.nim"):
     echo "No nakefile.nim found. Current working dir is ", getCurrentDir()
     quit 1
@@ -137,27 +145,81 @@ when isMainModule:
 
   # Recompiles the nakefile and runs it.
   quit (if shell("nimrod", "c", "-r", "nakefile.nim", args): 0 else: 1)
+
+
+proc needsRefresh*(target: string, src: varargs[string]): bool =
+  ## Returns true if target is missing or src has newer modification date.
+  ##
+  ## This is a convenience proc you can use in your tasks to verify if
+  ## compilation for a binary should happen. The proc will return true if
+  ## ``target`` doesn't exists or any of the file paths in ``src`` have a more
+  ## recent last modification timestamp. All paths in ``src`` must be reachable
+  ## or else the proc will raise an exception. Example:
+  ##
+  ## .. code-block:: nimrod
+  ##   import nake, os
+  ##
+  ##   let
+  ##     src = "prog.nim"
+  ##     exe = src.changeFileExt(exeExt)
+  ##   if exe.needsRefresh(src):
+  ##     direShell "nimrod c", src
+  ##   else:
+  ##     echo "All done!"
+  assert len(src) > 0, "Pass some parameters to check for"
+  var targetTime: float
+  try:
+    targetTime = toSeconds(getLastModificationTime(target))
+  except EOS:
+    return true
+
+  for s in src:
+    let srcTime = toSeconds(getLastModificationTime(s))
+    if srcTime > targetTime:
+      return true
+
+
+proc listTasks*() =
+  ## Lists to stdout the registered tasks.
+  ##
+  ## You can call this proc inside your ``defaultTask`` task to tell the user
+  ## about other options if your default task doesn't have anything to do.
+  assert tasks.len > 0
+  echo "Available tasks:"
+  for name, task in pairs(tasks):
+    echo name, " - ", task.desc
+
+
+proc moduleHook() {.noconv.} =
+  ## Hook registered when the module is imported by someone else.
+  var
+    task: string
+    printTaskList: bool
+  for kind, key, val in getOpt():
+    case kind
+    of cmdLongOption, cmdShortOption:
+      case key.tolower
+      of "careful", "c":
+        careful = true
+      of "tasks", "t":
+        printTaskList = true
+      else:
+        echo "Unknown option: ", key, ": ", val
+    of cmdArgument:
+      task = key
+    else: nil
+  # If the user specified a task but it doesn't exist, abort.
+  let badTask = (not task.isNil and (not tasks.hasKey(task)))
+  if task.isNil and tasks.hasKey(defaultTask):
+    echo "No task specified, running default task defined by nakefile."
+    task = defaultTask
+  if printTaskList or task.isNil or badTask:
+    if badTask: echo "Task '" & task & "' not found."
+    listTasks()
+    quit(if badTask: 1 else: 0)
+  runTask task
+
+when isMainModule:
+  mainExecution()
 else:
-  addQuitProc proc {.noconv.} =
-    var 
-      task: string
-      printTaskList: bool
-    for kind, key, val in getOpt():
-      case kind
-      of cmdLongOption, cmdShortOption:
-        case key.tolower
-        of "careful", "c":
-          careful = true
-        of "tasks", "t":
-          printTaskList = true
-        else: 
-          echo "Unknown option: ", key, ": ", val
-      of cmdArgument:
-        task = key
-      else: nil
-    if printTaskList or task.isNil or not(tasks.hasKey(task)):
-      echo "Available tasks:"
-      for name, task in pairs(tasks):
-        echo name, " - ", task.desc
-      quit 0
-    runTask task
+  addQuitProc moduleHook
