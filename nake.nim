@@ -35,14 +35,14 @@ proc runTask*(name: string) {.inline.} ## \
   ## You can call this proc to *chain* other tasks for the current task and
   ## avoid repeating code. Example:
   ##
-  ## .. code-block:: nimrod
+  ## .. code-block:: nim
   ##   import nake, os
   ##
   ##   ...
   ##
   ##   task "docs", "generates docs for module":
   ##     echo "Generating " & moduleHtml
-  ##     direShell "nimrod", "doc", moduleNim
+  ##     direShell "nim", "doc", moduleNim
   ##
   ##   task "install_docs", "copies docs to " & docInstallDir:
   ##     runTask("docs")
@@ -78,13 +78,13 @@ template task*(name: string; description: string; body: stmt): stmt {.immediate.
   ## Pass the name of the task, the description that will be displayed to the
   ## user when `nake` is invoked, and the body of the task. Example:
   ##
-  ## .. code-block:: nimrod
+  ## .. code-block:: nim
   ##   import nake
   ##
   ##   task "bin", "compiles all binaries":
   ##     for binName in binaries:
   ##       echo "Generating " & binName
-  ##       direShell "nimrod", "c", binName
+  ##       direShell "nim", "c", binName
   bind tasks,newTask
   tasks[name] = newTask(description, proc() {.closure.} =
     body)
@@ -109,7 +109,7 @@ proc cd*(dir: string) = setCurrentDir(dir)
 template withDir*(dir: string; body: stmt): stmt =
   ## Changes the current directory temporarily.
   ##
-  ## .. code-block:: nimrod
+  ## .. code-block:: nim
   ##   withDir "foo":
   ##     # inside foo
   ##   #back to last dir
@@ -121,7 +121,7 @@ template withDir*(dir: string; body: stmt): stmt =
 proc mainExecution() =
   ## Entry point when this module is run as an executable.
   ##
-  ## All the binary does is forward cli arguments to `nimrod c -r nakefile.nim
+  ## All the binary does is forward cli arguments to `nim c -r nakefile.nim
   ## $ARGS`
   if not existsFile("nakefile.nim"):
     echo "No nakefile.nim found. Current working dir is ", getCurrentDir()
@@ -144,7 +144,7 @@ proc mainExecution() =
     discard
 
   # Recompiles the nakefile and runs it.
-  quit (if shell("nimrod", "c", "-r", "nakefile.nim", args): 0 else: 1)
+  quit (if shell("nim", "c", "-r", "nakefile.nim", args): 0 else: 1)
 
 
 proc needsRefresh*(target: string, src: varargs[string]): bool =
@@ -156,14 +156,14 @@ proc needsRefresh*(target: string, src: varargs[string]): bool =
   ## recent last modification timestamp. All paths in ``src`` must be reachable
   ## or else the proc will raise an exception. Example:
   ##
-  ## .. code-block:: nimrod
+  ## .. code-block:: nim
   ##   import nake, os
   ##
   ##   let
   ##     src = "prog.nim"
   ##     exe = src.changeFileExt(exeExt)
   ##   if exe.needsRefresh(src):
-  ##     direShell "nimrod c", src
+  ##     direShell "nim c", src
   ##   else:
   ##     echo "All done!"
   assert len(src) > 0, "Pass some parameters to check for"
