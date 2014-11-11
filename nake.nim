@@ -28,6 +28,11 @@ const
   ## String with the name of the default task nake will run if you define it
   ## and the user doesn't specify any task.
 
+when findExe("nim") == "":
+  const nimExe = "nim"
+else: # assume at the very least nimrod exists.  I mean, how did you get this far otherwise?
+  const nimExe = "nimrod"
+
 proc newTask(desc: string; action: TTaskFunction): PTask
 proc runTask*(name: string) {.inline.} ## \
   ## Runs the specified task.
@@ -35,7 +40,7 @@ proc runTask*(name: string) {.inline.} ## \
   ## You can call this proc to *chain* other tasks for the current task and
   ## avoid repeating code. Example:
   ##
-  ## .. code-block:: nim
+  ## .. code-block:: nimrod
   ##   import nake, os
   ##
   ##   ...
@@ -78,7 +83,7 @@ template task*(name: string; description: string; body: stmt): stmt {.immediate.
   ## Pass the name of the task, the description that will be displayed to the
   ## user when `nake` is invoked, and the body of the task. Example:
   ##
-  ## .. code-block:: nim
+  ## .. code-block:: nimrod
   ##   import nake
   ##
   ##   task "bin", "compiles all binaries":
@@ -109,7 +114,7 @@ proc cd*(dir: string) = setCurrentDir(dir)
 template withDir*(dir: string; body: stmt): stmt =
   ## Changes the current directory temporarily.
   ##
-  ## .. code-block:: nim
+  ## .. code-block:: nimrod
   ##   withDir "foo":
   ##     # inside foo
   ##   #back to last dir
@@ -144,7 +149,7 @@ proc mainExecution() =
     discard
 
   # Recompiles the nakefile and runs it.
-  quit (if shell("nim", "c", "-r", "nakefile.nim", args): 0 else: 1)
+  quit (if shell(nimExe, "c", "-r", "nakefile.nim", args): 0 else: 1)
 
 
 proc needsRefresh*(target: string, src: varargs[string]): bool =
@@ -156,7 +161,7 @@ proc needsRefresh*(target: string, src: varargs[string]): bool =
   ## recent last modification timestamp. All paths in ``src`` must be reachable
   ## or else the proc will raise an exception. Example:
   ##
-  ## .. code-block:: nim
+  ## .. code-block:: nimrod
   ##   import nake, os
   ##
   ##   let
