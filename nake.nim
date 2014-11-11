@@ -42,7 +42,7 @@ proc runTask*(name: string) {.inline.} ## \
   ##
   ##   task "docs", "generates docs for module":
   ##     echo "Generating " & moduleHtml
-  ##     direShell "nimrod", "doc", moduleNim
+  ##     direShell "nim", "doc", moduleNim
   ##
   ##   task "install_docs", "copies docs to " & docInstallDir:
   ##     runTask("docs")
@@ -84,7 +84,7 @@ template task*(name: string; description: string; body: stmt): stmt {.immediate.
   ##   task "bin", "compiles all binaries":
   ##     for binName in binaries:
   ##       echo "Generating " & binName
-  ##       direShell "nimrod", "c", binName
+  ##       direShell "nim", "c", binName
   bind tasks,newTask
   tasks[name] = newTask(description, proc() {.closure.} =
     body)
@@ -121,7 +121,7 @@ template withDir*(dir: string; body: stmt): stmt =
 proc mainExecution() =
   ## Entry point when this module is run as an executable.
   ##
-  ## All the binary does is forward cli arguments to `nimrod c -r nakefile.nim
+  ## All the binary does is forward cli arguments to `nim c -r nakefile.nim
   ## $ARGS`
   if not existsFile("nakefile.nim"):
     echo "No nakefile.nim found. Current working dir is ", getCurrentDir()
@@ -163,7 +163,7 @@ proc needsRefresh*(target: string, src: varargs[string]): bool =
   ##     src = "prog.nim"
   ##     exe = src.changeFileExt(exeExt)
   ##   if exe.needsRefresh(src):
-  ##     direShell "nimrod c", src
+  ##     direShell "nim c", src
   ##   else:
   ##     echo "All done!"
   assert len(src) > 0, "Pass some parameters to check for"
