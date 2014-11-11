@@ -1,5 +1,10 @@
 import nake
 
+when findExe("nim") == "":
+  const nimExe = "nim"
+else: # assume at the very least nimrod exists.  I mean, how did you get this far otherwise?
+  const nimExe = "nimrod"
+
 proc mvFile(`from`,to: string) = 
   moveFile(`from`,to)
   echo "Moved file"
@@ -14,19 +19,19 @@ when defined(Linux):
 task "docs", "generate user documentation for nake API and local rst files":
   if "nake.html".needsRefresh("nake.nim"):
     echo "nake.nim -> nake.html"
-    direShell "nimrod", "doc2", "--verbosity:0", "nake.nim"
+    direShell nimExe, "doc2", "--verbosity:0", "nake.nim"
 
   for rstSrc in walkFiles("*.rst"):
     let rstDest = rstSrc.changeFileExt(".html")
     if not rstDest.needsRefresh(rstSrc): continue
-    if not shell("nimrod rst2html --verbosity:0 -o:" & rstDest & " " & rstSrc):
+    if not shell(nimExe & " rst2html --verbosity:0 -o:" & rstDest & " " & rstSrc):
       quit("Could not generate html doc for " & rstSrc)
     else:
       echo rstSrc, " -> ", rstDest
   echo "Finished generating docs"
 
 task "install", "compile and install nake binary":
-  direShell "nimrod", "c", "nake"
+  direShell nimExe, "c", "nake"
   
   var 
     installMethod: proc(src,dest:string)# = mvFile
