@@ -4,10 +4,10 @@ Nake changes log
 
 Changes for `nake <https://github.com/fowlmouth/nake>`_.
 
-v1.3, ????-??-??
+v1.3, 2014-11-11
 ----------------
 
-* Nothing yet.
+* Update for Nim 0.10.0
 
 v1.2, 2014-02-22
 ----------------

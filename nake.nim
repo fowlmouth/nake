@@ -144,7 +144,7 @@ proc mainExecution() =
     discard
 
   # Recompiles the nakefile and runs it.
-  quit (if shell("nimrod", "c", "-r", "nakefile.nim", args): 0 else: 1)
+  quit (if shell("nim", "c", "-r", "nakefile.nim", args): 0 else: 1)
 
 
 proc needsRefresh*(target: string, src: varargs[string]): bool =
