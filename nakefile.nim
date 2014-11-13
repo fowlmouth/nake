@@ -1,10 +1,5 @@
 import nake
 
-when findExe("nim") == "":
-  const nimExe = "nim"
-else: # assume at the very least nimrod exists.  I mean, how did you get this far otherwise?
-  const nimExe = "nimrod"
-
 proc mvFile(`from`,to: string) = 
   moveFile(`from`,to)
   echo "Moved file"

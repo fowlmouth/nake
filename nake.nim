@@ -22,16 +22,21 @@ type
 var
   tasks = initTable[string, PTask](32)
   careful = false
+  nimExe*: string ## \
+  ## Full path to the Nim compiler binary.
+  ##
+  ## The path is obtained at runtime. First the ``nim`` binary is probed, and
+  ## if that fails, the older ``nimrod`` is searched for backwards
+  ## compatibility.
 
 const
   defaultTask* = "default" ## \
   ## String with the name of the default task nake will run if you define it
   ## and the user doesn't specify any task.
 
-when findExe("nim") == "":
-  const nimExe = "nim"
-else: # assume at the very least nimrod exists.  I mean, how did you get this far otherwise?
-  const nimExe = "nimrod"
+nimExe = findExe("nim")
+if nimExe.len < 1:
+  nimExe = findExe("nimrod")
 
 proc newTask(desc: string; action: TTaskFunction): PTask
 proc runTask*(name: string) {.inline.} ## \
@@ -47,7 +52,7 @@ proc runTask*(name: string) {.inline.} ## \
   ##
   ##   task "docs", "generates docs for module":
   ##     echo "Generating " & moduleHtml
-  ##     direShell "nim", "doc", moduleNim
+  ##     direShell nimExe, "doc", moduleNim
   ##
   ##   task "install_docs", "copies docs to " & docInstallDir:
   ##     runTask("docs")
@@ -89,7 +94,7 @@ template task*(name: string; description: string; body: stmt): stmt {.immediate.
   ##   task "bin", "compiles all binaries":
   ##     for binName in binaries:
   ##       echo "Generating " & binName
-  ##       direShell "nim", "c", binName
+  ##       direShell nimExe, "c", binName
   bind tasks,newTask
   tasks[name] = newTask(description, proc() {.closure.} =
     body)
@@ -168,7 +173,7 @@ proc needsRefresh*(target: string, src: varargs[string]): bool =
   ##     src = "prog.nim"
   ##     exe = src.changeFileExt(exeExt)
   ##   if exe.needsRefresh(src):
-  ##     direShell "nim c", src
+  ##     direShell nimExe, "c", src
   ##   else:
   ##     echo "All done!"
   assert len(src) > 0, "Pass some parameters to check for"
