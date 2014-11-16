@@ -22,11 +22,21 @@ type
 var
   tasks = initTable[string, PTask](32)
   careful = false
+  nimExe*: string ## \
+  ## Full path to the Nim compiler binary.
+  ##
+  ## The path is obtained at runtime. First the ``nim`` binary is probed, and
+  ## if that fails, the older ``nimrod`` is searched for backwards
+  ## compatibility.
 
 const
   defaultTask* = "default" ## \
   ## String with the name of the default task nake will run if you define it
   ## and the user doesn't specify any task.
+
+nimExe = findExe("nim")
+if nimExe.len < 1:
+  nimExe = findExe("nimrod")
 
 proc newTask(desc: string; action: TTaskFunction): PTask
 proc runTask*(name: string) {.inline.} ## \
@@ -35,14 +45,14 @@ proc runTask*(name: string) {.inline.} ## \
   ## You can call this proc to *chain* other tasks for the current task and
   ## avoid repeating code. Example:
   ##
-  ## .. code-block:: nim
+  ## .. code-block:: nimrod
   ##   import nake, os
   ##
   ##   ...
   ##
   ##   task "docs", "generates docs for module":
   ##     echo "Generating " & moduleHtml
-  ##     direShell "nim", "doc", moduleNim
+  ##     direShell nimExe, "doc", moduleNim
   ##
   ##   task "install_docs", "copies docs to " & docInstallDir:
   ##     runTask("docs")
@@ -78,13 +88,13 @@ template task*(name: string; description: string; body: stmt): stmt {.immediate.
   ## Pass the name of the task, the description that will be displayed to the
   ## user when `nake` is invoked, and the body of the task. Example:
   ##
-  ## .. code-block:: nim
+  ## .. code-block:: nimrod
   ##   import nake
   ##
   ##   task "bin", "compiles all binaries":
   ##     for binName in binaries:
   ##       echo "Generating " & binName
-  ##       direShell "nim", "c", binName
+  ##       direShell nimExe, "c", binName
   bind tasks,newTask
   tasks[name] = newTask(description, proc() {.closure.} =
     body)
@@ -109,7 +119,7 @@ proc cd*(dir: string) = setCurrentDir(dir)
 template withDir*(dir: string; body: stmt): stmt =
   ## Changes the current directory temporarily.
   ##
-  ## .. code-block:: nim
+  ## .. code-block:: nimrod
   ##   withDir "foo":
   ##     # inside foo
   ##   #back to last dir
@@ -144,7 +154,7 @@ proc mainExecution() =
     discard
 
   # Recompiles the nakefile and runs it.
-  quit (if shell("nim", "c", "-r", "nakefile.nim", args): 0 else: 1)
+  quit (if shell(nimExe, "c", "-r", "nakefile.nim", args): 0 else: 1)
 
 
 proc needsRefresh*(target: string, src: varargs[string]): bool =
@@ -156,14 +166,14 @@ proc needsRefresh*(target: string, src: varargs[string]): bool =
   ## recent last modification timestamp. All paths in ``src`` must be reachable
   ## or else the proc will raise an exception. Example:
   ##
-  ## .. code-block:: nim
+  ## .. code-block:: nimrod
   ##   import nake, os
   ##
   ##   let
   ##     src = "prog.nim"
   ##     exe = src.changeFileExt(exeExt)
   ##   if exe.needsRefresh(src):
-  ##     direShell "nim c", src
+  ##     direShell nimExe, "c", src
   ##   else:
   ##     echo "All done!"
   assert len(src) > 0, "Pass some parameters to check for"
