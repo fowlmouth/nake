@@ -20,7 +20,7 @@ type
     action*: TTaskFunction
   TTaskFunction* = proc()
 var
-  tasks = initTable[string, PTask](32)
+  tasks = initOrderedTable[string, PTask](32)
   careful = false
   nimExe*: string ## \
   ## Full path to the Nim compiler binary.

@@ -8,6 +8,7 @@ v1.3, ????-??-??
 ----------------
 
 * Updates for Nimrod -> Nim transition
+* Now uses an ordered table to store tasks
 
 v1.2, 2014-02-22
 ----------------
