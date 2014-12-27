@@ -2,6 +2,10 @@
 *.swp
 .DS_Store
 nimcache/
+tests/*
+tests/**/nakefile
+!tests/*.nim
+!tests/tst_*
 
 # Full paths.
 /LICENSE.html

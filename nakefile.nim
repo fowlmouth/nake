@@ -1,6 +1,7 @@
 import nake
+import sequtils
 
-proc mvFile(`from`,to: string) = 
+proc mvFile(`from`,to: string) =
   moveFile(`from`,to)
   echo "Moved file"
 
@@ -25,12 +26,31 @@ task "docs", "generate user documentation for nake API and local rst files":
       echo rstSrc, " -> ", rstDest
   echo "Finished generating docs"
 
+
+task "test", "runs any tests in the `./tests` directory":
+  var testResults: seq[bool] = @[]
+
+  withDir "tests":
+    for nakeFile in walkFiles "*.nim":
+      let nakeExe = nakeFile.changeFileExt(ExeExt)
+      if not shell(nimExe, "c", "--verbosity:0", nakeFile):
+        testResults.add(false)
+        continue
+      let success = shell getCurrentDir().joinPath(nakeExe)
+      testResults.add(success)
+
+  let
+    total = testResults.len
+    successes = filter(testResults, proc(x:bool): bool = x).len
+
+  echo "Tests Complete: ", total, " tests run, ", successes, " tests succeeded."
+
 task "install", "compile and install nake binary":
   direShell nimExe, "c", "nake"
-  
-  var 
+
+  var
     installMethod: proc(src,dest:string)# = mvFile
-  
+
   when defined(Linux):
     echo "How to install the nake binary?\L",
       "  * [M]ove file\L",
@@ -40,7 +60,7 @@ task "install", "compile and install nake binary":
     of "s","symlink": installMethod = symlinkFile
   else:
     installMethod = mvFile
-  
+
   let path = getEnv("PATH").split(PathSep)
   echo "Your $PATH:"
   for index, dir in pairs(path):
