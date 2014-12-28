@@ -19,6 +19,8 @@ type
     desc*: string
     action*: TTaskFunction
   TTaskFunction* = proc()
+  TTaskLister* = proc() ## Represents a proc to print out the task list.
+
 var
   tasks = initOrderedTable[string, PTask](32)
   careful = false
@@ -189,15 +191,33 @@ proc needsRefresh*(target: string, src: varargs[string]): bool =
       return true
 
 
-proc listTasks*() =
-  ## Lists to stdout the registered tasks.
+proc listTasksImpl*() =
+  ## Default implementation for listing tasks to stdout.
   ##
-  ## You can call this proc inside your ``defaultTask`` task to tell the user
-  ## about other options if your default task doesn't have anything to do.
+  ## This implementation will print out each task and it's description to the
+  ## command line.
   assert tasks.len > 0
   echo "Available tasks:"
   for name, task in pairs(tasks):
     echo name, " - ", task.desc
+
+
+var listTasks*: TTaskLister = listTasksImpl
+## You can call the proc held here inside your ``defaultTask`` task to tell
+## the user about other options if your default task doesn't have anything to
+## do.
+## You can assign to this var to provide another implementation.  Example:
+##
+##
+## .. code-block:: nimrod
+##   import nake, sequtils
+##
+##   nake.listTasks = proc() =
+##     ## only lists the task names, no descriptions
+##     echo "Available tasks: ", toSeq(nake.tasks.keys).join(", ")
+##
+##   task "default", "lists all tasks":
+##     listTasks()
 
 
 proc moduleHook() {.noconv.} =
