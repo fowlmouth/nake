@@ -22,7 +22,7 @@ type
   TTaskLister* = proc() ## Represents a proc to print out the task list.
 
 var
-  tasks = initOrderedTable[string, PTask](32)
+  tasks* = initOrderedTable[string, PTask](32)
   careful = false
   nimExe*: string ## \
   ## Full path to the Nim compiler binary.
