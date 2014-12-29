@@ -8,6 +8,8 @@ v1.3, ????-??-??
 ----------------
 
 * Updates for Nimrod -> Nim transition
+* Now uses an ordered table to store tasks
+* Add the ability to change the default task-listing implementation
 
 v1.2, 2014-02-22
 ----------------

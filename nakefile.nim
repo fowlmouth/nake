@@ -1,6 +1,6 @@
 import nake
 
-proc mvFile(`from`,to: string) = 
+proc mvFile(`from`,to: string) =
   moveFile(`from`,to)
   echo "Moved file"
 
@@ -27,10 +27,10 @@ task "docs", "generate user documentation for nake API and local rst files":
 
 task "install", "compile and install nake binary":
   direShell nimExe, "c", "nake"
-  
-  var 
+
+  var
     installMethod: proc(src,dest:string)# = mvFile
-  
+
   when defined(Linux):
     echo "How to install the nake binary?\L",
       "  * [M]ove file\L",
@@ -40,7 +40,7 @@ task "install", "compile and install nake binary":
     of "s","symlink": installMethod = symlinkFile
   else:
     installMethod = mvFile
-  
+
   let path = getEnv("PATH").split(PathSep)
   echo "Your $PATH:"
   for index, dir in pairs(path):
