@@ -1,4 +1,5 @@
 # Global patterns
+*.idx
 *.swp
 .DS_Store
 nimcache/
