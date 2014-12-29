@@ -10,6 +10,8 @@ v1.3, ????-??-??
 * Updates for Nimrod -> Nim transition
 * Now uses an ordered table to store tasks
 * Add the ability to change the default task-listing implementation
+* `Updated to use nimble instead of babel
+  <https://github.com/fowlmouth/nake/issues/13>`_.
 
 v1.2, 2014-02-22
 ----------------
