@@ -15,6 +15,7 @@ v1.3, ????-??-??
   <https://github.com/fowlmouth/nake/commit/0110a989f52bee05c716734fd5e6818522ac8a98>`_.
 * `Updated to use nimble instead of babel
   <https://github.com/fowlmouth/nake/issues/13>`_.
+* `Improved documentation <https://github.com/fowlmouth/nake/issues/15>`_.
 
 v1.2, 2014-02-22
 ----------------
