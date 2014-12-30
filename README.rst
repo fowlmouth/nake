@@ -1,8 +1,8 @@
-====
-Nake
-====
+===========
+Nake readme
+===========
 
-Describe your `Nimrod <http://nimrod-lang.org>`_ builds as tasks. Example
+Describe your `Nim <http://nim-lang.org>`_ builds as tasks. Example
 ``nakefile.nim``::
 
     import nake
@@ -12,7 +12,7 @@ Describe your `Nimrod <http://nimrod-lang.org>`_ builds as tasks. Example
       BleedingEdgeFeatures = "-d:testFeature1 -d:testFeature2"
 
     task "debug-build", "Build with unproven features":
-      if shell("nimrod c", BleedingEdgeFeatures, "-d:debug", ExeName):
+      if shell(nimExe, "c", BleedingEdgeFeatures, "-d:debug", ExeName):
         ## zip up files or do something useful here?
 
     task "run-tests":
@@ -20,7 +20,7 @@ Describe your `Nimrod <http://nimrod-lang.org>`_ builds as tasks. Example
 
 Now you can compile this ``nakefile.nim`` file into a binary and run it::
 
-    $ nimrod c -r nakefile test-build
+    $ nim c -r nakefile test-build
     ## or if you already compiled the nakefile
     $ ./nakefile test-build
 
@@ -37,32 +37,38 @@ Installation
 Stable version
 --------------
 
-Use `Nimrod's babel package manager <https://github.com/nimrod-code/babel>`_ to
+Use `Nim's Nimble package manager <https://github.com/nim-lang/nimble>`_ to
 install the package and ``nake`` binary::
 
-    $ babel update
-    $ babel install nake
+    $ nimble update
+    $ nimble install nake
 
 
 Development version
 -------------------
 
-Use `Nimrod's babel package manager <https://github.com/nimrod-code/babel>`_ to
+Use `Nim's Nimble package manager <https://github.com/nim-lang/nimble>`_ to
 install locally the github checkout::
 
     $ git clone https://github.com/fowlmouth/nake
     $ cd nake
-    $ babel install
+    $ nimble install
+
+If you don't mind downloading the git repository every time, you can also tell
+Nimble to install the latest development version directly from git::
+
+    $ nimble update
+    $ nimble install -y nake@#head
 
 
 Usage
 =====
 
 Nake has its own nakefile, it will build nake as a binary. The ``nake`` binary
-is just a shortcut for ``nimrod c -r nakefile $ARGS``::
+is just a shortcut for ``nim c -r nakefile $ARGS``::
 
-    $ cd ~/.babel/libs/nake
-    $ nimrod c -r nakefile install
+    $ cd ~/.nimble/libs/nake
+    $ nim c -r nakefile install
     ## boring ^
     $ cd ~/my-project
     $ nake debug-build
@@ -79,7 +85,7 @@ the shell invocations do you can pass the ``-c`` or ``--careful`` switch to a
 ``nake`` binary and then it will ask you to confirm each command being run::
 
     $ nake --careful install
-    Run? `nimrod c nake` [N/y]
+    Run? `nim c nake` [N/y]
 
 Note that this parameter only applies to nake's convenience ``shell`` and
 ``direShell`` procs, a *malicious* nakefile author will likely implement his
@@ -107,19 +113,19 @@ Documentation
 Run the **docs** task of the included `nakefile.nim <nakefile.nim>`_ to
 generate the user API HTML documentation in the `nake.html file <nake.html>`_.
 This documentation explains what symbols you can use other than the obvious
-``task`` to define tasks. If you installed from babel you first need to go to
-your babel directory. Unix example::
+``task`` to define tasks. If you installed from nimble you first need to go to
+your nimble directory. Unix example::
 
-    $ cd `babel path nake`
-    $ nimrod c -r nake docs
+    $ cd `nimble path nake`
+    $ nim c -r nake docs
     $ open nake.html
 
 The **docs** task will also generate HTML versions of all local rst files,
-which are indexed from `docindex.rst <docindex.rst>`_.
+which are indexed from the generated `theindex.html <theindex.html>`_.
 
 
 Changes
 =======
 
-This is stable version 1.2. Read the changes log in the `changes.rst file
+This is stable version 1.4. Read the changes log in the `changes.rst file
 <changes.rst>`_.

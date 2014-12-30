@@ -15,18 +15,43 @@ import strutils, parseopt, tables, os, rdstdin, times
 export strutils, parseopt, tables, os, rdstdin
 
 type
-  PTask* = ref object
+  PTask* = ref object ## Defines a task with a description and action.
     desc*: string
     action*: TTaskFunction
-  TTaskFunction* = proc()
+
+  TTaskFunction* = proc() ## \
+  ## Type for the actions associated with a task name.
+  ##
+  ## Used in `PTask <#PTask>`_ objects.
+
+  TTaskLister* = proc() ## \
+  ## Type for the ``proc`` which prints out the list of available tasks.
+  ##
+  ## Assigned to the `listTasks <#listTasks>`_ global.
+
 var
-  tasks = initTable[string, PTask](32)
+  tasks* = initOrderedTable[string, PTask](32) ## \
+  ## Holds the list of defined tasks.
+  ##
+  ## Use the `task() <#task>`_ template to add elements to this variable.
+
   careful = false
+
+  nimExe*: string ## \
+  ## Full path to the Nim compiler binary.
+  ##
+  ## The path is obtained at runtime. First the ``nim`` binary is probed, and
+  ## if that fails, the older ``nimrod`` is searched for backwards
+  ## compatibility.
 
 const
   defaultTask* = "default" ## \
   ## String with the name of the default task nake will run if you define it
   ## and the user doesn't specify any task.
+
+nimExe = findExe("nim")
+if nimExe.len < 1:
+  nimExe = findExe("nimrod")
 
 proc newTask(desc: string; action: TTaskFunction): PTask
 proc runTask*(name: string) {.inline.} ## \
@@ -42,7 +67,7 @@ proc runTask*(name: string) {.inline.} ## \
   ##
   ##   task "docs", "generates docs for module":
   ##     echo "Generating " & moduleHtml
-  ##     direShell "nimrod", "doc", moduleNim
+  ##     direShell nimExe, "doc", moduleNim
   ##
   ##   task "install_docs", "copies docs to " & docInstallDir:
   ##     runTask("docs")
@@ -55,8 +80,10 @@ proc shell*(cmd: varargs[string, `$`]): bool {.discardable.}
 proc cd*(dir: string) {.inline.}
   ## Changes the current directory.
   ##
-  ## The change is permanent for the rest of the execution. Use the ``withDir``
-  ## template if you want to perform a temporary change only.
+  ## The change is permanent for the rest of the execution, since this is just
+  ## a shortcut for `os.setCurrentDir()
+  ## <http://nim-lang.org/os.html#setCurrentDir,string>`_ . Use the `withDir()
+  ## <#withDir>`_ template if you want to perform a temporary change only.
 
 discard """ template nakeImports*(): stmt {.immediate.} =
   ## Import required modules, if they need to be imported.
@@ -84,7 +111,7 @@ template task*(name: string; description: string; body: stmt): stmt {.immediate.
   ##   task "bin", "compiles all binaries":
   ##     for binName in binaries:
   ##       echo "Generating " & binName
-  ##       direShell "nimrod", "c", binName
+  ##       direShell nimExe, "c", binName
   bind tasks,newTask
   tasks[name] = newTask(description, proc() {.closure.} =
     body)
@@ -109,6 +136,8 @@ proc cd*(dir: string) = setCurrentDir(dir)
 template withDir*(dir: string; body: stmt): stmt =
   ## Changes the current directory temporarily.
   ##
+  ## If you need a permanent change, use the `cd() <#cd>`_ proc. Usage example:
+  ##
   ## .. code-block:: nimrod
   ##   withDir "foo":
   ##     # inside foo
@@ -121,7 +150,7 @@ template withDir*(dir: string; body: stmt): stmt =
 proc mainExecution() =
   ## Entry point when this module is run as an executable.
   ##
-  ## All the binary does is forward cli arguments to `nimrod c -r nakefile.nim
+  ## All the binary does is forward cli arguments to `nim c -r nakefile.nim
   ## $ARGS`
   if not existsFile("nakefile.nim"):
     echo "No nakefile.nim found. Current working dir is ", getCurrentDir()
@@ -144,7 +173,7 @@ proc mainExecution() =
     discard
 
   # Recompiles the nakefile and runs it.
-  quit (if shell("nimrod", "c", "-r", "nakefile.nim", args): 0 else: 1)
+  quit (if shell(nimExe, "c", "-r", "nakefile.nim", args): 0 else: 1)
 
 
 proc needsRefresh*(target: string, src: varargs[string]): bool =
@@ -163,7 +192,7 @@ proc needsRefresh*(target: string, src: varargs[string]): bool =
   ##     src = "prog.nim"
   ##     exe = src.changeFileExt(exeExt)
   ##   if exe.needsRefresh(src):
-  ##     direShell "nimrod c", src
+  ##     direShell nimExe, "c", src
   ##   else:
   ##     echo "All done!"
   assert len(src) > 0, "Pass some parameters to check for"
@@ -179,15 +208,51 @@ proc needsRefresh*(target: string, src: varargs[string]): bool =
       return true
 
 
-proc listTasks*() =
-  ## Lists to stdout the registered tasks.
+proc listTasksImpl*() =
+  ## Default implementation for listing tasks to stdout.
   ##
-  ## You can call this proc inside your ``defaultTask`` task to tell the user
-  ## about other options if your default task doesn't have anything to do.
+  ## This implementation will print out each task and it's description to the
+  ## command line. You can change the value of the `listTasks <#listTasks>`_
+  ## global if you don't like it.
   assert tasks.len > 0
   echo "Available tasks:"
   for name, task in pairs(tasks):
     echo name, " - ", task.desc
+
+
+var listTasks*: TTaskLister = listTasksImpl ## \
+## Holds the proc that is used by default to list available tasks to the user.
+##
+## You can call the proc held here inside your `defaultTask <#defaultTask>`_
+## task to tell the user about available options if your default task doesn't
+## have anything to do.  You can assign to this var to provide another
+## implementation, the default is `listTasksImpl() <#listTasksImpl>`_.
+## Example:
+##
+## .. code-block:: nimrod
+##   import nake, sequtils
+##
+##   nake.listTasks = proc() =
+##     ## only lists the task names, no descriptions
+##     echo "Available tasks: ", toSeq(nake.tasks.keys).join(", ")
+##
+##   task defaultTask, "lists all tasks":
+##     listTasks()
+##
+## Here is an alternative version which blacklists tasks to end users.
+## They may not be interested or capable of running some of them due to extra
+## development dependencies:
+##
+## .. code-block:: nimrod
+##   const privateTasks = ["dist", defaultTask, "testRemote", "upload"]
+##
+##   nake.listTasks = proc() =
+##     echo "Available tasks:"
+##     for taskKey in nake.tasks.keys:
+##       # Show only public tasks.
+##       if taskKey in privateTasks:
+##         continue
+##       echo "\t", taskKey
 
 
 proc moduleHook() {.noconv.} =
