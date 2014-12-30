@@ -1,6 +1,6 @@
-====================================
-What to do for a new public release?
-====================================
+==================
+Nake release steps
+==================
 
 * ``git flow release start versionname`` (versionname without v).
 * Update version numbers:
@@ -27,4 +27,4 @@ What to do for a new public release?
   development version*.
 * ``git push origin master``.
 
-* Announce at http://forum.nimrod-lang.org/t/67.
+* Announce at http://forum.nim-lang.org/t/67.
