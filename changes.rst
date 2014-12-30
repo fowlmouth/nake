@@ -4,7 +4,7 @@ Nake changes log
 
 Changes for `nake <https://github.com/fowlmouth/nake>`_.
 
-v1.3, ????-??-??
+v1.4, 2014-12-30
 ----------------
 
 * `Updated for Nimrod -> Nim transition
