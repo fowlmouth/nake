@@ -127,5 +127,5 @@ which are indexed from the generated `theindex.html <theindex.html>`_.
 Changes
 =======
 
-This is stable version 1.4. Read the changes log in the `changes.rst file
+This is development version 1.5. Read the changes log in the `changes.rst file
 <changes.rst>`_.

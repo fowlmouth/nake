@@ -1,6 +1,6 @@
 [Package]
 name = "nake"
-version = "1.4"
+version = "1.5"
 author = "fowl"
 description = "make-like for Nim. Describe your builds as tasks!"
 license = "DATWPL"
