@@ -195,19 +195,22 @@ proc listTasksImpl*() =
   ## Default implementation for listing tasks to stdout.
   ##
   ## This implementation will print out each task and it's description to the
-  ## command line.
+  ## command line. You can change the value of the `listTasks <#listTasks>`_
+  ## global if you don't like it.
   assert tasks.len > 0
   echo "Available tasks:"
   for name, task in pairs(tasks):
     echo name, " - ", task.desc
 
 
-var listTasks*: TTaskLister = listTasksImpl
-## You can call the proc held here inside your ``defaultTask`` task to tell
-## the user about other options if your default task doesn't have anything to
-## do.
-## You can assign to this var to provide another implementation.  Example:
+var listTasks*: TTaskLister = listTasksImpl ## \
+## Holds the proc that is used by default to list available tasks to the user.
 ##
+## You can call the proc held here inside your `defaultTask <#defaultTask>`_
+## task to tell the user about available options if your default task doesn't
+## have anything to do.  You can assign to this var to provide another
+## implementation, the default is `listTasksImpl() <#listTasksImpl>`_.
+## Example:
 ##
 ## .. code-block:: nimrod
 ##   import nake, sequtils
@@ -216,8 +219,23 @@ var listTasks*: TTaskLister = listTasksImpl
 ##     ## only lists the task names, no descriptions
 ##     echo "Available tasks: ", toSeq(nake.tasks.keys).join(", ")
 ##
-##   task "default", "lists all tasks":
+##   task defaultTask, "lists all tasks":
 ##     listTasks()
+##
+## Here is an alternative version which blacklists tasks to end users.
+## They may not be interested or capable of running some of them due to extra
+## development dependencies:
+##
+## .. code-block:: nimrod
+##   const privateTasks = ["dist", defaultTask, "testRemote", "upload"]
+##
+##   nake.listTasks = proc() =
+##     echo "Available tasks:"
+##     for taskKey in nake.tasks.keys:
+##       # Show only public tasks.
+##       if taskKey in privateTasks:
+##         continue
+##       echo "\t", taskKey
 
 
 proc moduleHook() {.noconv.} =
