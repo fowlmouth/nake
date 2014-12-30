@@ -14,15 +14,18 @@ when defined(Linux):
 task "docs", "generate user documentation for nake API and local rst files":
   if "nake.html".needsRefresh("nake.nim"):
     echo "nake.nim -> nake.html"
-    direShell nimExe, "doc2", "--verbosity:0", "nake.nim"
+    direShell nimExe, "doc2", "--verbosity:0", "--index:on", "nake.nim"
 
   for rstSrc in walkFiles("*.rst"):
     let rstDest = rstSrc.changeFileExt(".html")
     if not rstDest.needsRefresh(rstSrc): continue
-    if not shell(nimExe & " rst2html --verbosity:0 -o:" & rstDest & " " & rstSrc):
+    if not shell(nimExe & " rst2html --verbosity:0 --index:on -o:" &
+        rstDest & " " & rstSrc):
       quit("Could not generate html doc for " & rstSrc)
     else:
       echo rstSrc, " -> ", rstDest
+
+  direShell nimExe, "buildIndex ."
   echo "Finished generating docs"
 
 task "install", "compile and install nake binary":

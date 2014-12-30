@@ -121,7 +121,7 @@ your nimble directory. Unix example::
     $ open nake.html
 
 The **docs** task will also generate HTML versions of all local rst files,
-which are indexed from `docindex.rst <docindex.rst>`_.
+which are indexed from the generated `theindex.html <theindex.html>`_.
 
 
 Changes
