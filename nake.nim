@@ -15,15 +15,28 @@ import strutils, parseopt, tables, os, rdstdin, times
 export strutils, parseopt, tables, os, rdstdin
 
 type
-  PTask* = ref object
+  PTask* = ref object ## Defines a task with a description and action.
     desc*: string
     action*: TTaskFunction
-  TTaskFunction* = proc()
-  TTaskLister* = proc() ## Represents a proc to print out the task list.
+
+  TTaskFunction* = proc() ## \
+  ## Type for the actions associated with a task name.
+  ##
+  ## Used in `PTask <#PTask>`_ objects.
+
+  TTaskLister* = proc() ## \
+  ## Type for the ``proc`` which prints out the list of available tasks.
+  ##
+  ## Assigned to the `listTasks <#listTasks>`_ global.
 
 var
-  tasks* = initOrderedTable[string, PTask](32)
+  tasks* = initOrderedTable[string, PTask](32) ## \
+  ## Holds the list of defined tasks.
+  ##
+  ## Use the `task() <#task>`_ template to add elements to this variable.
+
   careful = false
+
   nimExe*: string ## \
   ## Full path to the Nim compiler binary.
   ##
@@ -67,8 +80,10 @@ proc shell*(cmd: varargs[string, `$`]): bool {.discardable.}
 proc cd*(dir: string) {.inline.}
   ## Changes the current directory.
   ##
-  ## The change is permanent for the rest of the execution. Use the ``withDir``
-  ## template if you want to perform a temporary change only.
+  ## The change is permanent for the rest of the execution, since this is just
+  ## a shortcut for `os.setCurrentDir()
+  ## <http://nim-lang.org/os.html#setCurrentDir,string>`_ . Use the `withDir()
+  ## <#withDir>`_ template if you want to perform a temporary change only.
 
 discard """ template nakeImports*(): stmt {.immediate.} =
   ## Import required modules, if they need to be imported.
@@ -120,6 +135,8 @@ proc direShell*(cmd: varargs[string, `$`]): bool {.discardable.} =
 proc cd*(dir: string) = setCurrentDir(dir)
 template withDir*(dir: string; body: stmt): stmt =
   ## Changes the current directory temporarily.
+  ##
+  ## If you need a permanent change, use the `cd() <#cd>`_ proc. Usage example:
   ##
   ## .. code-block:: nimrod
   ##   withDir "foo":
