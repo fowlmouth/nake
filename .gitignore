@@ -5,8 +5,8 @@
 nimcache/
 tests/*
 tests/**/nakefile
-!tests/*.nim
-!tests/tst_*
+!tests/test_*.nim
+!tests/test_dir_*
 
 # Full paths.
 /LICENSE.html

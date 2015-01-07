@@ -46,7 +46,8 @@ task "test", "runs any tests in the `./tests` directory":
     total = testResults.len
     successes = filter(testResults, proc(x:bool): bool = x).len
 
-  echo "Tests Complete: ", total, " tests run, ", successes, " tests succeeded."
+  echo ("Tests Complete: ", total, " test files run, ",
+        successes, " test files succeeded.")
 
 task "install", "compile and install nake binary":
   direShell nimExe, "c", "nake"
