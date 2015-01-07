@@ -41,12 +41,13 @@ task "test", "runs any tests in the `./tests` directory":
         continue
       let success = shell getCurrentDir().joinPath(nakeExe)
       testResults.add(success)
+      echo "" # prettify the output
 
   let
     total = testResults.len
     successes = filter(testResults, proc(x:bool): bool = x).len
 
-  echo ("Tests Complete: ", total, " test files run, ",
+  echo ("\nTests Complete: ", total, " test files run, ",
         successes, " test files succeeded.")
 
 task "install", "compile and install nake binary":

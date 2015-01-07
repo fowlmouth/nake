@@ -3,6 +3,10 @@
 *.swp
 .DS_Store
 nimcache/
+
+# Test patterns
+# (ban everything in tests, espc. nakefiles)
+# (then unban test files and test dirs)
 tests/*
 tests/**/nakefile
 !tests/test_*.nim
