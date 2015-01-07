@@ -15,13 +15,28 @@ import strutils, parseopt, tables, os, rdstdin, times
 export strutils, parseopt, tables, os, rdstdin
 
 type
-  PTask* = ref object
+  PTask* = ref object ## Defines a task with a description and action.
     desc*: string
     action*: TTaskFunction
-  TTaskFunction* = proc()
+
+  TTaskFunction* = proc() ## \
+  ## Type for the actions associated with a task name.
+  ##
+  ## Used in `PTask <#PTask>`_ objects.
+
+  TTaskLister* = proc() ## \
+  ## Type for the ``proc`` which prints out the list of available tasks.
+  ##
+  ## Assigned to the `listTasks <#listTasks>`_ global.
+
 var
-  tasks = initTable[string, PTask](32)
+  tasks* = initOrderedTable[string, PTask](32) ## \
+  ## Holds the list of defined tasks.
+  ##
+  ## Use the `task() <#task>`_ template to add elements to this variable.
+
   careful = false
+
   nimExe*: string ## \
   ## Full path to the Nim compiler binary.
   ##
@@ -65,8 +80,10 @@ proc shell*(cmd: varargs[string, `$`]): bool {.discardable.}
 proc cd*(dir: string) {.inline.}
   ## Changes the current directory.
   ##
-  ## The change is permanent for the rest of the execution. Use the ``withDir``
-  ## template if you want to perform a temporary change only.
+  ## The change is permanent for the rest of the execution, since this is just
+  ## a shortcut for `os.setCurrentDir()
+  ## <http://nim-lang.org/os.html#setCurrentDir,string>`_ . Use the `withDir()
+  ## <#withDir>`_ template if you want to perform a temporary change only.
 
 discard """ template nakeImports*(): stmt {.immediate.} =
   ## Import required modules, if they need to be imported.
@@ -118,6 +135,8 @@ proc direShell*(cmd: varargs[string, `$`]): bool {.discardable.} =
 proc cd*(dir: string) = setCurrentDir(dir)
 template withDir*(dir: string; body: stmt): stmt =
   ## Changes the current directory temporarily.
+  ##
+  ## If you need a permanent change, use the `cd() <#cd>`_ proc. Usage example:
   ##
   ## .. code-block:: nimrod
   ##   withDir "foo":
@@ -189,15 +208,51 @@ proc needsRefresh*(target: string, src: varargs[string]): bool =
       return true
 
 
-proc listTasks*() =
-  ## Lists to stdout the registered tasks.
+proc listTasksImpl*() =
+  ## Default implementation for listing tasks to stdout.
   ##
-  ## You can call this proc inside your ``defaultTask`` task to tell the user
-  ## about other options if your default task doesn't have anything to do.
+  ## This implementation will print out each task and it's description to the
+  ## command line. You can change the value of the `listTasks <#listTasks>`_
+  ## global if you don't like it.
   assert tasks.len > 0
   echo "Available tasks:"
   for name, task in pairs(tasks):
     echo name, " - ", task.desc
+
+
+var listTasks*: TTaskLister = listTasksImpl ## \
+## Holds the proc that is used by default to list available tasks to the user.
+##
+## You can call the proc held here inside your `defaultTask <#defaultTask>`_
+## task to tell the user about available options if your default task doesn't
+## have anything to do.  You can assign to this var to provide another
+## implementation, the default is `listTasksImpl() <#listTasksImpl>`_.
+## Example:
+##
+## .. code-block:: nimrod
+##   import nake, sequtils
+##
+##   nake.listTasks = proc() =
+##     ## only lists the task names, no descriptions
+##     echo "Available tasks: ", toSeq(nake.tasks.keys).join(", ")
+##
+##   task defaultTask, "lists all tasks":
+##     listTasks()
+##
+## Here is an alternative version which blacklists tasks to end users.
+## They may not be interested or capable of running some of them due to extra
+## development dependencies:
+##
+## .. code-block:: nimrod
+##   const privateTasks = ["dist", defaultTask, "testRemote", "upload"]
+##
+##   nake.listTasks = proc() =
+##     echo "Available tasks:"
+##     for taskKey in nake.tasks.keys:
+##       # Show only public tasks.
+##       if taskKey in privateTasks:
+##         continue
+##       echo "\t", taskKey
 
 
 proc moduleHook() {.noconv.} =

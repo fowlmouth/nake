@@ -1,6 +1,6 @@
-====
-Nake
-====
+===========
+Nake readme
+===========
 
 Describe your `Nim <http://nim-lang.org>`_ builds as tasks. Example
 ``nakefile.nim``::
@@ -12,7 +12,7 @@ Describe your `Nim <http://nim-lang.org>`_ builds as tasks. Example
       BleedingEdgeFeatures = "-d:testFeature1 -d:testFeature2"
 
     task "debug-build", "Build with unproven features":
-      if shell("nim c", BleedingEdgeFeatures, "-d:debug", ExeName):
+      if shell(nimExe, "c", BleedingEdgeFeatures, "-d:debug", ExeName):
         ## zip up files or do something useful here?
 
     task "run-tests":
@@ -37,7 +37,7 @@ Installation
 Stable version
 --------------
 
-Use `Nim's nimble package manager <https://github.com/nimrod-code/nimble>`_ to
+Use `Nim's Nimble package manager <https://github.com/nim-lang/nimble>`_ to
 install the package and ``nake`` binary::
 
     $ nimble update
@@ -47,12 +47,18 @@ install the package and ``nake`` binary::
 Development version
 -------------------
 
-Use `Nim's nimble package manager <https://github.com/nimrod-code/nimble>`_ to
+Use `Nim's Nimble package manager <https://github.com/nim-lang/nimble>`_ to
 install locally the github checkout::
 
     $ git clone https://github.com/fowlmouth/nake
     $ cd nake
     $ nimble install
+
+If you don't mind downloading the git repository every time, you can also tell
+Nimble to install the latest development version directly from git::
+
+    $ nimble update
+    $ nimble install -y nake@#head
 
 
 Usage
@@ -111,15 +117,15 @@ This documentation explains what symbols you can use other than the obvious
 your nimble directory. Unix example::
 
     $ cd `nimble path nake`
-    $ nimrod c -r nake docs
+    $ nim c -r nake docs
     $ open nake.html
 
 The **docs** task will also generate HTML versions of all local rst files,
-which are indexed from `docindex.rst <docindex.rst>`_.
+which are indexed from the generated `theindex.html <theindex.html>`_.
 
 
 Changes
 =======
 
-This is development version 1.3. Read the changes log in the `changes.rst file
+This is development version 1.5. Read the changes log in the `changes.rst file
 <changes.rst>`_.
