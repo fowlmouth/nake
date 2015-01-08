@@ -61,3 +61,9 @@ echo "- Test commands listed in order given"
 output = execCmdEx(nakePathExe & " -t")
 assert output.exitCode == 0, output.output
 assert output.output.match(getRe("default", "testcmd", "list"))
+
+# For future reference if this is added?
+#echo "- Test multiple commands can be given"
+#output = execCmdEx(nakePathExe & " default testcmd")
+#assert output.exitCode == 0, output.output
+#assert output.output.match(getRe("nakefile default worked", "nakefile testcmd worked")), output.output

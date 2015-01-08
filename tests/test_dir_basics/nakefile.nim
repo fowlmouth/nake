@@ -1,4 +1,5 @@
-import nake
+import "../../nake" # use this because then we don't need
+                    # to install just to be able to test
 
 task "default", "Default task":
   echo "nakefile default worked"
