@@ -43,11 +43,24 @@ output = execCmdEx(nakePathExe & " testcmd")
 assert output.exitCode == 0, output.output
 assert output.output.match(getRe("nakefile testcmd worked")), output.output
 
+echo "- Test nonexistant command"
+output = execCmdEx(nakePathExe & " nonexistant")
+assert output.exitCode == 1, output.output
+assert output.output.match(getRe("Task 'nonexistant' not found")), output.output
+
+echo "- Test failure lists commands"
+output = execCmdEx(nakePathExe & " nonexistant")
+assert output.exitCode == 1, output.output
+assert output.output.match(getRe("default"))
+assert output.output.match(getRe("list"))
+assert output.output.match(getRe("testcmd"))
+
 echo "- Test list commands from c-l"
 output = execCmdEx(nakePathExe & " -t")
 assert output.exitCode == 0, output.output
 assert output.output.match(getRe("default"))
 assert output.output.match(getRe("list"))
+assert output.output.match(getRe("test-careful"))
 assert output.output.match(getRe("testcmd"))
 
 echo "- Test list commands from 'list' command"
@@ -55,12 +68,23 @@ output = execCmdEx(nakePathExe & " list")
 assert output.exitCode == 0, output.output
 assert output.output.match(getRe("default"))
 assert output.output.match(getRe("list"))
+assert output.output.match(getRe("test-careful"))
 assert output.output.match(getRe("testcmd"))
 
 echo "- Test commands listed in order given"
 output = execCmdEx(nakePathExe & " -t")
 assert output.exitCode == 0, output.output
-assert output.output.match(getRe("default", "testcmd", "list"))
+assert output.output.match(getRe("default", "testcmd", "test-careful", "list"))
+
+echo "- Test -c (careful) option (yes)"
+output = execCmdEx("echo 'y' | " & nakePathExe & " test-careful -c")
+assert output.exitCode == 0, output.output
+assert output.output.match(getRe("nake rules"))
+
+echo "- Test -c (careful) option (no)"
+output = execCmdEx("echo 'n' | " & nakePathExe & " test-careful -c")
+assert output.exitCode == 0, output.output
+assert (not output.output.match(getRe("nake rules")))
 
 # For future reference if this is added?
 #echo "- Test multiple commands can be given"

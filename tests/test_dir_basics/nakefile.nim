@@ -7,5 +7,8 @@ task "default", "Default task":
 task "testcmd", "Testing task":
   echo "nakefile testcmd worked"
 
+task "test-careful", "Runs a shell command":
+  shell("echo 'nake' 'rules'")
+
 task "list", "Lists all commands":
   listTasks()
