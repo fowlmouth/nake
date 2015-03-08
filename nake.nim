@@ -11,8 +11,8 @@ As said in the Olde Country, `Keepe it Gangster'."""
 ## These are the procs and macros you can use to define and run tasks in your
 ## nakefiles.
 
-import strutils, parseopt, tables, os, rdstdin, times
-export strutils, parseopt, tables, os, rdstdin
+import strutils, parseopt2, tables, os, rdstdin, times
+export strutils, parseopt2, tables, os, rdstdin
 
 type
   PTask* = ref object ## Defines a task with a description and action.
@@ -168,7 +168,7 @@ proc mainExecution() =
         nakefileTime = toSeconds(getLastModificationTime("nakefile.nim"))
       if binaryTime > nakefileTime:
         quit (if shell("." / "nakefile", args): 0 else: 1)
-  except EOS:
+  except OSError:
     # Reached if for example nakefile doesn't exist, so permissions test fails.
     discard
 
@@ -199,7 +199,7 @@ proc needsRefresh*(target: string, src: varargs[string]): bool =
   var targetTime: float
   try:
     targetTime = toSeconds(getLastModificationTime(target))
-  except EOS:
+  except OSError:
     return true
 
   for s in src:
