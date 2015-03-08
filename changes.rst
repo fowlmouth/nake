@@ -7,7 +7,8 @@ Changes for `nake <https://github.com/fowlmouth/nake>`_.
 v1.5, ????-??-??
 ----------------
 
-* Nothing yet.
+* `Silences compilation warnings <https://github.com/fowlmouth/nake/pull/22>`_.
+  This change requires Nim 0.10.2 or better.
 
 v1.4, 2014-12-30
 ----------------
