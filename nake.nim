@@ -162,12 +162,20 @@ proc mainExecution() =
 
   # Detects if the nakefile binary is stale and should be rebuilt.
   try:
-    if fpUserExec in getFilePermissions("nakefile"):
+    let (head,file) = splitPath(findExe("nakefile"))
+    if head != "":
+      # not in current directory
+      raise newException(EOS, head)
+
+    if fpUserExec in getFilePermissions(file):
       let
-        binaryTime = toSeconds(getLastModificationTime("nakefile"))
+        binaryTime = toSeconds(getLastModificationTime(file))
         nakefileTime = toSeconds(getLastModificationTime("nakefile.nim"))
-      if binaryTime > nakefileTime:
-        quit (if shell("." / "nakefile", args): 0 else: 1)
+        nakeExe = findExe("nake")
+        nakeIsOlder = if nakeExe == "": true
+          else: binaryTime > toSeconds(getLastModificationTime(nakeExe))
+      if binaryTime > nakefileTime and nakeIsOlder:
+        quit(if shell("." / file, args): 0 else: 1)
   except EOS:
     # Reached if for example nakefile doesn't exist, so permissions test fails.
     discard
