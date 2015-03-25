@@ -36,11 +36,14 @@ task "test", "runs any tests in the `./tests` directory":
   withDir "tests":
     for nakeFile in walkFiles "*.nim":
       let nakeExe = nakeFile.changeFileExt(ExeExt)
-      if not shell(nimExe, "c", "--verbosity:0", nakeFile):
+      if not shell(nimExe, "c", "--verbosity:0 -d:debug -r", nakeFile):
         testResults.add(false)
         continue
-      let success = shell getCurrentDir().joinPath(nakeExe)
-      testResults.add(success)
+      # Repeat in compilation in release mode.
+      if not shell(nimExe, "c", "--verbosity:0 -d:release -r", nakeFile):
+        testResults.add(false)
+        continue
+      testResults.add(true)
       echo "" # prettify the output
 
   let
