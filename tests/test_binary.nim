@@ -46,17 +46,17 @@ echo ""
 echo "- Test nakefile binary default command"
 withDir testDir:
   output = execCmdEx("nake")
-assert output.exitCode == 0, output.output
-assert output.output.match(getRe("nakefile default worked"))
+doAssert output.exitCode == 0, output.output
+doAssert output.output.match(getRe("nakefile default worked"))
 
 echo "- Test nakefile binary additional command"
 withDir testDir:
   output = execCmdEx("nake testcmd")
-assert output.exitCode == 0, output.output
-assert output.output.match(getRe("nakefile testcmd worked"))
+doAssert output.exitCode == 0, output.output
+doAssert output.output.match(getRe("nakefile testcmd worked"))
 
 echo "- Test -t option on binary"
 withDir testDir:
   output = execCmdEx("nake -t")
-assert output.exitCode == 0, output.output
-assert output.output.match(getRe("default", "testcmd",  "list")), output.output
+doAssert output.exitCode == 0, output.output
+doAssert output.output.match(getRe("default", "testcmd",  "list")), output.output
