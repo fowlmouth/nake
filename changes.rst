@@ -7,7 +7,7 @@ Changes for `nake <https://github.com/fowlmouth/nake>`_.
 v1.5, ????-??-??
 ----------------
 
-* Nothing yet.
+* `Added test suite <https://github.com/fowlmouth/nake/pull/26>`_.
 
 v1.4, 2014-12-30
 ----------------
