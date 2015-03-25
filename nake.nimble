@@ -15,3 +15,10 @@ release_steps.rst
 
 """
 bin = "nake"
+
+[Deps]
+Requires: """
+
+nim >= 0.10.2
+
+"""
