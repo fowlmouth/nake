@@ -88,17 +88,22 @@ the shell invocations do you can pass the ``-c`` or ``--careful`` switch to a
     $ nake --careful install
     Run? `nim c nake` [N/y]
 
-Note that this parameter only applies to nake's convenience ``shell`` and
-``direShell`` procs, a *malicious* nakefile author will likely implement his
-own shell spawning process.
+Note that this parameter only applies to nake's convenience `shell()
+<http://fowlmouth.github.io/nake/gh_docs/master/nake.html#shell>`_ and
+`direShell()
+<http://fowlmouth.github.io/nake/gh_docs/master/nake.html#direShell>`_ procs,
+*malicious* nakefile authors will likely implement their own shell spawning
+process.
 
 If you run the nakefile without parameters or with the ``-t`` or ``--tasks``
 switch it will report the available tasks.  But if you run a nakefile with a
 specific task and this task doesn't exist, nake will report an error, list the
 available tasks and exit with a non zero status.
 
-In your nakefiles you can define the ``defaultTask`` task. This is a task which
-will be executed if the user runs ``nake`` without specifying a task. Example::
+In your nakefiles you can define the `defaultTask
+<http://fowlmouth.github.io/nake/gh_docs/master/nake.html#defaultTask>`_ task.
+This is a task which will be executed if the user runs ``nake`` without
+specifying a task. Example::
 
     task defaultTask, "Compiles binary":
       if binaryRequiresRebuilding():
