@@ -1,0 +1,13 @@
+# Global patterns
+*.diff
+*.exe
+*.swp
+.DS_Store
+.sybil_systems
+.vagrant/
+nimcache/
+
+/*.html
+/*.idx
+/nake
+/nakefile
