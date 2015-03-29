@@ -40,9 +40,15 @@ var
   nimExe*: string ## \
   ## Full path to the Nim compiler binary.
   ##
-  ## The path is obtained at runtime. First the ``nim`` binary is probed, and
-  ## if that fails, the older ``nimrod`` is searched for backwards
-  ## compatibility.
+  ## You can use this in your code to avoid having to hardcode the path to the
+  ## compiler. The path is obtained at runtime. First the ``nim`` binary is
+  ## probed, and if that fails, the older ``nimrod`` is searched for backwards
+  ## compatibility. Example:
+  ##
+  ## .. code-block:: nimrod
+  ##   if "nake.html".needsRefresh("nake.nim"):
+  ##     echo "nake.nim -> nake.html"
+  ##     direShell nimExe, "doc2", "--verbosity:0", "--index:on", "nake.nim"
 
 const
   defaultTask* = "default" ## \
@@ -128,7 +134,7 @@ proc askShellCMD (cmd: string): bool =
 proc shell*(cmd: varargs[string, `$`]): bool =
   askShellCMD(cmd.join(" "))
 proc direShell*(cmd: varargs[string, `$`]): bool {.discardable.} =
-  ## Like shell() but quits if the process does not return 0
+  ## Like `shell() <#shell>`_ but quits if the process does not return 0
   result = shell(cmd)
   if not result: quit 1
 

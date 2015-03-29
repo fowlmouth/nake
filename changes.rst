@@ -9,6 +9,8 @@ v1.5, ????-??-??
 
 * `Silences compilation warnings <https://github.com/fowlmouth/nake/pull/22>`_.
   This change requires Nim 0.10.2 or better.
+* `Fixed broken documentation links, added website with generated docs
+  <https://github.com/fowlmouth/nake/issues/27>`_.
 
 v1.4, 2014-12-30
 ----------------
