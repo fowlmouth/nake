@@ -32,6 +32,17 @@ These are the steps to be performed for new stable releases of `nake
 
 * ``git commit -av`` into ``master`` with `Bumps version numbers for
   development version`.
+
+* Regenerate static website. This requires having installed
+  `gh_nimrod_doc_pages <https://github.com/gradha/gh_nimrod_doc_pages>`_ (you
+  can do so through `Nimble <https://github.com/nim-lang/nimble>`_):
+
+  * Make sure git doesn't show changes, then run ``nake web`` and review.
+  * ``git add . && git commit``. Tag with
+    `Regenerates website. Refs #release_issue`.
+  * ``./nakefile postweb`` to return to the previous branch. This also updates
+    submodules, so it is easier.
+
 * ``git push origin master stable --tags``.
 * Close the dummy release issue.
 * Close the milestone on github.

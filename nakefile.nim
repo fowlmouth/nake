@@ -77,7 +77,10 @@ proc switchToGhPages(iniPathOrDir = ".") =
     gitExe = findExe("git")
 
   if ghExe.len < 1:
-    quit("Could not find gh_nimrod_doc_pages binary in $PATH, aborting")
+    quit("""Could not find gh_nimrod_doc_pages binary in $PATH, aborting.
+You may find it at https://github.com/gradha/gh_nimrod_doc_pages.
+Or maybe run 'nimble install gh_nimrod_doc_pages'.
+""")
 
   if gitExe.len < 1:
     quit("Could not find git binary in $PATH, aborting")
