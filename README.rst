@@ -55,7 +55,8 @@ install locally the github checkout::
     $ nimble install
 
 If you don't mind downloading the git repository every time, you can also tell
-Nimble to install the latest development version directly from git::
+`Nimble <https://github.com/nim-lang/nimble>`_ to install the latest
+development version directly from git::
 
     $ nimble update
     $ nimble install -y nake@#head
@@ -110,18 +111,24 @@ will be executed if the user runs ``nake`` without specifying a task. Example::
 Documentation
 =============
 
-Run the **docs** task of the included `nakefile.nim <nakefile.nim>`_ to
-generate the user API HTML documentation in the `nake.html file <nake.html>`_.
-This documentation explains what symbols you can use other than the obvious
-``task`` to define tasks. If you installed from nimble you first need to go to
-your nimble directory. Unix example::
+The documentation of ``nake`` can be found online at
+`http://fowlmouth.github.io/nake/ <http://fowlmouth.github.io/nake/>`_, but you
+can run the **docs** task of the included `nakefile.nim <nakefile.nim>`_ to
+generate the user API HTML documentation into a `nake.html file
+<http://fowlmouth.github.io/nake/gh_docs/master/nake.html>`_.  This
+documentation explains what symbols you can use other than the obvious `task()
+template <http://fowlmouth.github.io/nake/gh_docs/master/nake.html#task>`_ to
+define tasks. If you installed using `Nimble
+<https://github.com/nim-lang/nimble>`_ you first need to go to your local
+`Nimble <https://github.com/nim-lang/nimble>`_ directory. Unix example::
 
     $ cd `nimble path nake`
     $ nim c -r nake docs
     $ open nake.html
 
 The **docs** task will also generate HTML versions of all local rst files,
-which are indexed from the generated `theindex.html <theindex.html>`_.
+which are indexed from the generated `theindex.html
+<http://fowlmouth.github.io/nake/gh_docs/master/theindex.html>`_.
 
 
 Changes
