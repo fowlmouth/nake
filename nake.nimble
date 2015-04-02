@@ -11,6 +11,7 @@ README.rst
 changes.rst
 nake.nim
 nakefile.nim
+nakelib.nim
 release_steps.rst
 
 """

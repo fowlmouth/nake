@@ -13,9 +13,14 @@ when defined(Linux):
 
 
 proc task_docs() =
-  if "nake.html".needsRefresh("nake.nim"):
-    echo "nake.nim -> nake.html"
-    direShell nimExe, "doc2", "--verbosity:0", "--index:on", "nake.nim"
+  for name in ["nake", "nakelib"]:
+    let
+      dest = name & ".html"
+      src = name & ".nim"
+
+    if dest.needsRefresh(src):
+      echo src, " -> ", dest
+      direShell nimExe, "doc2", "--verbosity:0", "--index:on", src
 
   for rstSrc in walkFiles("*.rst"):
     let rstDest = rstSrc.changeFileExt(".html")
