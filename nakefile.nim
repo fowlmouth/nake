@@ -12,7 +12,7 @@ when defined(Linux):
     echo "Symlinked file"
 
 
-proc task_docs() =
+proc buildDocs() =
   for name in ["nake", "nakelib"]:
     let
       dest = name & ".html"
@@ -34,7 +34,7 @@ proc task_docs() =
   direShell nimExe, "buildIndex ."
 
 
-proc task_test() =
+proc runTests() =
   var testResults: seq[bool] = @[]
 
   withDir "tests":
@@ -59,7 +59,8 @@ proc task_test() =
   echo ("Tests Complete: ", total, " test files run, ",
         successes, " test files succeeded.")
 
-proc task_install() =
+
+proc installNake() =
   direShell nimExe, "c", "nake"
 
   var
@@ -149,14 +150,14 @@ proc switchBackFromGhPages() =
 
 
 task "docs", "generate user documentation for nake API and local rst files":
-  task_docs()
+  buildDocs()
   echo "Finished generating docs"
 
 task "test", "runs any tests in the `./tests` directory":
-  task_test()
+  runTests()
 
 task "install", "compile and install nake binary":
-  task_install()
+  installNake()
   echo "Great success!"
 
 task "web", "switches to gh-pages branch and runs gh_nimrod_doc_pages":
