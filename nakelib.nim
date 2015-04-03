@@ -18,7 +18,7 @@ As said in the Olde Country, `Keepe it Gangster'."""
 ## Import this module instead of `nake <nake.html>`_ if you want to use any of
 ## its procs without affecting your program execution.
 
-import strutils, parseopt2, tables, os, rdstdin, times
+import strutils, parseopt2, tables, os, rdstdin, times, osproc
 export strutils, parseopt2, tables, os, rdstdin
 
 
@@ -79,13 +79,33 @@ if nimExe.len < 1:
 
 proc askShellCMD (cmd: string): bool {.raises: [ValueError].} =
   if validateShellCommands:
-    let ans = readLineFromSTDIN ("Run? `$#` [N/y]\L" % cmd).toLower
+    let ans = readLineFromSTDIN ("Run? `$#` [N/y]\L" % cmd)
     if ans[0] in {'y','Y'}:
       result = execShellCMD(cmd) == 0
     else:
       return false
   else:
     result = execShellCMD(cmd) == 0
+
+
+proc askSilentShellCMD(cmd: string):
+    tuple[output: TaintedString, exitCode: int]
+    {.raises: [ValueError, OSError, Exception].} =
+  ## Variant of askShellCMD which returns the output and exit code.
+  ##
+  ## In case of the user rejecting the command the proc will return the empty
+  ## string for `output` and a negative value for `exitCode`.
+  assert(not cmd.isNil)
+
+  if validateShellCommands:
+    let ans = readLineFromSTDIN ("Run? `$#` [N/y]\L" % cmd)
+    if ans[0] in {'y','Y'}:
+      result = execCmdEx(cmd)
+    else:
+      result.output = ""
+      result.exitCode = -1
+  else:
+    result = execCmdEx(cmd)
 
 
 proc shell*(cmd: varargs[string, `$`]): bool {.discardable,
@@ -108,6 +128,40 @@ proc direShell*(cmd: varargs[string, `$`]): bool {.discardable,
   ## ``direShell()`` `quits <http://nim-lang.org/system.html#quit>`_ if the
   ## process does not return 0.
   result = shell(cmd)
+  if not result: quit 1
+
+
+proc silentShell*(info: string, cmd: varargs[string, `$`]): bool {.discardable,
+    raises:[ValueError].} =
+  ## Invokes an external command silently, informing the user about it.
+  ##
+  ## The proc will return ``false`` if the command exits with a non zero code,
+  ## ``true`` otherwise.  This is very similar to the `shell() <#shell>`_ proc,
+  ## but the output of the command will be displayed only if the proc returns
+  ## ``false``, successful commands won't output anything. Since this means
+  ## that the output is buffered until the command returns, for long running
+  ## commands you should maybe tell the user work is being done. This can be
+  ## done through the `info` parameter. When not ``nil``, the `info` parameter
+  ## will be echoed to standard output before executing `cmd`.
+  ##
+  ## This proc respects the value of the `validateShellCommands
+  ## <#validateShellCommands>`_ global.
+  if not info.isNil:
+    echo info
+  let (output, exitCode) = askSilentShellCMD(cmd.join(" "))
+  result = (0 == exitCode)
+  if not result:
+    echo output
+
+
+proc direSilentShell*(info: string, cmd: varargs[string, `$`]): bool
+    {.discardable, raises:[ValueError].} =
+  ## Wrapper around the `silentShell() <#silentShell>`_ proc.
+  ##
+  ## Instead of returning a non zero value like `silentShell()
+  ## <#silentShell>`_, ``direSilentShell()`` `quits
+  ## <http://nim-lang.org/system.html#quit>`_ if the process does not return 0.
+  result = silentShell(info, cmd)
   if not result: quit 1
 
 
