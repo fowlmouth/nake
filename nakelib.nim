@@ -124,7 +124,7 @@ proc direShell*(cmd: varargs[string, `$`]): bool {.discardable,
     raises:[ValueError].} =
   ## Wrapper around the `shell() <#shell>`_ proc.
   ##
-  ## Instead of returning a non zero value like `shell() <#shell>`_,
+  ## Instead of returning on a non zero value like `shell() <#shell>`_,
   ## ``direShell()`` `quits <http://nim-lang.org/system.html#quit>`_ if the
   ## process does not return 0.
   result = shell(cmd)
@@ -145,7 +145,13 @@ proc silentShell*(info: string, cmd: varargs[string, `$`]): bool {.discardable,
   ## will be echoed to standard output before executing `cmd`.
   ##
   ## This proc respects the value of the `validateShellCommands
-  ## <#validateShellCommands>`_ global.
+  ## <#validateShellCommands>`_ global. Example:
+  ##
+  ## .. code-block:: nimrod
+  ##   if not silentShell("Checking for A", "cmdA", "--version"):
+  ##     let another = silentShell("Checking for B", "cmdB", "-v")
+  ##     if not another:
+  ##       quit("Sorry, neither A nor B were found, please install one")
   if not info.isNil:
     echo info
   let (output, exitCode) = askSilentShellCMD(cmd.join(" "))
@@ -158,9 +164,14 @@ proc direSilentShell*(info: string, cmd: varargs[string, `$`]): bool
     {.discardable, raises:[ValueError].} =
   ## Wrapper around the `silentShell() <#silentShell>`_ proc.
   ##
-  ## Instead of returning a non zero value like `silentShell()
+  ## Instead of returning on a non zero value like `silentShell()
   ## <#silentShell>`_, ``direSilentShell()`` `quits
-  ## <http://nim-lang.org/system.html#quit>`_ if the process does not return 0.
+  ## <http://nim-lang.org/system.html#quit>`_ if the process does not return
+  ## zero.  Example:
+  ##
+  ## .. code-block:: nimrod
+  ##   direSilentShell(nil, "git", "--version")
+  ##   direSilentShell("Building stuff", nimExe, "c", "-r", "stuff.nim")
   result = silentShell(info, cmd)
   if not result: quit 1
 
