@@ -72,7 +72,7 @@ else:
       of cmdLongOption, cmdShortOption:
         case key.tolower
         of "careful", "c":
-          careful = true
+          validateShellCommands = true
         of "tasks", "t":
           printTaskList = true
         else:

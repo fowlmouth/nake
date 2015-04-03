@@ -44,7 +44,7 @@ var
   ##
   ## Use the `task() <#task>`_ template to add elements to this variable.
 
-  careful* = false ## \
+  validateShellCommands* = false ## \
   ## Set this global to ``true`` if you want the `shell() <#shell>`_ and
   ## `direShell() <#direShell>`_ procs to ask the user for confirmation before
   ## executing a command.
@@ -74,8 +74,8 @@ if nimExe.len < 1:
   nimExe = findExe("nimrod")
 
 
-proc askShellCMD (cmd: string): bool =
-  if careful:
+proc askShellCMD (cmd: string): bool {.raises: [ValueError].} =
+  if validateShellCommands:
     let ans = readLineFromSTDIN ("Run? `$#` [N/y]\L" % cmd).toLower
     if ans[0] in {'y','Y'}:
       result = execShellCMD(cmd) == 0
@@ -85,17 +85,20 @@ proc askShellCMD (cmd: string): bool =
     result = execShellCMD(cmd) == 0
 
 
-proc shell*(cmd: varargs[string, `$`]): bool {.discardable.} =
+proc shell*(cmd: varargs[string, `$`]): bool {.discardable,
+    raises:[ValueError] .} =
   ## Invokes an external command.
   ##
   ## The proc will return ``false`` if the command exits with a non zero code,
   ## ``true`` otherwise.
   ##
-  ## This proc respects the value of the `careful global <#careful>`_.
+  ## This proc respects the value of the `validateShellCommands
+  ## <#validateShellCommands>`_ global.
   result = askShellCMD(cmd.join(" "))
 
 
-proc direShell*(cmd: varargs[string, `$`]): bool {.discardable.} =
+proc direShell*(cmd: varargs[string, `$`]): bool {.discardable,
+    raises:[ValueError].} =
   ## Wrapper around the `shell() <#shell>`_ proc.
   ##
   ## Instead of returning a non zero value like `shell() <#shell>`_,
@@ -105,7 +108,7 @@ proc direShell*(cmd: varargs[string, `$`]): bool {.discardable.} =
   if not result: quit 1
 
 
-proc cd*(dir: string) {.inline.} =
+proc cd*(dir: string) {.inline, raises: [OSError].} =
   ## Changes the current directory.
   ##
   ## The change is permanent for the rest of the execution, since this is just
@@ -130,7 +133,8 @@ template withDir*(dir: string; body: stmt): stmt =
   cd(curDir)
 
 
-proc needsRefresh*(target: string, src: varargs[string]): bool =
+proc needsRefresh*(target: string, src: varargs[string]): bool {.
+    raises: [OSError].} =
   ## Returns true if target is missing or src has newer modification date.
   ##
   ## This is a convenience proc you can use in your tasks to verify if
@@ -162,7 +166,7 @@ proc needsRefresh*(target: string, src: varargs[string]): bool =
       return true
 
 
-proc newTask (desc: string; action: TTaskFunction): PTask =
+proc newTask (desc: string; action: TTaskFunction): PTask {.raises: [].} =
   result = PTask(desc: desc, action: action)
 
 
@@ -188,7 +192,7 @@ proc runTask*(name: string) {.inline.} = ## \
   tasks[name].action()
 
 
-template task*(name: string; description: string; body: stmt): stmt {.immediate.} =
+template task*(name, description: string; body: stmt): stmt {.immediate.} =
   ## Defines a task for nake.
   ##
   ## Pass the name of the task, the description that will be displayed to the
