@@ -23,23 +23,26 @@ export strutils, parseopt2, tables, os, rdstdin
 
 
 type
-  PTask* = ref object ## Defines a task with a description and action.
+  NakeTask* = ref object ## Defines a task with a description and action.
     desc*: string
-    action*: TTaskFunction
+    action*: NakeAction
 
-  TTaskFunction* = proc() ## \
+  NakeAction* = proc() ## \
   ## Type for the actions associated with a task name.
   ##
-  ## Used in `PTask <#PTask>`_ objects.
+  ## Used in `NakeTask <#NakeTask>`_ objects.
 
-  TTaskLister* = proc() ## \
+  NakeTaskLister* = proc() ## \
   ## Type for the ``proc`` which prints out the list of available tasks.
   ##
   ## Assigned to the `listTasks <#listTasks>`_ global.
 
+{.deprecated: [PTask: NakeTask].}
+{.deprecated: [TTaskFunction: NakeAction].}
+{.deprecated: [TTaskLister: NakeTaskLister].}
 
 var
-  tasks* = initOrderedTable[string, PTask](32) ## \
+  tasks* = initOrderedTable[string, NakeTask](32) ## \
   ## Holds the list of defined tasks.
   ##
   ## Use the `task() <#task>`_ template to add elements to this variable.
@@ -166,8 +169,8 @@ proc needsRefresh*(target: string, src: varargs[string]): bool {.
       return true
 
 
-proc newTask (desc: string; action: TTaskFunction): PTask {.raises: [].} =
-  result = PTask(desc: desc, action: action)
+proc newNakeTask(desc: string; action: NakeAction): NakeTask {.raises: [].} =
+  result = NakeTask(desc: desc, action: action)
 
 
 proc runTask*(name: string) {.inline.} = ## \
@@ -205,8 +208,8 @@ template task*(name, description: string; body: stmt): stmt {.immediate.} =
   ##     for binName in binaries:
   ##       echo "Generating " & binName
   ##       direShell nimExe, "c", binName
-  bind tasks,newTask
-  tasks[name] = newTask(description, proc() {.closure.} =
+  bind tasks,newNakeTask
+  tasks[name] = newNakeTask(description, proc() {.closure.} =
     body)
 
 proc listTasksImpl*() =
@@ -221,7 +224,7 @@ proc listTasksImpl*() =
     echo name, " - ", task.desc
 
 
-var listTasks*: TTaskLister = listTasksImpl ## \
+var listTasks*: NakeTaskLister = listTasksImpl ## \
 ## Holds the proc that is used by default to list available tasks to the user.
 ##
 ## You can call the proc held here inside your `defaultTask <#defaultTask>`_
