@@ -40,11 +40,13 @@ proc task_test() =
   withDir "tests":
     for nakeFile in walkFiles "*.nim":
       let nakeExe = nakeFile.changeFileExt(ExeExt)
-      if not shell(nimExe, "c", "--verbosity:0 -d:debug -r", nakeFile):
+      if not shell(nimExe, "c",
+          "--noNimblePath --verbosity:0 -d:debug -r", nakeFile):
         testResults.add(false)
         continue
-      # Repeat in compilation in release mode.
-      if not shell(nimExe, "c", "--verbosity:0 -d:release -r", nakeFile):
+      # Repeat compilation in release mode.
+      if not shell(nimExe, "c",
+          "--noNimblePath --verbosity:0 -d:release -r", nakeFile):
         testResults.add(false)
         continue
       testResults.add(true)
