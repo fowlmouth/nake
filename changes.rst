@@ -15,6 +15,8 @@ v1.5, ????-??-??
 * `Moved nake procs and macros to nakelib module which can be imported without
   turning the importer into a nakefile
   <https://github.com/fowlmouth/nake/issues/19>`_.
+* `Removed prefix letter from types
+  <https://github.com/fowlmouth/nake/issues/29>`_.
 
 v1.4, 2014-12-30
 ----------------
