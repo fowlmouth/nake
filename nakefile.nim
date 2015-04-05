@@ -1,4 +1,5 @@
 import nake
+import sequtils
 
 proc mvFile(`from`,to: string) =
   moveFile(`from`,to)
@@ -26,6 +27,30 @@ proc task_docs() =
       echo rstSrc, " -> ", rstDest
 
   direShell nimExe, "buildIndex ."
+
+
+proc task_test() =
+  var testResults: seq[bool] = @[]
+
+  withDir "tests":
+    for nakeFile in walkFiles "*.nim":
+      let nakeExe = nakeFile.changeFileExt(ExeExt)
+      if not shell(nimExe, "c", "--verbosity:0 -d:debug -r", nakeFile):
+        testResults.add(false)
+        continue
+      # Repeat in compilation in release mode.
+      if not shell(nimExe, "c", "--verbosity:0 -d:release -r", nakeFile):
+        testResults.add(false)
+        continue
+      testResults.add(true)
+      echo "" # prettify the output
+
+  let
+    total = testResults.len
+    successes = filter(testResults, proc(x:bool): bool = x).len
+
+  echo ("Tests Complete: ", total, " test files run, ",
+        successes, " test files succeeded.")
 
 proc task_install() =
   direShell nimExe, "c", "nake"
@@ -119,6 +144,9 @@ proc switchBackFromGhPages() =
 task "docs", "generate user documentation for nake API and local rst files":
   task_docs()
   echo "Finished generating docs"
+
+task "test", "runs any tests in the `./tests` directory":
+  task_test()
 
 task "install", "compile and install nake binary":
   task_install()

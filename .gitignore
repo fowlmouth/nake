@@ -4,6 +4,14 @@
 .DS_Store
 nimcache/
 
+# Test patterns
+# (ban everything in tests, espc. nakefiles)
+# (then unban test files and test dirs)
+tests/*
+tests/**/nakefile
+!tests/test_*.nim
+!tests/test_dir_*
+
 # Full paths.
 /LICENSE.html
 /README.html
