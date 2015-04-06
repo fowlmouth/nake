@@ -262,13 +262,18 @@ a.reference:hover {color: #E00000;background-color: #ffff00;display: margin;
 </ul>
 </li>
 <li><tt class="docutils literal"><span class="pre">git commit -av</span></tt> into <tt class="docutils literal"><span class="pre">master</span></tt> with <cite>Bumps version numbers for development version</cite>.</li>
+<li>Regenerate static website. This requires having installed <a class="reference external" href="https://github.com/gradha/gh_nimrod_doc_pages">gh_nimrod_doc_pages</a> (you can do so through <a class="reference external" href="https://github.com/nim-lang/nimble">Nimble</a>):<ul class="simple"><li>Make sure git doesn't show changes, then run <tt class="docutils literal"><span class="pre">nake web</span></tt> and review.</li>
+<li><tt class="docutils literal"><span class="pre">git add . &amp;&amp; git commit</span></tt>. Tag with <cite>Regenerates website. Refs #release_issue</cite>.</li>
+<li><tt class="docutils literal"><span class="pre">./nakefile postweb</span></tt> to return to the previous branch. This also updates submodules, so it is easier.</li>
+</ul>
+</li>
 <li><tt class="docutils literal"><span class="pre">git push origin master stable --tags</span></tt>.</li>
 <li>Close the dummy release issue.</li>
 <li>Close the milestone on github.</li>
 <li>Announce at <a class="reference external" href="http://forum.nim-lang.org/t/67">http://forum.nim-lang.org/t/67</a>.</li>
 </ul>
 
-<small>Last modified: 2015-03-29 19:26 UTC. Local time: 2015-03-29 21:26.
+<small>Last modified: 2015-04-06 21:08 UTC. Local time: 2015-04-06 23:08.
 <div id="counter"></div>
 </small>
 <br>Rendered by lazy_rest 0.2.2.
@@ -302,7 +307,7 @@ function timeDifference(current, previous) {
 
 // Timer base code taken from http://stackoverflow.com/a/11876480/172690
 window.onload = function() {
-    var fileTime = new Date(1427657197000);
+    var fileTime = new Date(1428354506000);
 	var ctr = document.getElementById("counter");
 
     function incrementCounter() {

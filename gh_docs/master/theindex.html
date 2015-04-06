@@ -244,7 +244,7 @@ a.reference:hover {color: #E00000;background-color: #ffff00;display: margin;
 <body>
 <div class="document" id="documentId">
 <h1 class="title">Index</h1>
-<p>Documents: <a href="changes.html">Nake changes log</a>, <a href="LICENSE.html">Nake license</a>, <a href="README.html">Nake readme</a>, <a href="release_steps.html">Nake release steps</a>.<br><p />Modules: <a href="nake.html">nake</a>.<br><p /><h2>Documentation files</h2>
+<p>Documents: <a href="changes.html">Nake changes log</a>, <a href="LICENSE.html">Nake license</a>, <a href="README.html">Nake readme</a>, <a href="release_steps.html">Nake release steps</a>.<br><p />Modules: <a href="nakelib.html">nakelib</a>.<br><p /><h2>Documentation files</h2>
 <ul><li><a href="changes.html">Nake changes log</a>
 <ul>
 <li><a href="changes.html#v1-5">v1.5, ????-??-??</a>
@@ -276,69 +276,79 @@ a.reference:hover {color: #E00000;background-color: #ffff00;display: margin;
 <h2>API symbols</h2>
 <dt><span>cd:</span></dt><ul class="simple"><dd>
 <li><a class="reference external"
-          title="Changes the current directory.…" href="nake.html#cd,string">nake : cd*(dir: string)</a></li>
-          <li><a class="reference external" href="nake.html#cd,string_2">nake : cd*(dir: string)</a></li>
+          title="Changes the current directory.…" href="nakelib.html#cd,string">nakelib : cd*(dir: string)</a></li>
           </ul></dd>
 <dt><span>defaultTask:</span></dt><ul class="simple"><dd>
 <li><a class="reference external"
-          title="\…" href="nake.html#defaultTask">nake : defaultTask</a></li>
+          title="\…" href="nakelib.html#defaultTask">nakelib : defaultTask</a></li>
           </ul></dd>
 <dt><span>direShell:</span></dt><ul class="simple"><dd>
 <li><a class="reference external"
-          title="Like shell() but quits if the process does not return 0" href="nake.html#direShell,varargs[string,]">nake : direShell*(cmd: varargs[string, `$`]): bool</a></li>
+          title="Wrapper around the `shell() &lt;#shell&gt;`_ proc.…" href="nakelib.html#direShell,varargs[string,]">nakelib : direShell*(cmd: varargs[string, `$`]): bool</a></li>
+          </ul></dd>
+<dt><span>direSilentShell:</span></dt><ul class="simple"><dd>
+<li><a class="reference external"
+          title="Wrapper around the `silentShell() &lt;#silentShell&gt;`_ proc.…" href="nakelib.html#direSilentShell,string,varargs[string,]">nakelib : direSilentShell*(info: string; cmd: varargs[string, `$`]): bool</a></li>
           </ul></dd>
 <dt><span>listTasks:</span></dt><ul class="simple"><dd>
 <li><a class="reference external"
-          title="\…" href="nake.html#listTasks">nake : listTasks</a></li>
+          title="\…" href="nakelib.html#listTasks">nakelib : listTasks</a></li>
           </ul></dd>
 <dt><span>listTasksImpl:</span></dt><ul class="simple"><dd>
 <li><a class="reference external"
-          title="Default implementation for listing tasks to stdout.…" href="nake.html#listTasksImpl,">nake : listTasksImpl*()</a></li>
+          title="Default implementation for listing tasks to stdout.…" href="nakelib.html#listTasksImpl,">nakelib : listTasksImpl*()</a></li>
+          </ul></dd>
+<dt><span>NakeAction:</span></dt><ul class="simple"><dd>
+<li><a class="reference external"
+          title="\…" href="nakelib.html#NakeAction">nakelib : NakeAction</a></li>
+          </ul></dd>
+<dt><span>NakeTask:</span></dt><ul class="simple"><dd>
+<li><a class="reference external"
+          title="Defines a task with a description and action." href="nakelib.html#NakeTask">nakelib : NakeTask</a></li>
+          </ul></dd>
+<dt><span>NakeTaskLister:</span></dt><ul class="simple"><dd>
+<li><a class="reference external"
+          title="\…" href="nakelib.html#NakeTaskLister">nakelib : NakeTaskLister</a></li>
           </ul></dd>
 <dt><span>needsRefresh:</span></dt><ul class="simple"><dd>
 <li><a class="reference external"
-          title="Returns true if target is missing or src has newer modification date.…" href="nake.html#needsRefresh,string,varargs[string]">nake : needsRefresh*(target: string; src: varargs[string]): bool</a></li>
+          title="Returns true if target is missing or src has newer modification date.…" href="nakelib.html#needsRefresh,string,varargs[string]">nakelib : needsRefresh*(target: string; src: varargs[string]): bool</a></li>
           </ul></dd>
 <dt><span>nimExe:</span></dt><ul class="simple"><dd>
 <li><a class="reference external"
-          title="\…" href="nake.html#nimExe">nake : nimExe</a></li>
-          </ul></dd>
-<dt><span>PTask:</span></dt><ul class="simple"><dd>
-<li><a class="reference external"
-          title="Defines a task with a description and action." href="nake.html#PTask">nake : PTask</a></li>
+          title="\…" href="nakelib.html#nimExe">nakelib : nimExe</a></li>
           </ul></dd>
 <dt><span>runTask:</span></dt><ul class="simple"><dd>
 <li><a class="reference external"
-          title="\…" href="nake.html#runTask,string">nake : runTask*(name: string)</a></li>
+          title="\…" href="nakelib.html#runTask,string">nakelib : runTask*(name: string)</a></li>
           </ul></dd>
 <dt><span>shell:</span></dt><ul class="simple"><dd>
 <li><a class="reference external"
-          title="Invokes an external command.…" href="nake.html#shell,varargs[string,]">nake : shell*(cmd: varargs[string, `$`]): bool</a></li>
-          <li><a class="reference external" href="nake.html#shell,varargs[string,]_2">nake : shell*(cmd: varargs[string, `$`]): bool</a></li>
+          title="Invokes an external command.…" href="nakelib.html#shell,varargs[string,]">nakelib : shell*(cmd: varargs[string, `$`]): bool</a></li>
+          </ul></dd>
+<dt><span>silentShell:</span></dt><ul class="simple"><dd>
+<li><a class="reference external"
+          title="Invokes an external command silently, informing the user about it.…" href="nakelib.html#silentShell,string,varargs[string,]">nakelib : silentShell*(info: string; cmd: varargs[string, `$`]): bool</a></li>
           </ul></dd>
 <dt><span>task:</span></dt><ul class="simple"><dd>
 <li><a class="reference external"
-          title="Defines a task for nake.…" href="nake.html#task.t,string,string,stmt">nake : task*(name: string; description: string; body: stmt): stmt</a></li>
+          title="Defines a task for nake.…" href="nakelib.html#task.t,string,string,stmt">nakelib : task*(name, description: string; body: stmt): stmt</a></li>
           </ul></dd>
 <dt><span>tasks:</span></dt><ul class="simple"><dd>
 <li><a class="reference external"
-          title="\…" href="nake.html#tasks">nake : tasks</a></li>
+          title="\…" href="nakelib.html#tasks">nakelib : tasks</a></li>
           </ul></dd>
-<dt><span>TTaskFunction:</span></dt><ul class="simple"><dd>
+<dt><span>validateShellCommands:</span></dt><ul class="simple"><dd>
 <li><a class="reference external"
-          title="\…" href="nake.html#TTaskFunction">nake : TTaskFunction</a></li>
-          </ul></dd>
-<dt><span>TTaskLister:</span></dt><ul class="simple"><dd>
-<li><a class="reference external"
-          title="\…" href="nake.html#TTaskLister">nake : TTaskLister</a></li>
+          title="\…" href="nakelib.html#validateShellCommands">nakelib : validateShellCommands</a></li>
           </ul></dd>
 <dt><span>withDir:</span></dt><ul class="simple"><dd>
 <li><a class="reference external"
-          title="Changes the current directory temporarily.…" href="nake.html#withDir.t,string,stmt">nake : withDir*(dir: string; body: stmt): stmt</a></li>
+          title="Changes the current directory temporarily.…" href="nakelib.html#withDir.t,string,stmt">nakelib : withDir*(dir: string; body: stmt): stmt</a></li>
           </ul></dd>
 </p>
 
-<small>Last modified: 2015-03-29 19:26 UTC. Local time: 2015-03-29 21:26.
+<small>Last modified: 2015-04-06 21:08 UTC. Local time: 2015-04-06 23:08.
 <div id="counter"></div>
 </small>
 <br>Rendered by lazy_rest 0.2.2.
@@ -372,7 +382,7 @@ function timeDifference(current, previous) {
 
 // Timer base code taken from http://stackoverflow.com/a/11876480/172690
 window.onload = function() {
-    var fileTime = new Date(1427657197000);
+    var fileTime = new Date(1428354507000);
 	var ctr = document.getElementById("counter");
 
     function incrementCounter() {
