@@ -20,5 +20,6 @@ tests/**/nakefile
 /nake
 /nake.html
 /nakefile
+/nakelib.html
 /release_steps.html
 /theindex.html

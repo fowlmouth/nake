@@ -12,6 +12,9 @@ v1.5, ????-??-??
 * `Fixed broken documentation links, added website with generated docs
   <https://github.com/fowlmouth/nake/issues/27>`_.
 * `Added test suite <https://github.com/fowlmouth/nake/pull/26>`_.
+* `Moved nake procs and macros to nakelib module which can be imported without
+  turning the importer into a nakefile
+  <https://github.com/fowlmouth/nake/issues/19>`_.
 
 v1.4, 2014-12-30
 ----------------
