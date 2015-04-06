@@ -36,30 +36,27 @@ when isMainModule:
     ##
     ## All the binary does is forward cli arguments to `nim c -r nakefile.nim
     ## $ARGS`
-    if not existsFile("nakefile.nim"):
-      echo "No nakefile.nim found. Current working dir is ", getCurrentDir()
+    let nakeSource = "nakefile.nim"
+    if not existsFile(nakeSource):
+      echo "No ", nakeSource, " found. Current working dir is ", getCurrentDir()
       quit 1
-    var args = ""
-    for i in 1..paramCount():
-      args.add paramStr(i)
-      args.add " "
 
-    # Detects if the nakefile binary is stale and should be rebuilt.
-    try:
-      if fpUserExec in getFilePermissions("nakefile"):
-        let
-          binaryTime = toSeconds(getLastModificationTime("nakefile"))
-          nakefileTime = toSeconds(getLastModificationTime("nakefile.nim"))
-        if binaryTime > nakefileTime:
-          quit (if shell("." / "nakefile", args): 0 else: 1)
-    except OSError:
-      # Reached if for example nakefile doesn't exist, so permissions test
-      # fails.
-      discard
+    let
+      nakeExe = "nakefile".addFileExt(ExeExt)
+      nakeSelf = getApplicationFilename()
 
-    # Recompiles the nakefile and runs it.
-    direSilentShell("Compiling nakefile...", nimExe, "c", "nakefile.nim")
-    quit (if shell("." / "nakefile", args): 0 else: 1)
+    var
+      args = join(commandLineParams(), " ")
+      dependencies = @[nakeSource]
+
+    if nakeSelf.len > 0:
+      dependencies.add(nakeSelf)
+
+    if nakeExe.needsRefresh(dependencies):
+      # Recompiles the nakefile before running it.
+      direSilentShell("Compiling nakefile...", nimExe, "c", nakeSource)
+
+    quit (if shell("." / nakeExe, args): 0 else: 1)
 
   mainExecution()
 else:

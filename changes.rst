@@ -19,6 +19,8 @@ v1.5, ????-??-??
   <https://github.com/fowlmouth/nake/issues/29>`_.
 * `Reduced nake verbosity, added silent shell procs
   <https://github.com/fowlmouth/nake/issues/20>`_.
+* `Adds nake's timestamp to nakefile rebuild dependency list
+  <https://github.com/fowlmouth/nake/issues/23>`_.
 
 v1.4, 2014-12-30
 ----------------
