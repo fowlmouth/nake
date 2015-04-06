@@ -19,19 +19,18 @@ proc buildDocs() =
       src = name & ".nim"
 
     if dest.needsRefresh(src):
-      echo src, " -> ", dest
-      direShell nimExe, "doc2", "--verbosity:0", "--index:on", src
+      direSilentShell(src & " -> " & dest,
+        nimExe, "doc2", "--verbosity:0", "--index:on", src)
 
   for rstSrc in walkFiles("*.rst"):
     let rstDest = rstSrc.changeFileExt(".html")
     if not rstDest.needsRefresh(rstSrc): continue
-    if not shell(nimExe & " rst2html --verbosity:0 --index:on -o:" &
-        rstDest & " " & rstSrc):
-      quit("Could not generate html doc for " & rstSrc)
-    else:
-      echo rstSrc, " -> ", rstDest
+    direSilentShell(rstSrc & " -> " & rstDest,
+      nimExe & " rst2html --verbosity:0 --index:on -o:" &
+        rstDest & " " & rstSrc)
 
-  direShell nimExe, "buildIndex ."
+  direSilentShell("Building theindex.html", nimExe, "buildIndex .")
+
 
 
 proc runTests() =
@@ -61,7 +60,7 @@ proc runTests() =
 
 
 proc installNake() =
-  direShell nimExe, "c", "nake"
+  direSilentShell("Compiling nake...", nimExe, "c", "nake")
 
   var
     installMethod: proc(src,dest:string)# = mvFile

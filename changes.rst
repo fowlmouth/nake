@@ -17,6 +17,8 @@ v1.5, ????-??-??
   <https://github.com/fowlmouth/nake/issues/19>`_.
 * `Removed prefix letter from types
   <https://github.com/fowlmouth/nake/issues/29>`_.
+* `Reduced nake verbosity, added silent shell procs
+  <https://github.com/fowlmouth/nake/issues/20>`_.
 
 v1.4, 2014-12-30
 ----------------

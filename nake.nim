@@ -58,7 +58,8 @@ when isMainModule:
       discard
 
     # Recompiles the nakefile and runs it.
-    quit (if shell(nimExe, "c", "-r", "nakefile.nim", args): 0 else: 1)
+    direSilentShell("Compiling nakefile...", nimExe, "c", "nakefile.nim")
+    quit (if shell("." / "nakefile", args): 0 else: 1)
 
   mainExecution()
 else:
