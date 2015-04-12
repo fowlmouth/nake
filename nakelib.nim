@@ -132,7 +132,7 @@ proc direShell*(cmd: varargs[string, `$`]): bool {.discardable,
 
 
 proc silentShell*(info: string, cmd: varargs[string, `$`]): bool {.discardable,
-    raises:[ValueError].} =
+    raises:[ValueError, OSError, Exception].} =
   ## Invokes an external command silently, informing the user about it.
   ##
   ## The proc will return ``false`` if the command exits with a non zero code,
@@ -161,7 +161,7 @@ proc silentShell*(info: string, cmd: varargs[string, `$`]): bool {.discardable,
 
 
 proc direSilentShell*(info: string, cmd: varargs[string, `$`]): bool
-    {.discardable, raises:[ValueError].} =
+    {.discardable, raises:[ValueError, OSError, Exception].} =
   ## Wrapper around the `silentShell() <#silentShell>`_ proc.
   ##
   ## Instead of returning on a non zero value like `silentShell()
