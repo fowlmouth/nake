@@ -28,7 +28,7 @@ Now you can compile this ``nakefile.nim`` file into a binary and run it::
 License
 =======
 
-`DATWPL license <LICENSE.rst>`_.
+`MIT license <LICENSE.rst>`_.
 
 
 Installation
