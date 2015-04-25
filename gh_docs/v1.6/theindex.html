@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Nake documentation index</title>
+<title>Index</title>
 <style type="text/css">
 
 body {
@@ -243,15 +243,110 @@ a.reference:hover {color: #E00000;background-color: #ffff00;display: margin;
 </head>
 <body>
 <div class="document" id="documentId">
-<h1 class="title">Nake documentation index</h1>
-<p>Available documentation files for <a class="reference external" href="https://github.com/fowlmouth/nake">nake</a>. You need to run <tt class="docutils literal"><span class="pre">nake docs</span></tt> at the root of the project to obtain them:</p>
-<blockquote><p><ul class="simple"><li><a class="reference external" href="nake.html">Nake module API</a>.</li>
-<li><a class="reference external" href="LICENSE.html">LICENSE.rst</a>.</li>
-<li><a class="reference external" href="README.html">README.rst</a>.</li>
-<li><a class="reference external" href="changes.html">changes.rst</a>.</li>
-<li><a class="reference external" href="release_steps.html">release_steps.rst</a>.</li>
+<h1 class="title">Index</h1>
+<p>Documents: <a href="changes.html">Nake changes log</a>, <a href="LICENSE.html">Nake license</a>, <a href="README.html">Nake readme</a>, <a href="release_steps.html">Nake release steps</a>.<br><p />Modules: <a href="nakelib.html">nakelib</a>.<br><p /><h2>Documentation files</h2>
+<ul><li><a href="changes.html">Nake changes log</a>
+<ul>
+<li><a href="changes.html#v1-6-2015-04-26">v1.6, 2015-04-26</a>
+<li><a href="changes.html#v1-4-2014-12-30">v1.4, 2014-12-30</a>
+<li><a href="changes.html#v1-2-2014-02-22">v1.2, 2014-02-22</a>
+<li><a href="changes.html#v1-1-2013-11-09">v1.1, 2013-11-09</a>
+<li><a href="changes.html#v1-0-2013-06-30">v1.0, 2013-06-30</a>
 </ul>
-</p></blockquote>
+</ul>
+<ul><li><a href="LICENSE.html">Nake license</a>
+<ul>
+</ul>
+</ul>
+<ul><li><a href="README.html">Nake readme</a>
+<ul>
+<li><a href="README.html#license">License</a>
+<li><a href="README.html#installation">Installation</a>
+<ul><li><a href="README.html#stable-version">Stable version</a>
+<li><a href="README.html#development-version">Development version</a>
+</ul><li><a href="README.html#usage">Usage</a>
+<li><a href="README.html#documentation">Documentation</a>
+<li><a href="README.html#changes">Changes</a>
+</ul>
+</ul>
+<ul><li><a href="release_steps.html">Nake release steps</a>
+<ul>
+</ul>
+</ul>
+<h2>API symbols</h2>
+<dt><span>cd:</span></dt><ul class="simple"><dd>
+<li><a class="reference external"
+          title="Changes the current directory.…" href="nakelib.html#cd,string">nakelib : cd*(dir: string)</a></li>
+          </ul></dd>
+<dt><span>defaultTask:</span></dt><ul class="simple"><dd>
+<li><a class="reference external"
+          title="\…" href="nakelib.html#defaultTask">nakelib : defaultTask</a></li>
+          </ul></dd>
+<dt><span>direShell:</span></dt><ul class="simple"><dd>
+<li><a class="reference external"
+          title="Wrapper around the `shell() &lt;#shell&gt;`_ proc.…" href="nakelib.html#direShell,varargs[string,]">nakelib : direShell*(cmd: varargs[string, `$`]): bool</a></li>
+          </ul></dd>
+<dt><span>direSilentShell:</span></dt><ul class="simple"><dd>
+<li><a class="reference external"
+          title="Wrapper around the `silentShell() &lt;#silentShell&gt;`_ proc.…" href="nakelib.html#direSilentShell,string,varargs[string,]">nakelib : direSilentShell*(info: string; cmd: varargs[string, `$`]): bool</a></li>
+          </ul></dd>
+<dt><span>listTasks:</span></dt><ul class="simple"><dd>
+<li><a class="reference external"
+          title="\…" href="nakelib.html#listTasks">nakelib : listTasks</a></li>
+          </ul></dd>
+<dt><span>listTasksImpl:</span></dt><ul class="simple"><dd>
+<li><a class="reference external"
+          title="Default implementation for listing tasks to stdout.…" href="nakelib.html#listTasksImpl,">nakelib : listTasksImpl*()</a></li>
+          </ul></dd>
+<dt><span>NakeAction:</span></dt><ul class="simple"><dd>
+<li><a class="reference external"
+          title="\…" href="nakelib.html#NakeAction">nakelib : NakeAction</a></li>
+          </ul></dd>
+<dt><span>NakeTask:</span></dt><ul class="simple"><dd>
+<li><a class="reference external"
+          title="Defines a task with a description and action." href="nakelib.html#NakeTask">nakelib : NakeTask</a></li>
+          </ul></dd>
+<dt><span>NakeTaskLister:</span></dt><ul class="simple"><dd>
+<li><a class="reference external"
+          title="\…" href="nakelib.html#NakeTaskLister">nakelib : NakeTaskLister</a></li>
+          </ul></dd>
+<dt><span>needsRefresh:</span></dt><ul class="simple"><dd>
+<li><a class="reference external"
+          title="Returns true if target is missing or src has newer modification date.…" href="nakelib.html#needsRefresh,string,varargs[string]">nakelib : needsRefresh*(target: string; src: varargs[string]): bool</a></li>
+          </ul></dd>
+<dt><span>nimExe:</span></dt><ul class="simple"><dd>
+<li><a class="reference external"
+          title="\…" href="nakelib.html#nimExe">nakelib : nimExe</a></li>
+          </ul></dd>
+<dt><span>runTask:</span></dt><ul class="simple"><dd>
+<li><a class="reference external"
+          title="\…" href="nakelib.html#runTask,string">nakelib : runTask*(name: string)</a></li>
+          </ul></dd>
+<dt><span>shell:</span></dt><ul class="simple"><dd>
+<li><a class="reference external"
+          title="Invokes an external command.…" href="nakelib.html#shell,varargs[string,]">nakelib : shell*(cmd: varargs[string, `$`]): bool</a></li>
+          </ul></dd>
+<dt><span>silentShell:</span></dt><ul class="simple"><dd>
+<li><a class="reference external"
+          title="Invokes an external command silently, informing the user about it.…" href="nakelib.html#silentShell,string,varargs[string,]">nakelib : silentShell*(info: string; cmd: varargs[string, `$`]): bool</a></li>
+          </ul></dd>
+<dt><span>task:</span></dt><ul class="simple"><dd>
+<li><a class="reference external"
+          title="Defines a task for nake.…" href="nakelib.html#task.t,string,string,stmt">nakelib : task*(name, description: string; body: stmt): stmt</a></li>
+          </ul></dd>
+<dt><span>tasks:</span></dt><ul class="simple"><dd>
+<li><a class="reference external"
+          title="\…" href="nakelib.html#tasks">nakelib : tasks</a></li>
+          </ul></dd>
+<dt><span>validateShellCommands:</span></dt><ul class="simple"><dd>
+<li><a class="reference external"
+          title="\…" href="nakelib.html#validateShellCommands">nakelib : validateShellCommands</a></li>
+          </ul></dd>
+<dt><span>withDir:</span></dt><ul class="simple"><dd>
+<li><a class="reference external"
+          title="Changes the current directory temporarily.…" href="nakelib.html#withDir.t,string,stmt">nakelib : withDir*(dir: string; body: stmt): stmt</a></li>
+          </ul></dd>
+</p>
 
 <small>Last modified: 2015-04-25 22:39 UTC. Local time: 2015-04-26 00:39.
 <div id="counter"></div>
@@ -287,7 +382,7 @@ function timeDifference(current, previous) {
 
 // Timer base code taken from http://stackoverflow.com/a/11876480/172690
 window.onload = function() {
-    var fileTime = new Date(1430001556000);
+    var fileTime = new Date(1430001557000);
 	var ctr = document.getElementById("counter");
 
     function incrementCounter() {

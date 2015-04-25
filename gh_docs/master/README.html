@@ -264,7 +264,7 @@ $ nim c -r nakefile test-build
 $ ./nakefile test-build</pre>
 </p>
 
-<h1 id="license">License</h1><p><a class="reference external" href="LICENSE.html">DATWPL license</a>.</p>
+<h1 id="license">License</h1><p><a class="reference external" href="LICENSE.html">MIT license</a>.</p>
 
 <h1 id="installation">Installation</h1>
 <h2 id="stable-version">Stable version</h2><p>Use <a class="reference external" href="https://github.com/nim-lang/nimble">Nim's Nimble package manager</a> to install the package and <tt class="docutils literal"><span class="pre">nake</span></tt> binary:<pre>
@@ -295,9 +295,9 @@ $ nake debug-build
 $ nake --careful install
 Run? `nim c nake` [N/y]</pre>
 </p>
-<p>Note that this parameter only applies to nake's convenience <a class="reference external" href="http://fowlmouth.github.io/nake/gh_docs/master/nake.html#shell">shell()</a> and <a class="reference external" href="http://fowlmouth.github.io/nake/gh_docs/master/nake.html#direShell">direShell()</a> procs, <em>malicious</em> nakefile authors will likely implement their own shell spawning process.</p>
+<p>Note that this parameter only applies to nake's convenience <a class="reference external" href="http://fowlmouth.github.io/nake/gh_docs/master/nakelib.html#shell">shell()</a> and <a class="reference external" href="http://fowlmouth.github.io/nake/gh_docs/master/nakelib.html#direShell">direShell()</a> procs, <em>malicious</em> nakefile authors will likely implement their own shell spawning process.</p>
 <p>If you run the nakefile without parameters or with the <tt class="docutils literal"><span class="pre">-t</span></tt> or <tt class="docutils literal"><span class="pre">--tasks</span></tt> switch it will report the available tasks.  But if you run a nakefile with a specific task and this task doesn't exist, nake will report an error, list the available tasks and exit with a non zero status.</p>
-<p>In your nakefiles you can define the <a class="reference external" href="http://fowlmouth.github.io/nake/gh_docs/master/nake.html#defaultTask">defaultTask</a> task. This is a task which will be executed if the user runs <tt class="docutils literal"><span class="pre">nake</span></tt> without specifying a task. Example:<pre>
+<p>In your nakefiles you can define the <a class="reference external" href="http://fowlmouth.github.io/nake/gh_docs/master/nakelib.html#defaultTask">defaultTask</a> task.  This is a task which will be executed if the user runs <tt class="docutils literal"><span class="pre">nake</span></tt> without specifying a task. Example:<pre>
 task defaultTask, &quot;Compiles binary&quot;:
   if binaryRequiresRebuilding():
     doStuffToCompileProgram()
@@ -306,16 +306,16 @@ task defaultTask, &quot;Compiles binary&quot;:
     listTasks()</pre>
 </p>
 
-<h1 id="documentation">Documentation</h1><p>The documentation of <tt class="docutils literal"><span class="pre">nake</span></tt> can be found online at <a class="reference external" href="http://fowlmouth.github.io/nake/">http://fowlmouth.github.io/nake/</a>, but you can run the <strong>docs</strong> task of the included <a class="reference external" href="nakefile.nim">nakefile.nim</a> to generate the user API HTML documentation into a <a class="reference external" href="http://fowlmouth.github.io/nake/gh_docs/master/nake.html">nake.html file</a>.  This documentation explains what symbols you can use other than the obvious <a class="reference external" href="http://fowlmouth.github.io/nake/gh_docs/master/nake.html#task">task() template</a> to define tasks. If you installed using <a class="reference external" href="https://github.com/nim-lang/nimble">Nimble</a> you first need to go to your local <a class="reference external" href="https://github.com/nim-lang/nimble">Nimble</a> directory. Unix example:<pre>
+<h1 id="documentation">Documentation</h1><p>The documentation of <tt class="docutils literal"><span class="pre">nake</span></tt> can be found online at <a class="reference external" href="http://fowlmouth.github.io/nake/">http://fowlmouth.github.io/nake/</a>, but you can run the <strong>docs</strong> task of the included <a class="reference external" href="nakefile.nim">nakefile.nim</a> to generate the user API HTML documentation into a <a class="reference external" href="http://fowlmouth.github.io/nake/gh_docs/master/nake.html">nake.html file</a>.  This documentation explains what symbols you can use other than the obvious <a class="reference external" href="http://fowlmouth.github.io/nake/gh_docs/master/nakelib.html#task">task() template</a> to define tasks. If you installed using <a class="reference external" href="https://github.com/nim-lang/nimble">Nimble</a> you first need to go to your local <a class="reference external" href="https://github.com/nim-lang/nimble">Nimble</a> directory. Unix example:<pre>
 $ cd `nimble path nake`
 $ nim c -r nake docs
 $ open nake.html</pre>
 </p>
 <p>The <strong>docs</strong> task will also generate HTML versions of all local rst files, which are indexed from the generated <a class="reference external" href="http://fowlmouth.github.io/nake/gh_docs/master/theindex.html">theindex.html</a>.</p>
 
-<h1 id="changes">Changes</h1><p>This is development version 1.5. Read the changes log in the <a class="reference external" href="changes.html">changes.rst file</a>. </p>
+<h1 id="changes">Changes</h1><p>This is development version 1.7. Read the changes log in the <a class="reference external" href="changes.html">changes.rst file</a>. </p>
 
-<small>Last modified: 2015-04-06 21:08 UTC. Local time: 2015-04-06 23:08.
+<small>Last modified: 2015-04-25 22:39 UTC. Local time: 2015-04-26 00:39.
 <div id="counter"></div>
 </small>
 <br>Rendered by lazy_rest 0.2.2.
@@ -349,7 +349,7 @@ function timeDifference(current, previous) {
 
 // Timer base code taken from http://stackoverflow.com/a/11876480/172690
 window.onload = function() {
-    var fileTime = new Date(1428354506000);
+    var fileTime = new Date(1430001557000);
 	var ctr = document.getElementById("counter");
 
     function incrementCounter() {
