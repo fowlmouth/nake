@@ -43,7 +43,7 @@ These are the steps to be performed for new stable releases of `nake
   * ``./nakefile postweb`` to return to the previous branch. This also updates
     submodules, so it is easier.
 
-* ``git push origin master stable --tags``.
+* ``git push origin master stable gh-pages --tags``.
 * Close the dummy release issue.
 * Close the milestone on github.
 * Announce at http://forum.nim-lang.org/t/67.
