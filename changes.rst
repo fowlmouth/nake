@@ -4,7 +4,7 @@ Nake changes log
 
 Changes for `nake <https://github.com/fowlmouth/nake>`_.
 
-v1.5, ????-??-??
+v1.6, 2015-04-26
 ----------------
 
 * `Silences compilation warnings <https://github.com/fowlmouth/nake/pull/22>`_.
