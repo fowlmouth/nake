@@ -4,7 +4,7 @@ Nake changes log
 
 Changes for `nake <https://github.com/fowlmouth/nake>`_.
 
-v1.5, ????-??-??
+v1.6, 2015-04-26
 ----------------
 
 * `Silences compilation warnings <https://github.com/fowlmouth/nake/pull/22>`_.
@@ -21,6 +21,8 @@ v1.5, ????-??-??
   <https://github.com/fowlmouth/nake/issues/20>`_.
 * `Adds nake's timestamp to nakefile rebuild dependency list
   <https://github.com/fowlmouth/nake/issues/23>`_.
+* `DATWPL license was changed to MIT
+  <https://github.com/fowlmouth/nake/pull/37>`_.
 
 v1.4, 2014-12-30
 ----------------
