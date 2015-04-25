@@ -3,7 +3,7 @@ name = "nake"
 version = "1.5"
 author = "fowl"
 description = "make-like for Nim. Describe your builds as tasks!"
-license = "DATWPL"
+license = "MIT"
 InstallFiles = """
 
 LICENSE.rst
