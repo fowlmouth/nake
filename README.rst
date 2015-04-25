@@ -28,7 +28,7 @@ Now you can compile this ``nakefile.nim`` file into a binary and run it::
 License
 =======
 
-`DATWPL license <LICENSE.rst>`_.
+`MIT license <LICENSE.rst>`_.
 
 
 Installation
@@ -55,7 +55,8 @@ install locally the github checkout::
     $ nimble install
 
 If you don't mind downloading the git repository every time, you can also tell
-Nimble to install the latest development version directly from git::
+`Nimble <https://github.com/nim-lang/nimble>`_ to install the latest
+development version directly from git::
 
     $ nimble update
     $ nimble install -y nake@#head
@@ -87,17 +88,22 @@ the shell invocations do you can pass the ``-c`` or ``--careful`` switch to a
     $ nake --careful install
     Run? `nim c nake` [N/y]
 
-Note that this parameter only applies to nake's convenience ``shell`` and
-``direShell`` procs, a *malicious* nakefile author will likely implement his
-own shell spawning process.
+Note that this parameter only applies to nake's convenience `shell()
+<http://fowlmouth.github.io/nake/gh_docs/master/nakelib.html#shell>`_ and
+`direShell()
+<http://fowlmouth.github.io/nake/gh_docs/master/nakelib.html#direShell>`_
+procs, *malicious* nakefile authors will likely implement their own shell
+spawning process.
 
 If you run the nakefile without parameters or with the ``-t`` or ``--tasks``
 switch it will report the available tasks.  But if you run a nakefile with a
 specific task and this task doesn't exist, nake will report an error, list the
 available tasks and exit with a non zero status.
 
-In your nakefiles you can define the ``defaultTask`` task. This is a task which
-will be executed if the user runs ``nake`` without specifying a task. Example::
+In your nakefiles you can define the `defaultTask
+<http://fowlmouth.github.io/nake/gh_docs/master/nakelib.html#defaultTask>`_
+task.  This is a task which will be executed if the user runs ``nake`` without
+specifying a task. Example::
 
     task defaultTask, "Compiles binary":
       if binaryRequiresRebuilding():
@@ -110,22 +116,28 @@ will be executed if the user runs ``nake`` without specifying a task. Example::
 Documentation
 =============
 
-Run the **docs** task of the included `nakefile.nim <nakefile.nim>`_ to
-generate the user API HTML documentation in the `nake.html file <nake.html>`_.
-This documentation explains what symbols you can use other than the obvious
-``task`` to define tasks. If you installed from nimble you first need to go to
-your nimble directory. Unix example::
+The documentation of ``nake`` can be found online at
+`http://fowlmouth.github.io/nake/ <http://fowlmouth.github.io/nake/>`_, but you
+can run the **docs** task of the included `nakefile.nim <nakefile.nim>`_ to
+generate the user API HTML documentation into a `nake.html file
+<http://fowlmouth.github.io/nake/gh_docs/master/nake.html>`_.  This
+documentation explains what symbols you can use other than the obvious `task()
+template <http://fowlmouth.github.io/nake/gh_docs/master/nakelib.html#task>`_
+to define tasks. If you installed using `Nimble
+<https://github.com/nim-lang/nimble>`_ you first need to go to your local
+`Nimble <https://github.com/nim-lang/nimble>`_ directory. Unix example::
 
     $ cd `nimble path nake`
     $ nim c -r nake docs
     $ open nake.html
 
 The **docs** task will also generate HTML versions of all local rst files,
-which are indexed from the generated `theindex.html <theindex.html>`_.
+which are indexed from the generated `theindex.html
+<http://fowlmouth.github.io/nake/gh_docs/master/theindex.html>`_.
 
 
 Changes
 =======
 
-This is stable version 1.4. Read the changes log in the `changes.rst file
+This is stable version 1.6. Read the changes log in the `changes.rst file
 <changes.rst>`_.
