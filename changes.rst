@@ -7,7 +7,8 @@ Changes for `nake <https://github.com/fowlmouth/nake>`_.
 v1.7, ????-??-??
 ----------------
 
-* Nothing yet.
+* `Mentions how to update nake installed with nimble
+  <https://github.com/fowlmouth/nake/pull/40>`_.
 
 v1.6, 2015-04-26
 ----------------
