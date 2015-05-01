@@ -43,6 +43,10 @@ install the package and ``nake`` binary::
     $ nimble update
     $ nimble install nake
 
+If a new version of ``nake`` is released you can update to it running again
+those commands. You can figure out the version you have installed by running
+``nimble path nake``.
+
 
 Development version
 -------------------
