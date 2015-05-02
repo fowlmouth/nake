@@ -143,5 +143,5 @@ which are indexed from the generated `theindex.html
 Changes
 =======
 
-This is stable version 1.8. Read the changes log in the `changes.rst file
+This is development version 1.9. Read the changes log in the `changes.rst file
 <changes.rst>`_.
