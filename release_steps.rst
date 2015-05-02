@@ -9,6 +9,7 @@ These are the steps to be performed for new stable releases of `nake
   https://github.com/fowlmouth/nake/milestones.
 * Create new dummy issue `Release versionname` and assign to that milestone.
 * ``git flow release start versionname`` (``versionname`` without ``v``).
+* Run ``nake test`` to verify the test suite still works.
 * Update version numbers:
 
   * Modify `README.rst <README.rst>`_ (s/development/stable/).
@@ -23,6 +24,8 @@ These are the steps to be performed for new stable releases of `nake
   version of the full changes log into the message. Add text ``*`` item
   markers.
 * Move closed issues not assigned to any milestone to this release milestone.
+* Move closed pull requests not assigned to any milestone to this release
+  milestone.
 * Increase version numbers, ``master`` branch gets +0.1.
 
   * Modify `README.rst <README.rst>`_.
