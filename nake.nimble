@@ -1,6 +1,6 @@
 [Package]
 name = "nake"
-version = "1.6"
+version = "1.8"
 author = "fowl"
 description = "make-like for Nim. Describe your builds as tasks!"
 license = "MIT"

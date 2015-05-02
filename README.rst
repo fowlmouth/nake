@@ -43,6 +43,10 @@ install the package and ``nake`` binary::
     $ nimble update
     $ nimble install nake
 
+If a new version of ``nake`` is released you can update to it running again
+those commands. You can figure out the version you have installed by running
+``nimble path nake``.
+
 
 Development version
 -------------------
@@ -139,5 +143,5 @@ which are indexed from the generated `theindex.html
 Changes
 =======
 
-This is stable version 1.6. Read the changes log in the `changes.rst file
+This is stable version 1.8. Read the changes log in the `changes.rst file
 <changes.rst>`_.

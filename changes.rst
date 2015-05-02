@@ -4,6 +4,14 @@ Nake changes log
 
 Changes for `nake <https://github.com/fowlmouth/nake>`_.
 
+v1.8, 2015-05-02
+----------------
+
+* `Mentions how to update nake installed with nimble
+  <https://github.com/fowlmouth/nake/pull/40>`_.
+* `Fixes nakelib raises pragmas for Windows
+  <https://github.com/fowlmouth/nake/issues/38>`_.
+
 v1.6, 2015-04-26
 ----------------
 
