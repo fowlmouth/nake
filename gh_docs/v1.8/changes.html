@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>What to do for a new public release?</title>
+<title>Nake changes log</title>
 <style type="text/css">
 
 body {
@@ -243,24 +243,44 @@ a.reference:hover {color: #E00000;background-color: #ffff00;display: margin;
 </head>
 <body>
 <div class="document" id="documentId">
-<h1 class="title">What to do for a new public release?</h1>
-<ul class="simple"><li><tt class="docutils literal"><span class="pre">git flow release start versionname</span></tt> (versionname without v).</li>
-<li>Update version numbers:<ul class="simple"><li>Modify <a class="reference external" href="../README.rst">README.rst</a> (s/development/stable/).</li>
-<li>Modify <a class="reference external" href="changes.html">changes.rst</a> with list of changes and version/number.</li>
-<li>Modify <a class="reference external" href="nake.babel">nake.babel</a> with version and list of new files to install.</li>
+<h1 class="title">Nake changes log</h1>
+<p>Changes for <a class="reference external" href="https://github.com/fowlmouth/nake">nake</a>.</p>
+
+<h1 id="v1-8-2015-05-02">v1.8, 2015-05-02</h1><ul class="simple"><li><a class="reference external" href="https://github.com/fowlmouth/nake/pull/40">Mentions how to update nake installed with nimble</a>.</li>
+<li><a class="reference external" href="https://github.com/fowlmouth/nake/issues/38">Fixes nakelib raises pragmas for Windows</a>.</li>
 </ul>
-</li>
-<li><tt class="docutils literal"><span class="pre">git commit -av</span></tt> into the release branch the version number changes.</li>
-<li><tt class="docutils literal"><span class="pre">git flow release finish versionname</span></tt> (the tagname is versionname without <tt class="docutils literal"><span class="pre">v</span></tt>).  When specifying the tag message, copy and paste a text version of the full changes log into the message. Add rst item markers.</li>
-<li>Push all to git: <tt class="docutils literal"><span class="pre">git push origin master stable --tags</span></tt>.</li>
-<li>Increase version numbers, <tt class="docutils literal"><span class="pre">master</span></tt> branch gets +1.<ul class="simple"><li>Modify <a class="reference external" href="../README.rst">README.rst</a>.</li>
-<li>Add to <a class="reference external" href="changes.html">changes.rst</a> development version with unknown date.</li>
-<li>Modify <a class="reference external" href="nake.babel">nake.babel</a> with development version.</li>
+
+<h1 id="v1-6-2015-04-26">v1.6, 2015-04-26</h1><ul class="simple"><li><a class="reference external" href="https://github.com/fowlmouth/nake/pull/22">Silences compilation warnings</a>. This change requires Nim 0.10.2 or better.</li>
+<li><a class="reference external" href="https://github.com/fowlmouth/nake/issues/27">Fixed broken documentation links, added website with generated docs</a>.</li>
+<li><a class="reference external" href="https://github.com/fowlmouth/nake/pull/26">Added test suite</a>.</li>
+<li><a class="reference external" href="https://github.com/fowlmouth/nake/issues/19">Moved nake procs and macros to nakelib module which can be imported without turning the importer into a nakefile</a>.</li>
+<li><a class="reference external" href="https://github.com/fowlmouth/nake/issues/29">Removed prefix letter from types</a>.</li>
+<li><a class="reference external" href="https://github.com/fowlmouth/nake/issues/20">Reduced nake verbosity, added silent shell procs</a>.</li>
+<li><a class="reference external" href="https://github.com/fowlmouth/nake/issues/23">Adds nake's timestamp to nakefile rebuild dependency list</a>.</li>
+<li><a class="reference external" href="https://github.com/fowlmouth/nake/pull/37">DATWPL license was changed to MIT</a>.</li>
 </ul>
-</li>
-<li><tt class="docutils literal"><span class="pre">git commit -av</span></tt> into <tt class="docutils literal"><span class="pre">master</span></tt> with <em>Bumps version numbers for development version</em>.</li>
-<li><tt class="docutils literal"><span class="pre">git push origin master</span></tt>.</li>
-<li>Announce at <a class="reference external" href="http://forum.nimrod-lang.org/t/67">http://forum.nimrod-lang.org/t/67</a>.</li>
+
+<h1 id="v1-4-2014-12-30">v1.4, 2014-12-30</h1><ul class="simple"><li><a class="reference external" href="https://github.com/fowlmouth/nake/pull/10">Updated for Nimrod -&gt; Nim transition</a>.</li>
+<li><a class="reference external" href="https://github.com/fowlmouth/nake/commit/8748926dbfb51740ad09d06d3bc14856185c7a80">Now uses an ordered table to store tasks</a>.</li>
+<li><a class="reference external" href="https://github.com/fowlmouth/nake/commit/0110a989f52bee05c716734fd5e6818522ac8a98">Added the ability to change the default task-listing implementation</a>.</li>
+<li><a class="reference external" href="https://github.com/fowlmouth/nake/issues/13">Updated to use nimble instead of babel</a>.</li>
+<li><a class="reference external" href="https://github.com/fowlmouth/nake/issues/15">Improved documentation</a>.</li>
+</ul>
+
+<h1 id="v1-2-2014-02-22">v1.2, 2014-02-22</h1><ul class="simple"><li>Nake now reports an error to the OS for unknown tasks.</li>
+<li>Added some documentation, changed to rst format for local generation.</li>
+<li>Added <tt class="docutils literal"><span class="pre">defaultTask</span></tt> to run when no options are specified.</li>
+<li>Added convenience <tt class="docutils literal"><span class="pre">needsRefresh</span></tt> proc to do work only when timestamps change.</li>
+</ul>
+
+<h1 id="v1-1-2013-11-09">v1.1, 2013-11-09</h1><ul class="simple"><li>Added some documentation.</li>
+<li>Avoided recompilation of nakefile based on timestamps.</li>
+<li>Added binary for babel installations.</li>
+<li>Corrected license, see <a class="reference external" href="LICENSE.html">LICENSE.rst</a>.</li>
+</ul>
+
+<h1 id="v1-0-2013-06-30">v1.0, 2013-06-30</h1><ul class="simple"><li>Availability on babel.</li>
+<li>Added <em>careful</em> mode with <tt class="docutils literal"><span class="pre">-c</span></tt> toggle.</li>
 </ul>
 
 <small>Last modified: 2015-05-02 18:55 UTC. Local time: 2015-05-02 20:55.
@@ -297,7 +317,7 @@ function timeDifference(current, previous) {
 
 // Timer base code taken from http://stackoverflow.com/a/11876480/172690
 window.onload = function() {
-    var fileTime = new Date(1430592935000);
+    var fileTime = new Date(1430592936000);
 	var ctr = document.getElementById("counter");
 
     function incrementCounter() {

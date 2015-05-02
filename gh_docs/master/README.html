@@ -271,6 +271,7 @@ $ ./nakefile test-build</pre>
 $ nimble update
 $ nimble install nake</pre>
 </p>
+<p>If a new version of <tt class="docutils literal"><span class="pre">nake</span></tt> is released you can update to it running again those commands. You can figure out the version you have installed by running <tt class="docutils literal"><span class="pre">nimble path nake</span></tt>.</p>
 
 <h2 id="development-version">Development version</h2><p>Use <a class="reference external" href="https://github.com/nim-lang/nimble">Nim's Nimble package manager</a> to install locally the github checkout:<pre>
 $ git clone https://github.com/fowlmouth/nake
@@ -313,9 +314,9 @@ $ open nake.html</pre>
 </p>
 <p>The <strong>docs</strong> task will also generate HTML versions of all local rst files, which are indexed from the generated <a class="reference external" href="http://fowlmouth.github.io/nake/gh_docs/master/theindex.html">theindex.html</a>.</p>
 
-<h1 id="changes">Changes</h1><p>This is development version 1.7. Read the changes log in the <a class="reference external" href="changes.html">changes.rst file</a>. </p>
+<h1 id="changes">Changes</h1><p>This is development version 1.9. Read the changes log in the <a class="reference external" href="changes.html">changes.rst file</a>. </p>
 
-<small>Last modified: 2015-04-25 22:39 UTC. Local time: 2015-04-26 00:39.
+<small>Last modified: 2015-05-02 18:55 UTC. Local time: 2015-05-02 20:55.
 <div id="counter"></div>
 </small>
 <br>Rendered by lazy_rest 0.2.2.
@@ -349,7 +350,7 @@ function timeDifference(current, previous) {
 
 // Timer base code taken from http://stackoverflow.com/a/11876480/172690
 window.onload = function() {
-    var fileTime = new Date(1430001557000);
+    var fileTime = new Date(1430592936000);
 	var ctr = document.getElementById("counter");
 
     function incrementCounter() {
