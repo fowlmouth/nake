@@ -77,7 +77,7 @@ if nimExe.len < 1:
   nimExe = findExe("nimrod")
 
 
-proc askShellCMD (cmd: string): bool {.raises: [ValueError].} =
+proc askShellCMD (cmd: string): bool {.raises: [ValueError,IOError].} =
   if validateShellCommands:
     let ans = readLineFromSTDIN ("Run? `$#` [N/y]\L" % cmd)
     if ans[0] in {'y','Y'}:
@@ -109,7 +109,7 @@ proc askSilentShellCMD(cmd: string):
 
 
 proc shell*(cmd: varargs[string, `$`]): bool {.discardable,
-    raises:[ValueError] .} =
+    raises:[ValueError,IOError] .} =
   ## Invokes an external command.
   ##
   ## The proc will return ``false`` if the command exits with a non zero code,
@@ -121,7 +121,7 @@ proc shell*(cmd: varargs[string, `$`]): bool {.discardable,
 
 
 proc direShell*(cmd: varargs[string, `$`]): bool {.discardable,
-    raises:[ValueError].} =
+    raises:[ValueError,IOError].} =
   ## Wrapper around the `shell() <#shell>`_ proc.
   ##
   ## Instead of returning on a non zero value like `shell() <#shell>`_,
