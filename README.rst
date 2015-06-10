@@ -3,7 +3,9 @@ Nake readme
 ===========
 
 Describe your `Nim <http://nim-lang.org>`_ builds as tasks. Example
-``nakefile.nim``::
+``nakefile.nim``:
+
+.. code:: nim
 
     import nake
 
@@ -18,8 +20,9 @@ Describe your `Nim <http://nim-lang.org>`_ builds as tasks. Example
     task "run-tests":
       # ...
 
-Now you can compile this ``nakefile.nim`` file into a binary and run it::
+Now you can compile this ``nakefile.nim`` file into a binary and run it:
 
+.. code::bash
     $ nim c -r nakefile test-build
     ## or if you already compiled the nakefile
     $ ./nakefile test-build
