@@ -3,7 +3,9 @@ Nake readme
 ===========
 
 Describe your `Nim <http://nim-lang.org>`_ builds as tasks. Example
-``nakefile.nim``::
+``nakefile.nim``:
+
+.. code:: nim
 
     import nake
 
@@ -18,7 +20,9 @@ Describe your `Nim <http://nim-lang.org>`_ builds as tasks. Example
     task "run-tests":
       # ...
 
-Now you can compile this ``nakefile.nim`` file into a binary and run it::
+Now you can compile this ``nakefile.nim`` file into a binary and run it:
+
+.. code:: bash
 
     $ nim c -r nakefile test-build
     ## or if you already compiled the nakefile
@@ -38,7 +42,9 @@ Stable version
 --------------
 
 Use `Nim's Nimble package manager <https://github.com/nim-lang/nimble>`_ to
-install the package and ``nake`` binary::
+install the package and ``nake`` binary:
+
+.. code:: bash
 
     $ nimble update
     $ nimble install nake
@@ -52,7 +58,9 @@ Development version
 -------------------
 
 Use `Nim's Nimble package manager <https://github.com/nim-lang/nimble>`_ to
-install locally the github checkout::
+install locally the github checkout:
+
+.. code:: bash
 
     $ git clone https://github.com/fowlmouth/nake
     $ cd nake
@@ -60,7 +68,9 @@ install locally the github checkout::
 
 If you don't mind downloading the git repository every time, you can also tell
 `Nimble <https://github.com/nim-lang/nimble>`_ to install the latest
-development version directly from git::
+development version directly from git:
+
+.. code:: bash
 
     $ nimble update
     $ nimble install -y nake@#head
@@ -70,7 +80,9 @@ Usage
 =====
 
 Nake has its own nakefile, it will build nake as a binary. The ``nake`` binary
-is just a shortcut for ``nim c -r nakefile $ARGS``::
+is just a shortcut for ``nim c -r nakefile $ARGS``:
+
+.. code:: bash
 
     $ cd ~/.nimble/libs/nake
     $ nim c -r nakefile install
@@ -87,7 +99,9 @@ nakefile binary directly. You can always remove the ``nakefile`` and the
 
 Most nakefiles will involve running some commands in a shell. To verify what
 the shell invocations do you can pass the ``-c`` or ``--careful`` switch to a
-``nake`` binary and then it will ask you to confirm each command being run::
+``nake`` binary and then it will ask you to confirm each command being run:
+
+.. code:: bash
 
     $ nake --careful install
     Run? `nim c nake` [N/y]
@@ -107,7 +121,9 @@ available tasks and exit with a non zero status.
 In your nakefiles you can define the `defaultTask
 <http://fowlmouth.github.io/nake/gh_docs/master/nakelib.html#defaultTask>`_
 task.  This is a task which will be executed if the user runs ``nake`` without
-specifying a task. Example::
+specifying a task. Example:
+
+.. code:: nim
 
     task defaultTask, "Compiles binary":
       if binaryRequiresRebuilding():
@@ -129,7 +145,9 @@ documentation explains what symbols you can use other than the obvious `task()
 template <http://fowlmouth.github.io/nake/gh_docs/master/nakelib.html#task>`_
 to define tasks. If you installed using `Nimble
 <https://github.com/nim-lang/nimble>`_ you first need to go to your local
-`Nimble <https://github.com/nim-lang/nimble>`_ directory. Unix example::
+`Nimble <https://github.com/nim-lang/nimble>`_ directory. Unix example:
+
+.. code:: bash
 
     $ cd `nimble path nake`
     $ nim c -r nake docs
