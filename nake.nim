@@ -77,6 +77,7 @@ else:
           echo "Unknown option: ", key, ": ", val
       of cmdArgument:
         task = key
+        break
       else: discard
     # If the user specified a task but it doesn't exist, abort.
     let badTask = (not task.isNil and (not tasks.hasKey(task)))
