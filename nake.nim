@@ -22,19 +22,27 @@ export strutils, parseopt2, tables, os, rdstdin, nakelib
 
 
 when isMainModule:
+  proc findNakefile(): string =
+    var d = getCurrentDir()
+    while d.len > 1:
+      let nakefile = d / "nakefile.nim"
+      if fileExists(nakefile): return nakefile
+      d = d.parentDir()
+
   proc mainExecution() =
     ## Entry point when this module is run as an executable.
     ##
     ## All the binary does is forward cli arguments to `nim c -r nakefile.nim
     ## $ARGS`
-    let nakeSource = "nakefile.nim"
+    let nakeSource = findNakefile()
     if not existsFile(nakeSource):
-      echo "No ", nakeSource, " found. Current working dir is ", getCurrentDir()
+      echo "No nakefile.nim found. Current working dir is ", getCurrentDir()
       quit 1
 
     let
-      nakeExe = "nakefile".addFileExt(ExeExt)
-      nakeSelf = getApplicationFilename()
+      nakefileDir = nakeSource.parentDir()
+      nakeExe = nakeSource.changeFileExt(ExeExt)
+      nakeSelf = getAppFilename()
 
     var
       args = join(commandLineParams(), " ")
@@ -47,7 +55,10 @@ when isMainModule:
       # Recompiles the nakefile before running it.
       direSilentShell("Compiling nakefile...", nimExe, "c", nakeSource)
 
-    quit (if shell("." / nakeExe, args): 0 else: 1)
+    var res = false
+    withDir nakefileDir:
+      res = shell(nakeExe, args)
+    quit (if res: 0 else: 1)
 
   mainExecution()
 else:

@@ -94,8 +94,10 @@ is just a shortcut for ``nim c -r nakefile $ARGS``:
 Once the nakefile is built you can run it manually with ``./nakefile``, but you
 can also run ``nake`` again. If nake detects that the source file is newer than
 the binary, the nakefile will be rebuilt again, otherwise it just runs the
-nakefile binary directly. You can always remove the ``nakefile`` and the
-``nimcache`` directories if you need to force a rebuild.
+nakefile binary directly. Running ``nake`` in such case has an advantage of the
+nakefile being looked up in parent directories recirsively. You can always
+remove the ``nakefile`` and the ``nimcache`` directories if you need to force a
+rebuild.
 
 Most nakefiles will involve running some commands in a shell. To verify what
 the shell invocations do you can pass the ``-c`` or ``--careful`` switch to a
