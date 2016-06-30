@@ -1,12 +1,3 @@
-discard """
-DO AS THOU WILST PUBLIC LICENSE
-
-Whoever should stumble upon this document is henceforth and forever
-entitled to DO AS THOU WILST with aforementioned document and the
-contents thereof.
-
-As said in the Olde Country, `Keepe it Gangster'."""
-
 ## Reusable module for the `nake module <https://github.com/fowlmouth/nake>`_.
 ##
 ## This ``nakelib`` module implements all of `nake <nake.html>`_'s
