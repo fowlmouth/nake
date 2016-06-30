@@ -77,12 +77,12 @@ doAssert output.exitCode == 0, output.output
 doAssert output.output.match(getRe("default", "testcmd", "test-careful", "list"))
 
 echo "- Test -c (careful) option (yes)"
-output = execCmdEx("echo 'y' | " & nakePathExe & " test-careful -c")
+output = execCmdEx("echo 'y' | " & nakePathExe & " -c test-careful")
 doAssert output.exitCode == 0, output.output
 doAssert output.output.match(getRe("nake rules"))
 
 echo "- Test -c (careful) option (no)"
-output = execCmdEx("echo 'n' | " & nakePathExe & " test-careful -c")
+output = execCmdEx("echo 'n' | " & nakePathExe & " -c test-careful")
 doAssert output.exitCode == 0, output.output
 doAssert (not output.output.match(getRe("nake rules")))
 
