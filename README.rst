@@ -20,13 +20,11 @@ Describe your `Nim <http://nim-lang.org>`_ builds as tasks. Example
     task "run-tests":
       # ...
 
-Now you can compile this ``nakefile.nim`` file into a binary and run it:
+Now you can run tasks from the ``nakefile.nim``:
 
 .. code:: bash
 
-    $ nim c -r nakefile test-build
-    ## or if you already compiled the nakefile
-    $ ./nakefile test-build
+    $ nake debug-build
 
 
 License
@@ -163,5 +161,4 @@ which are indexed from the generated `theindex.html
 Changes
 =======
 
-This is development version 1.9. Read the changes log in the `changes.rst file
-<changes.rst>`_.
+The changes are listed on the `releases page<https://github.com/fowlmouth/nake/releases>`_
