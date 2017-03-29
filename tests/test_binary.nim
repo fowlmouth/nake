@@ -14,7 +14,7 @@ if nimExe.len < 1:
   nimExe = findExe("nimrod")
 
 proc cd(dir: string) = setCurrentDir(dir)
-template withDir(dir: string; body: stmt): stmt =
+template withDir(dir: string; body: untyped) =
   ## Changes the current directory temporarily.
   ##
   ## If you need a permanent change, use the `cd() <#cd>`_ proc. Usage example:
