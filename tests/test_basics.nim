@@ -84,7 +84,7 @@ doAssert output.output.match(getRe("nake rules"))
 echo "- Test -c (careful) option (no)"
 output = execCmdEx("echo 'n' | " & nakePathExe & " -c test-careful")
 doAssert output.exitCode == 0, output.output
-doAssert (not output.output.match(getRe("nake rules")))
+doAssert(not output.output.match(getRe("nake rules")))
 
 # For future reference if this is added?
 #echo "- Test multiple commands can be given"

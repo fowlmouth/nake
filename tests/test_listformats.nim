@@ -47,4 +47,4 @@ echo "- Test format change for individual tasks"
 output = execCmdEx(nakePathExe & " test-blacklist")
 doAssert output.exitCode == 0, output.output
 doAssert output.output.match(getRe("default", "test-blacklist", "list")), output.output
-doAssert (not output.output.match(getRe("testcmd")))
+doAssert(not output.output.match(getRe("testcmd")))
