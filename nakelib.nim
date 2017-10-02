@@ -70,7 +70,7 @@ if nimExe.len < 1:
 
 proc askShellCMD (cmd: string): bool {.raises: [ValueError,IOError].} =
   if validateShellCommands:
-    let ans = readLineFromSTDIN ("Run? `$#` [N/y]\L" % cmd)
+    let ans = readLineFromSTDIN("Run? `$#` [N/y]\L" % cmd)
     if ans[0] in {'y','Y'}:
       result = execShellCMD(cmd) == 0
     else:
@@ -89,7 +89,7 @@ proc askSilentShellCMD(cmd: string):
   assert(not cmd.isNil)
 
   if validateShellCommands:
-    let ans = readLineFromSTDIN ("Run? `$#` [N/y]\L" % cmd)
+    let ans = readLineFromSTDIN("Run? `$#` [N/y]\L" % cmd)
     if ans[0] in {'y','Y'}:
       result = execCmdEx(cmd)
     else:
