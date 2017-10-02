@@ -76,7 +76,7 @@ else:
         of "tasks", "t":
           printTaskList = true
         else:
-          echo "Unknown option: ", key, ": ", val
+          discard
       of cmdArgument:
         task = key
         break
