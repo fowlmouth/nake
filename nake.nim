@@ -43,10 +43,9 @@ when isMainModule:
       nakefileDir = nakeSource.parentDir()
       nakeExe = nakeSource.changeFileExt(ExeExt)
       nakeSelf = getAppFilename()
+      args = @[nakeExe] & commandLineParams()
 
-    var
-      args = join(commandLineParams(), " ")
-      dependencies = @[nakeSource]
+    var dependencies = @[nakeSource]
 
     if nakeSelf.len > 0:
       dependencies.add(nakeSelf)
@@ -57,7 +56,7 @@ when isMainModule:
 
     var res = false
     withDir nakefileDir:
-      res = shell(nakeExe, args)
+      res = shell(args)
     quit (if res: 0 else: 1)
 
   mainExecution()

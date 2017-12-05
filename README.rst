@@ -1,6 +1,9 @@
 ===========
-Nake readme
+Nake |travis|
 ===========
+
+.. |travis| image:: https://travis-ci.org/fowlmouth/nake.svg?branch=master
+    :target: https://travis-ci.org/fowlmouth/nake
 
 Describe your `Nim <http://nim-lang.org>`_ builds as tasks. Example
 ``nakefile.nim``:
