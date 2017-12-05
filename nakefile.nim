@@ -8,7 +8,7 @@ proc mvFile(`from`,to: string) =
 when defined(Linux):
   proc symlinkFile (file, to: string) =
     removeFile(to)
-    direShell("ln -s", file.expandFileName, to)
+    direShell("ln", "-s", file.expandFileName, to)
     echo "Symlinked file"
 
 
@@ -26,10 +26,9 @@ proc buildDocs() =
     let rstDest = rstSrc.changeFileExt(".html")
     if not rstDest.needsRefresh(rstSrc): continue
     direSilentShell(rstSrc & " -> " & rstDest,
-      nimExe & " rst2html --verbosity:0 --index:on -o:" &
-        rstDest & " " & rstSrc)
+      nimExe, "rst2html", "--verbosity:0", "--index:on", "-o:" & rstDest, rstSrc)
 
-  direSilentShell("Building theindex.html", nimExe, "buildIndex .")
+  direSilentShell("Building theindex.html", nimExe, "buildIndex", ".")
 
 
 
@@ -40,12 +39,12 @@ proc runTests() =
     for nakeFile in walkFiles "*.nim":
       let nakeExe = nakeFile.changeFileExt(ExeExt)
       if not shell(nimExe, "c",
-          "--noNimblePath --verbosity:0 -d:debug -r", nakeFile):
+          "--noNimblePath", "--verbosity:0", "-d:debug", "-r", nakeFile):
         testResults.add(false)
         continue
       # Repeat compilation in release mode.
       if not shell(nimExe, "c",
-          "--noNimblePath --verbosity:0 -d:release -r", nakeFile):
+          "--noNimblePath", "--verbosity:0", "-d:release", "-r", nakeFile):
         testResults.add(false)
         continue
       testResults.add(true)
@@ -121,18 +120,18 @@ Or maybe run 'nimble install gh_nimrod_doc_pages'.
   let
     nakeExe = "nakefile".addFileExt(ExeExt)
     ourselves = readFile(nakeExe)
-  direShell gitExe & " checkout gh-pages"
+  direShell gitExe, "checkout", "gh-pages"
   # Keep ingored files http://stackoverflow.com/a/3801554/172690.
   when defined(posix):
-    shell "rm -Rf `git ls-files --others --exclude-standard`"
+    shell "rm", "-Rf", "`git ls-files --others --exclude-standard`"
   removeDir("gh_docs")
-  direShell ghExe & " -c " & iniPathOrDir
+  direShell ghExe, "-c", iniPathOrDir
   writeFile(nakeExe, ourselves)
-  direShell "chmod 775 nakefile"
+  direShell "chmod", "775", "nakefile"
   echo "All commands run, now check the output and commit to git."
   when defined(macosx):
-    shell "open index.html"
-  echo "Wen you are done come back with './" & nakeExe & " postweb'."
+    shell "open", "index.html"
+  echo "Wen you are done come back with './", nakeExe, " postweb'."
 
 
 proc switchBackFromGhPages() =
@@ -142,9 +141,9 @@ proc switchBackFromGhPages() =
     quit("Could not find git binary in $PATH, aborting")
 
   echo "Forcing changes back to master."
-  direShell gitExe & " checkout -f @{-1}"
+  direShell gitExe, "checkout", "-f", "@{-1}"
   echo "Updating submodules just in case."
-  direShell gitExe & " submodule update"
+  direShell gitExe, "submodule", "update"
   removeDir("gh_docs")
 
 
