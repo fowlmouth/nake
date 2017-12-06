@@ -68,35 +68,38 @@ if nimExe.len < 1:
   nimExe = findExe("nimrod")
 
 
-proc askShellCMD (cmd: string): bool {.raises: [ValueError,IOError].} =
+proc allowedToRun(cmd: openarray[string]): bool =
+  result = true
   if validateShellCommands:
-    let ans = readLineFromSTDIN("Run? `$#` [N/y]\L" % cmd)
-    if ans[0] in {'y','Y'}:
-      result = execShellCMD(cmd) == 0
-    else:
-      return false
-  else:
-    result = execShellCMD(cmd) == 0
+    let ans = readLineFromSTDIN("Run? `$#` [N/y]\L" % cmd.join(" "))
+    if ans[0] notin {'y','Y'}:
+      result = false
+
+proc escapeShellCmd(cmd: openarray[string]): string =
+  result = ""
+  for i, c in cmd:
+    if i != 0: result &= ' '
+    result &= quoteShell(c)
+
+proc askShellCMD(cmd: openarray[string]): bool {.raises: [ValueError,IOError].} =
+  if allowedToRun(cmd):
+    result = execShellCMD(cmd.escapeShellCmd()) == 0
 
 
-proc askSilentShellCMD(cmd: string):
+proc askSilentShellCMD(cmd: openarray[string]):
     tuple[output: TaintedString, exitCode: int]
     {.raises: [ValueError, OSError, Exception].} =
   ## Variant of askShellCMD which returns the output and exit code.
   ##
   ## In case of the user rejecting the command the proc will return the empty
   ## string for `output` and a negative value for `exitCode`.
-  assert(not cmd.isNil)
+  assert(cmd.len != 0)
 
-  if validateShellCommands:
-    let ans = readLineFromSTDIN("Run? `$#` [N/y]\L" % cmd)
-    if ans[0] in {'y','Y'}:
-      result = execCmdEx(cmd)
-    else:
-      result.output = ""
-      result.exitCode = -1
+  if allowedToRun(cmd):
+    result = execCmdEx(cmd.escapeShellCmd())
   else:
-    result = execCmdEx(cmd)
+    result.output = ""
+    result.exitCode = -1
 
 
 proc shell*(cmd: varargs[string, `$`]): bool {.discardable,
@@ -108,18 +111,20 @@ proc shell*(cmd: varargs[string, `$`]): bool {.discardable,
   ##
   ## This proc respects the value of the `validateShellCommands
   ## <#validateShellCommands>`_ global.
-  result = askShellCMD(cmd.join(" "))
+  result = askShellCMD(cmd)
 
 
 proc direShell*(cmd: varargs[string, `$`]): bool {.discardable,
-    raises:[ValueError,IOError].} =
+    raises:[ValueError, IOError, Exception].} =
   ## Wrapper around the `shell() <#shell>`_ proc.
   ##
   ## Instead of returning on a non zero value like `shell() <#shell>`_,
   ## ``direShell()`` `quits <http://nim-lang.org/system.html#quit>`_ if the
   ## process does not return 0.
   result = shell(cmd)
-  if not result: quit 1
+  if not result:
+    echo "Child process failed: ", cmd.join(" ")
+    raise newException(Exception, "Child process failed")
 
 
 proc silentShell*(info: string, cmd: varargs[string, `$`]): bool {.discardable,
@@ -145,7 +150,7 @@ proc silentShell*(info: string, cmd: varargs[string, `$`]): bool {.discardable,
   ##       quit("Sorry, neither A nor B were found, please install one")
   if not info.isNil:
     echo info
-  let (output, exitCode) = askSilentShellCMD(cmd.join(" "))
+  let (output, exitCode) = askSilentShellCMD(cmd)
   result = (0 == exitCode)
   if not result:
     echo output
