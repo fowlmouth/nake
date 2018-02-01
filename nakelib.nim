@@ -66,6 +66,7 @@ const
 nimExe = findExe("nim")
 if nimExe.len < 1:
   nimExe = findExe("nimrod")
+nimExe = nimExe.quoteShell()
 
 
 proc askShellCMD (cmd: string): bool {.raises: [ValueError,IOError].} =

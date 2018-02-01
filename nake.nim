@@ -53,11 +53,11 @@ when isMainModule:
 
     if nakeExe.needsRefresh(dependencies):
       # Recompiles the nakefile before running it.
-      direSilentShell("Compiling nakefile...", nimExe, "c", nakeSource)
+      direSilentShell("Compiling nakefile...", nimExe, "c", nakeSource.quoteShell())
 
     var res = false
     withDir nakefileDir:
-      res = shell(nakeExe, args)
+      res = shell(nakeExe.quoteShell(), args)
     quit (if res: 0 else: 1)
 
   mainExecution()
