@@ -69,7 +69,7 @@ proc installNake() =
     echo "How to install the nake binary?\L",
       "  * [M]ove file\L",
       "    [S]ymlink file"
-    case stdin.readLine.toLower
+    case stdin.readLine.toLowerAscii
     of "m","move": installMethod = mvFile
     of "s","symlink": installMethod = symlinkFile
   else:
@@ -81,7 +81,7 @@ proc installNake() =
     echo "  ", index, ". ", dir
 
   echo "Where to install nake binary? (quit with ^C or quit or exit)"
-  let ans = stdin.readLine().toLower
+  let ans = stdin.readLine().toLowerAscii
   var index = 0
   case ans
   of "q", "quit", "x", "exit":

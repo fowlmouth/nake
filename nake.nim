@@ -70,7 +70,7 @@ else:
     for kind, key, val in getOpt():
       case kind
       of cmdLongOption, cmdShortOption:
-        case key.tolower
+        case key.tolowerAscii
         of "careful", "c":
           validateShellCommands = true
         of "tasks", "t":
