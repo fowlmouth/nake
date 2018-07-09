@@ -178,7 +178,7 @@ proc cd*(dir: string) {.inline, raises: [OSError].} =
   setCurrentDir(dir)
 
 
-template withDir*(dir: string; body: stmt): stmt =
+template withDir*(dir: string; body: untyped): untyped =
   ## Changes the current directory temporarily.
   ##
   ## If you need a permanent change, use the `cd() <#cd>`_ proc. Usage example:
@@ -252,7 +252,7 @@ proc runTask*(name: string) {.inline.} = ## \
   tasks[name].action()
 
 
-template task*(name, description: string; body: stmt): stmt {.immediate.} =
+template task*(name, description: string; body: untyped): untyped =
   ## Defines a task for nake.
   ##
   ## Pass the name of the task, the description that will be displayed to the
