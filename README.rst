@@ -47,16 +47,16 @@ install the package and ``nake`` binary:
     $ nimble update
     $ nimble install nake
 
-If a new version of ``nake`` is released you can update to it running again
-those commands. You can figure out the version you have installed by running
-``nimble path nake``.
+If a new version of ``nake`` is released, you can update to it by running
+those commands again. You can figure out the version you have installed by
+running ``nimble path nake``.
 
 
 Development version
 -------------------
 
 Use `Nim's Nimble package manager <https://github.com/nim-lang/nimble>`_ to
-install locally the github checkout:
+install locally the GitHub checkout:
 
 .. code:: bash
 
@@ -64,9 +64,9 @@ install locally the github checkout:
     $ cd nake
     $ nimble install
 
-If you don't mind downloading the git repository every time, you can also tell
+If you don't mind downloading the Git repository every time, you can also tell
 `Nimble <https://github.com/nim-lang/nimble>`_ to install the latest
-development version directly from git:
+development version directly from Git:
 
 .. code:: bash
 
@@ -89,7 +89,7 @@ is just a shortcut for ``nim c -r nakefile $ARGS``:
     $ nake debug-build
     ## wow look at the convenience (!!)
 
-Once the nakefile is built you can run it manually with ``./nakefile``, but you
+Once the nakefile is built, you can run it manually with ``./nakefile``, but you
 can also run ``nake`` again. If nake detects that the source file is newer than
 the binary, the nakefile will be rebuilt again, otherwise it just runs the
 nakefile binary directly. Running ``nake`` in such case has an advantage of the
@@ -144,8 +144,8 @@ generate the user API HTML documentation into a `nake.html file
 documentation explains what symbols you can use other than the obvious `task()
 template <http://fowlmouth.github.io/nake/gh_docs/master/nakelib.html#task>`_
 to define tasks. If you installed using `Nimble
-<https://github.com/nim-lang/nimble>`_ you first need to go to your local
-`Nimble <https://github.com/nim-lang/nimble>`_ directory. Unix example:
+<https://github.com/nim-lang/nimble>`_, you first need to go to your local
+`Nimble <https://github.com/nim-lang/nimble>`_ directory. UNIX example:
 
 .. code:: bash
 
@@ -153,7 +153,7 @@ to define tasks. If you installed using `Nimble
     $ nim c -r nake docs
     $ open nake.html
 
-The **docs** task will also generate HTML versions of all local rst files,
+The **docs** task will also generate HTML versions of all local RST files,
 which are indexed from the generated `theindex.html
 <http://fowlmouth.github.io/nake/gh_docs/master/theindex.html>`_.
 
@@ -161,4 +161,5 @@ which are indexed from the generated `theindex.html
 Changes
 =======
 
-The changes are listed on the `releases page<https://github.com/fowlmouth/nake/releases>`_
+The changes are listed on the
+`releases page <https://github.com/fowlmouth/nake/releases>`_.
