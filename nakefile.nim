@@ -103,7 +103,7 @@ proc switchToGhPages(iniPathOrDir = ".") =
   ## **This is a potentially destructive action!**. Pass the directory where
   ## the ``gh_nimrod_doc_pages.ini`` file lives, or the path to the specific
   ## file if you renamed it.
-  assert(not iniPathOrDir.isNil)
+  assert(iniPathOrDir.len != 0)
   let
     ghExe = findExe("gh_nimrod_doc_pages")
     gitExe = findExe("git")

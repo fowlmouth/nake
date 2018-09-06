@@ -87,7 +87,7 @@ proc askSilentShellCMD(cmd: string):
   ##
   ## In case of the user rejecting the command the proc will return the empty
   ## string for `output` and a negative value for `exitCode`.
-  assert(not cmd.isNil)
+  assert(cmd.len != 0)
 
   if validateShellCommands:
     let ans = readLineFromSTDIN("Run? `$#` [N/y]\L" % cmd)
@@ -144,7 +144,7 @@ proc silentShell*(info: string, cmd: varargs[string, `$`]): bool {.discardable,
   ##     let another = silentShell("Checking for B", "cmdB", "-v")
   ##     if not another:
   ##       quit("Sorry, neither A nor B were found, please install one")
-  if not info.isNil:
+  if info.len != 0:
     echo info
   let (output, exitCode) = askSilentShellCMD(cmd.join(" "))
   result = (0 == exitCode)
