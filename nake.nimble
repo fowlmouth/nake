@@ -1,4 +1,4 @@
-version = "1.9.2"
+version = "1.9.3"
 author = "fowl"
 description = "make-like for Nim. Describe your builds as tasks!"
 license = "MIT"

@@ -82,11 +82,11 @@ else:
         break
       else: discard
     # If the user specified a task but it doesn't exist, abort.
-    let badTask = (not task.isNil and (not tasks.hasKey(task)))
-    if task.isNil and tasks.hasKey(defaultTask):
+    let badTask = (task.len != 0 and (not tasks.hasKey(task)))
+    if task.len == 0 and tasks.hasKey(defaultTask):
       echo "No task specified, running default task defined by nakefile."
       task = defaultTask
-    if printTaskList or task.isNil or badTask:
+    if printTaskList or task.len == 0 or badTask:
       if badTask: echo "Task '" & task & "' not found."
       listTasks()
       quit(if badTask: 1 else: 0)
