@@ -236,7 +236,7 @@ proc needsRefresh*(targets: seq[string], src: varargs[string]): bool {.raises: [
   ##     dst = @["prog.out", "prog_stats.txt"]
   ##   if dst.needsRefresh(src):
   ##      echo "Refreshing ..."
-  ##      discard
+  ##      # do something to generate the outputs
   ##   else:
   ##      echo "All done!"
   assert len(targets) > 0, "Pass some targets to check"
