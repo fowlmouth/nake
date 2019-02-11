@@ -75,6 +75,8 @@ else:
           validateShellCommands = true
         of "tasks", "t":
           printTaskList = true
+        of "verbose", "v":
+          verboseMode = true
         else:
           discard
       of cmdArgument:
