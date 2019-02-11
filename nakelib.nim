@@ -43,6 +43,10 @@ var
   ## `direShell() <#direShell>`_ procs to ask the user for confirmation before
   ## executing a command.
 
+  verboseMode* = false ## \
+  ## Set this global to ``true`` if you want to display all tasks and commands
+  ## that are run.
+
   nimExe*: string ## \
   ## Full path to the Nim compiler binary.
   ##
@@ -69,7 +73,7 @@ if nimExe.len < 1:
 nimExe = nimExe.quoteShell()
 
 
-proc askShellCMD (cmd: string): bool {.raises: [ValueError,IOError].} =
+proc askShellCMD (cmd: string): bool {.raises: [ValueError,IOError,OSError].} =
   if validateShellCommands:
     let ans = readLineFromSTDIN("Run? `$#` [N/y]\L" % cmd)
     if ans[0] in {'y','Y'}:
@@ -77,6 +81,8 @@ proc askShellCMD (cmd: string): bool {.raises: [ValueError,IOError].} =
     else:
       return false
   else:
+    if verboseMode:
+      echo "[nake $1] $#" % [getCurrentDir(), cmd]
     result = execShellCMD(cmd) == 0
 
 
@@ -97,11 +103,13 @@ proc askSilentShellCMD(cmd: string):
       result.output = ""
       result.exitCode = -1
   else:
+    if verboseMode:
+      echo "[nake] $#" % cmd
     result = execCmdEx(cmd)
 
 
 proc shell*(cmd: varargs[string, `$`]): bool {.discardable,
-    raises:[ValueError,IOError] .} =
+    raises:[ValueError,IOError,OSError] .} =
   ## Invokes an external command.
   ##
   ## The proc will return ``false`` if the command exits with a non zero code,
@@ -113,7 +121,7 @@ proc shell*(cmd: varargs[string, `$`]): bool {.discardable,
 
 
 proc direShell*(cmd: varargs[string, `$`]): bool {.discardable,
-    raises:[ValueError,IOError].} =
+    raises:[ValueError,IOError,OSError].} =
   ## Wrapper around the `shell() <#shell>`_ proc.
   ##
   ## Instead of returning on a non zero value like `shell() <#shell>`_,
@@ -281,6 +289,8 @@ proc runTask*(name: string) {.inline.} = ## \
   ##     runTask("docs")
   ##     echo "Copying documentation to " & docInstallDir
   ##     copyFile(moduleHtml, docInstallDir / moduleHtml)
+  if verboseMode:
+    echo "[nake] " & name
   tasks[name].action()
 
 
