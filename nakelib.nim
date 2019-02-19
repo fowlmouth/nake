@@ -193,38 +193,6 @@ template withDir*(dir: string; body: untyped): untyped =
   cd(curDir)
 
 
-proc needsRefresh*(target: string, src: varargs[string]): bool {.
-    raises: [OSError].} =
-  ## Returns true if target is missing or src has newer modification date.
-  ##
-  ## This is a convenience proc you can use in your tasks to verify if
-  ## compilation for a binary should happen. The proc will return true if
-  ## ``target`` doesn't exists or any of the file paths in ``src`` have a more
-  ## recent last modification timestamp. All paths in ``src`` must be reachable
-  ## or else the proc will raise an exception. Example:
-  ##
-  ## .. code-block:: nimrod
-  ##   import nake, os
-  ##
-  ##   let
-  ##     src = "prog.nim"
-  ##     exe = src.changeFileExt(exeExt)
-  ##   if exe.needsRefresh(src):
-  ##     direShell nimExe, "c", src
-  ##   else:
-  ##     echo "All done!"
-  assert len(src) > 0, "Pass some parameters to check for"
-  var targetTime: float
-  try:
-    targetTime = toSeconds(getLastModificationTime(target))
-  except OSError:
-    return true
-
-  for s in src:
-    let srcTime = toSeconds(getLastModificationTime(s))
-    if srcTime > targetTime:
-      return true
-
 proc needsRefresh*(targets: seq[string], src: varargs[string]): bool {.raises: [OSError].} =
   ## Returns true if any ``src`` is newer than the oldest ``targets``.
   ##
@@ -257,6 +225,27 @@ proc needsRefresh*(targets: seq[string], src: varargs[string]): bool {.raises: [
     if srcTime > minTargetTime:
       return true
 
+proc needsRefresh*(target: string, src: varargs[string]): bool {.
+    raises: [OSError].} =
+  ## Returns true if target is missing or src has newer modification date.
+  ##
+  ## This is a convenience proc you can use in your tasks to verify if
+  ## compilation for a binary should happen. The proc will return true if
+  ## ``target`` doesn't exists or any of the file paths in ``src`` have a more
+  ## recent last modification timestamp. All paths in ``src`` must be reachable
+  ## or else the proc will raise an exception. Example:
+  ##
+  ## .. code-block:: nimrod
+  ##   import nake, os
+  ##
+  ##   let
+  ##     src = "prog.nim"
+  ##     exe = src.changeFileExt(exeExt)
+  ##   if exe.needsRefresh(src):
+  ##     direShell nimExe, "c", src
+  ##   else:
+  ##     echo "All done!"
+  result = needsRefresh(@[target], src)
 
 proc newNakeTask(desc: string; action: NakeAction): NakeTask {.raises: [].} =
   result = NakeTask(desc: desc, action: action)
