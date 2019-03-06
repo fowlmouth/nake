@@ -82,7 +82,7 @@ proc askShellCMD (cmd: string): bool {.raises: [ValueError,IOError,OSError].} =
       return false
   else:
     if verboseMode:
-      echo "[nake $1] $2" % [getCurrentDir(), cmd]
+      echo "[nake] $1 $2" % [getCurrentDir(), cmd]
     result = execShellCMD(cmd) == 0
 
 
