@@ -89,7 +89,7 @@ proc installNake() =
   else:
     index = parseInt(ans)
 
-  if index notin 0 .. <path.len:
+  if index notin 0 ..< path.len:
     echo "Invalid index."
     quit 1
 
