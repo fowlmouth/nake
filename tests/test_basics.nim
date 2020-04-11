@@ -86,6 +86,12 @@ output = execCmdEx("echo 'n' | " & nakePathExe & " -c test-careful")
 doAssert output.exitCode == 0, output.output
 doAssert(not output.output.match(getRe("nake rules")))
 
+echo "- Test needsRefresh"
+output = execCmdEx(nakePathExe & " needsRefresh")
+doAssert output.exitCode == 0, output.output
+doAssert output.output.match(getRe("file1 older than file2")), output.output
+doAssert output.output.match(getRe("[file1] older than [file2]")), output.output
+
 # For future reference if this is added?
 #echo "- Test multiple commands can be given"
 #output = execCmdEx(nakePathExe & " default testcmd")

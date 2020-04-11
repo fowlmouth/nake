@@ -193,6 +193,41 @@ template withDir*(dir: string; body: untyped): untyped =
   cd(curDir)
 
 
+proc needsRefresh*(targets: openArray[string], src: openArray[string]): bool {.raises: [OSError].} =
+  ## Returns true if any ``src`` is newer than the oldest ``targets``.
+  ##
+  ## .. code-block:: nimrod
+  ##   import nake, os
+  ##
+  ##   let
+  ##     src = @["prog.nim", "prog2.nim"]
+  ##     dst = @["prog.out", "prog_stats.txt"]
+  ##   if dst.needsRefresh(src):
+  ##      echo "Refreshing ..."
+  ##      # do something to generate the outputs
+  ##   else:
+  ##      echo "All done!"
+  assert len(targets) > 0, "Pass some targets to check"
+  assert len(src) > 0, "Pass some source files to check"
+  var
+    minTargetTime: Time
+    first = true
+  for target in targets:
+    try:
+      let targetTime = getLastModificationTime(target)
+      if first:
+        minTargetTime = targetTime
+        first = false
+      elif targetTime < minTargetTime:
+        minTargetTime = targetTime
+    except OSError:
+      return true
+  
+  for s in src:
+    let srcTime = getLastModificationTime(s)
+    if srcTime > minTargetTime:
+      return true
+
 proc needsRefresh*(target: string, src: varargs[string]): bool {.
     raises: [OSError].} =
   ## Returns true if target is missing or src has newer modification date.
@@ -213,18 +248,7 @@ proc needsRefresh*(target: string, src: varargs[string]): bool {.
   ##     direShell nimExe, "c", src
   ##   else:
   ##     echo "All done!"
-  assert len(src) > 0, "Pass some parameters to check for"
-  var targetTime: float
-  try:
-    targetTime = toSeconds(getLastModificationTime(target))
-  except OSError:
-    return true
-
-  for s in src:
-    let srcTime = toSeconds(getLastModificationTime(s))
-    if srcTime > targetTime:
-      return true
-
+  result = needsRefresh([target], src)
 
 proc newNakeTask(desc: string; action: NakeAction): NakeTask {.raises: [].} =
   result = NakeTask(desc: desc, action: action)
