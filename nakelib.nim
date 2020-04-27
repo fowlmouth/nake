@@ -9,8 +9,8 @@
 ## Import this module instead of `nake <nake.html>`_ if you want to use any of
 ## its procs without affecting your program execution.
 
-import strutils, parseopt2, tables, os, rdstdin, times, osproc
-export strutils, parseopt2, tables, os, rdstdin
+import strutils, parseopt, tables, os, rdstdin, times, osproc
+export strutils, parseopt, tables, os, rdstdin
 
 
 type
@@ -216,12 +216,12 @@ proc needsRefresh*(target: string, src: varargs[string]): bool {.
   assert len(src) > 0, "Pass some parameters to check for"
   var targetTime: float
   try:
-    targetTime = toSeconds(getLastModificationTime(target))
+    targetTime = toUnixFloat(getLastModificationTime(target))
   except OSError:
     return true
 
   for s in src:
-    let srcTime = toSeconds(getLastModificationTime(s))
+    let srcTime = toUnixFloat(getLastModificationTime(s))
     if srcTime > targetTime:
       return true
 
