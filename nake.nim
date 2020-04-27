@@ -17,8 +17,8 @@
 ## example of a simple nakefile
 
 
-import strutils, parseopt2, tables, os, rdstdin, times, nakelib
-export strutils, parseopt2, tables, os, rdstdin, nakelib
+import strutils, parseopt, tables, os, rdstdin, times, nakelib
+export strutils, parseopt, tables, os, rdstdin, nakelib
 
 
 when isMainModule:
