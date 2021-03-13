@@ -17,7 +17,7 @@
 ## example of a simple nakefile
 
 
-import strutils, parseopt, tables, os, rdstdin, times, nakelib
+import strutils, parseopt, tables, os, rdstdin, nakelib
 export strutils, parseopt, tables, os, rdstdin, nakelib
 
 
@@ -35,7 +35,7 @@ when isMainModule:
     ## All the binary does is forward cli arguments to `nim c -r nakefile.nim
     ## $ARGS`
     let nakeSource = findNakefile()
-    if not existsFile(nakeSource):
+    if not fileExists(nakeSource):
       echo "No nakefile.nim found. Current working dir is ", getCurrentDir()
       quit 1
 
