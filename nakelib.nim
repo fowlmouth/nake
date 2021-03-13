@@ -216,12 +216,12 @@ proc needsRefresh*(target: string, src: varargs[string]): bool {.
   assert len(src) > 0, "Pass some parameters to check for"
   var targetTime: float
   try:
-    targetTime = toUnix(getLastModificationTime(target)).float
+    targetTime = toUnixFloat(getLastModificationTime(target))
   except OSError:
     return true
 
   for s in src:
-    let srcTime = toUnix(getLastModificationTime(s)).float
+    let srcTime = toUnixFloat(getLastModificationTime(s))
     if srcTime > targetTime:
       return true
 
