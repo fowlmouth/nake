@@ -132,6 +132,8 @@ specifying a task. Example:
         echo "Binary is fresh, anything else?"
         listTasks()
 
+If you would like verbose output, including printing out the task names and
+shell commands being run, run with ``-v`` or ``--verbose``.
 
 Documentation
 =============
