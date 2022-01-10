@@ -13,7 +13,7 @@ import std/[os, osproc, rdstdin, strutils, tables, times]
 
 
 type
-  NakeTask* = ref object ## Defines a task with a description and action.
+  NakeTask* = object ## Defines a task with a description and action.
     desc*: string
     action*: NakeAction
 
