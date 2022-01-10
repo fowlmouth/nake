@@ -59,7 +59,7 @@ const
   ## and the user doesn't specify any task <#listTasks>`_.
 
 
-nimExe = findExe("nim")
+nimExe = findExe("nim").quoteShell
 
 proc askShellCmd (cmd: string): bool {.raises: [ValueError, IOError].} =
   if validateShellCommands:
