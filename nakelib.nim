@@ -9,8 +9,7 @@
 ## Import this module instead of `nake <nake.html>`_ if you want to use any of
 ## its procs without affecting your program execution.
 
-import strutils, parseopt, tables, os, rdstdin, times, osproc
-export strutils, parseopt, tables, os, rdstdin
+import std/[os, osproc, rdstdin, strutils, tables, times]
 
 
 type
@@ -28,9 +27,6 @@ type
   ##
   ## Assigned to the `listTasks <#listTasks>`_ global.
 
-{.deprecated: [PTask: NakeTask].}
-{.deprecated: [TTaskFunction: NakeAction].}
-{.deprecated: [TTaskLister: NakeTaskLister].}
 
 var
   tasks* = initOrderedTable[string, NakeTask](32) ## \
@@ -64,24 +60,20 @@ const
 
 
 nimExe = findExe("nim")
-if nimExe.len < 1:
-  nimExe = findExe("nimrod")
-nimExe = nimExe.quoteShell()
 
-
-proc askShellCMD (cmd: string): bool {.raises: [ValueError,IOError].} =
+proc askShellCmd (cmd: string): bool {.raises: [ValueError, IOError].} =
   if validateShellCommands:
-    let ans = readLineFromSTDIN("Run? `$#` [N/y]\L" % cmd)
-    if ans[0] in {'y','Y'}:
-      result = execShellCMD(cmd) == 0
+    let ans = readLineFromStdin("Run? `$#` [N/y]\L" % cmd)
+    if ans[0] in {'y', 'Y'}:
+      result = execShellCmd(cmd) == 0
     else:
       return false
   else:
-    result = execShellCMD(cmd) == 0
+    result = execShellCmd(cmd) == 0
 
 
-proc askSilentShellCMD(cmd: string):
-    tuple[output: TaintedString, exitCode: int]
+proc askSilentShellCmd(cmd: string):
+    tuple[output: string, exitCode: int]
     {.raises: [ValueError, OSError, Exception].} =
   ## Variant of askShellCMD which returns the output and exit code.
   ##
@@ -90,7 +82,7 @@ proc askSilentShellCMD(cmd: string):
   assert(cmd.len != 0)
 
   if validateShellCommands:
-    let ans = readLineFromSTDIN("Run? `$#` [N/y]\L" % cmd)
+    let ans = readLineFromStdin("Run? `$#` [N/y]\L" % cmd)
     if ans[0] in {'y','Y'}:
       result = execCmdEx(cmd)
     else:
@@ -101,7 +93,7 @@ proc askSilentShellCMD(cmd: string):
 
 
 proc shell*(cmd: varargs[string, `$`]): bool {.discardable,
-    raises:[ValueError,IOError] .} =
+    raises: [ValueError, IOError] .} =
   ## Invokes an external command.
   ##
   ## The proc will return ``false`` if the command exits with a non zero code,
@@ -109,11 +101,11 @@ proc shell*(cmd: varargs[string, `$`]): bool {.discardable,
   ##
   ## This proc respects the value of the `validateShellCommands
   ## <#validateShellCommands>`_ global.
-  result = askShellCMD(cmd.join(" "))
+  result = askShellCmd(cmd.join(" "))
 
 
 proc direShell*(cmd: varargs[string, `$`]): bool {.discardable,
-    raises:[ValueError,IOError].} =
+    raises:[ValueError, IOError].} =
   ## Wrapper around the `shell() <#shell>`_ proc.
   ##
   ## Instead of returning on a non zero value like `shell() <#shell>`_,
@@ -124,7 +116,7 @@ proc direShell*(cmd: varargs[string, `$`]): bool {.discardable,
 
 
 proc silentShell*(info: string, cmd: varargs[string, `$`]): bool {.discardable,
-    raises:[ValueError, OSError, Exception].} =
+    raises: [ValueError, OSError, Exception].} =
   ## Invokes an external command silently, informing the user about it.
   ##
   ## The proc will return ``false`` if the command exits with a non zero code,
@@ -146,14 +138,14 @@ proc silentShell*(info: string, cmd: varargs[string, `$`]): bool {.discardable,
   ##       quit("Sorry, neither A nor B were found, please install one")
   if info.len != 0:
     echo info
-  let (output, exitCode) = askSilentShellCMD(cmd.join(" "))
+  let (output, exitCode) = askSilentShellCmd(cmd.join(" "))
   result = (0 == exitCode)
   if not result:
     echo output
 
 
 proc direSilentShell*(info: string, cmd: varargs[string, `$`]): bool
-    {.discardable, raises:[ValueError, OSError, Exception].} =
+    {.discardable, raises: [ValueError, OSError, Exception].} =
   ## Wrapper around the `silentShell() <#silentShell>`_ proc.
   ##
   ## Instead of returning on a non zero value like `silentShell()
@@ -187,10 +179,12 @@ template withDir*(dir: string; body: untyped): untyped =
   ##   withDir "foo":
   ##     # inside foo
   ##   #back to last dir
-  var curDir = getCurrentDir()
-  cd(dir)
-  body
-  cd(curDir)
+  let curDir = getCurrentDir()
+  try:
+    cd(dir)
+    body
+  finally:
+    cd(curDir)
 
 
 proc needsRefresh*(target: string, src: varargs[string]): bool {.
@@ -224,10 +218,6 @@ proc needsRefresh*(target: string, src: varargs[string]): bool {.
     let srcTime = toUnixFloat(getLastModificationTime(s))
     if srcTime > targetTime:
       return true
-
-
-proc newNakeTask(desc: string; action: NakeAction): NakeTask {.raises: [].} =
-  result = NakeTask(desc: desc, action: action)
 
 
 proc runTask*(name: string) {.inline.} = ## \
@@ -265,9 +255,10 @@ template task*(name, description: string; body: untyped): untyped =
   ##     for binName in binaries:
   ##       echo "Generating " & binName
   ##       direShell nimExe, "c", binName
-  bind tasks,newNakeTask
-  tasks[name] = newNakeTask(description, proc() {.closure.} =
+  bind tasks
+  tasks[name] = NakeTask(desc: description, action: proc() {.closure.} =
     body)
+
 
 proc listTasksImpl*() =
   ## Default implementation for listing tasks to stdout.
