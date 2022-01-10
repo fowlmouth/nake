@@ -180,11 +180,9 @@ template withDir*(dir: string; body: untyped): untyped =
   ##     # inside foo
   ##   #back to last dir
   let curDir = getCurrentDir()
-  try:
-    cd(dir)
-    body
-  finally:
-    cd(curDir)
+  cd(dir)
+  body
+  cd(curDir)
 
 
 proc needsRefresh*(target: string, src: varargs[string]): bool {.
