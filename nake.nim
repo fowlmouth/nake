@@ -17,8 +17,8 @@
 ## example of a simple nakefile
 
 
-import strutils, parseopt, tables, os, rdstdin, nakelib
-export strutils, parseopt, tables, os, rdstdin, nakelib
+import std/[os, parseopt, rdstdin, strutils, tables], nakelib
+export os, parseopt, rdstdin, strutils, tables, nakelib
 
 
 when isMainModule:
@@ -53,8 +53,8 @@ when isMainModule:
 
     if nakeExe.needsRefresh(dependencies):
       # Recompiles the nakefile before running it.
-      direSilentShell("Compiling nakefile...", nimExe, "c", nakeSource.quoteShell())
-
+      direSilentShell("Compiling nakefile...", nimExe,
+          "c", nakeSource.quoteShell())
     var res = false
     withDir nakefileDir:
       res = shell(nakeExe.quoteShell(), args)
@@ -65,8 +65,8 @@ else:
   proc moduleHook() {.noconv.} =
     ## Hook registered when the module is imported by someone else.
     var
-      task: string
-      printTaskList: bool
+      task = ""
+      printTaskList = false
     for kind, key, val in getOpt():
       case kind
       of cmdLongOption, cmdShortOption:
@@ -82,7 +82,7 @@ else:
         break
       else: discard
     # If the user specified a task but it doesn't exist, abort.
-    let badTask = (task.len != 0 and (not tasks.hasKey(task)))
+    let badTask = task.len != 0 and task notin tasks
     if task.len == 0 and tasks.hasKey(defaultTask):
       echo "No task specified, running default task defined by nakefile."
       task = defaultTask
