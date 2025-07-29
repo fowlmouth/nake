@@ -62,7 +62,8 @@ when isMainModule:
 
   mainExecution()
 else:
-  proc moduleHook() {.noconv.} =
+  import std/exitprocs
+  proc moduleHook() =
     ## Hook registered when the module is imported by someone else.
     var
       task = ""
@@ -92,4 +93,15 @@ else:
       quit(if badTask: 1 else: 0)
     runTask task
 
-  addQuitProc moduleHook
+  when defined(gcDestructors):
+    # Hacky workaround for nim-lang#20800
+    # It is not safe to run all the nake machinery in exitProc,
+    # because nim destroys global heap before exitProc is run.
+    # but we can define an object whose destructor will run
+    # before that happens.
+    type
+      AtExit = object
+    proc `=destroy`(a: AtExit) = moduleHook()
+    var a: AtExit
+  else:
+    addExitProc moduleHook
