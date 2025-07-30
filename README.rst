@@ -27,17 +27,8 @@ Now you can run tasks from the ``nakefile.nim``:
     $ nake debug-build
 
 
-License
-=======
-
-`MIT license <LICENSE.rst>`_.
-
-
 Installation
 ============
-
-Stable version
---------------
 
 Use `Nim's Nimble package manager <https://github.com/nim-lang/nimble>`_ to
 install the package and ``nake`` binary:
@@ -52,42 +43,15 @@ those commands again. You can figure out the version you have installed by
 running ``nimble path nake``.
 
 
-Development version
--------------------
-
-Use `Nim's Nimble package manager <https://github.com/nim-lang/nimble>`_ to
-install locally the GitHub checkout:
-
-.. code:: bash
-
-    $ git clone https://github.com/fowlmouth/nake
-    $ cd nake
-    $ nimble install
-
-If you don't mind downloading the Git repository every time, you can also tell
-`Nimble <https://github.com/nim-lang/nimble>`_ to install the latest
-development version directly from Git:
-
-.. code:: bash
-
-    $ nimble update
-    $ nimble install -y nake@#head
-
-
 Usage
 =====
 
-Nake has its own nakefile, it will build nake as a binary. The ``nake`` binary
-is just a shortcut for ``nim c -r nakefile $ARGS``:
+The ``nake`` command is just a shortcut for ``nim c -r nakefile $ARGS``:
 
 .. code:: bash
 
-    $ cd ~/.nimble/libs/nake
-    $ nim c -r nakefile install
-    ## boring ^
     $ cd ~/my-project
     $ nake debug-build
-    ## wow look at the convenience (!!)
 
 Once the nakefile is built, you can run it manually with ``./nakefile``, but you
 can also run ``nake`` again. If nake detects that the source file is newer than
@@ -156,6 +120,42 @@ to define tasks. If you installed using `Nimble
 The **docs** task will also generate HTML versions of all local RST files,
 which are indexed from the generated `theindex.html
 <http://fowlmouth.github.io/nake/gh_docs/master/theindex.html>`_.
+
+
+Development version
+===================
+
+Use `Nim's Nimble package manager <https://github.com/nim-lang/nimble>`_ to
+install locally the GitHub checkout:
+
+.. code:: bash
+
+    $ git clone https://github.com/fowlmouth/nake
+    $ cd nake
+    $ nimble install
+
+If you don't mind downloading the Git repository every time, you can also tell
+`Nimble <https://github.com/nim-lang/nimble>`_ to install the latest
+development version directly from Git:
+
+.. code:: bash
+
+    $ nimble update
+    $ nimble install -y nake@#head
+
+
+Nake has its own nakefile, it will build nake as a binary.
+
+.. code:: bash
+
+    $ cd ~/.nimble/libs/nake
+    $ nim c -r nakefile install
+
+
+License
+=======
+
+`MIT license <LICENSE>`_.
 
 
 Changes
