@@ -4,7 +4,7 @@ description = "make-like for Nim. Describe your builds as tasks!"
 license = "MIT"
 
 installFiles = @[
-    "LICENSE.rst",
+    "LICENSE",
     "README.rst",
     "nake.nim",
     "nakefile.nim",
